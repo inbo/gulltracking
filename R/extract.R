@@ -55,10 +55,10 @@ validate_tracks_data <- function(tracks_data)	{
 	}
 	
 	# check whether columns can be converted to numeric
-	numeric_cols <- c("latitude", "longitude", "altitude", "pressure", "temperature",
-										"satellites_used", "gps_fixtime", "positiondop", "h_accuracy",
-										"v_accuracy", "x_speed", "y_speed", "z_speed", "speed_accurracy",
-										"speed_3d", "speed_2d", "direction", "altitude_agl")
+	numeric_cols <- c("device_info_serial", "latitude", "longitude", "altitude", "pressure",
+										"temperature", "satellites_used", "gps_fixtime", "positiondop",
+										"h_accuracy", "v_accuracy", "x_speed", "y_speed", "z_speed",
+										"speed_accurracy", "speed_3d", "speed_2d", "direction", "altitude_agl")
 	lapply(numeric_cols, function(x) {
 		tryCatch({
 			check_numeric_values(x, tracks_data[[x]])
@@ -69,6 +69,7 @@ validate_tracks_data <- function(tracks_data)	{
 	})
 	
 	# convert to numeric columns
+	tracks_data[, device_info_serial:=as.numeric(device_info_serial)]
 	tracks_data[, latitude:=as.numeric(latitude)]
 	tracks_data[, longitude:=as.numeric(longitude)]
 	tracks_data[, altitude:=as.numeric(altitude)]
