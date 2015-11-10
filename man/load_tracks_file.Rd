@@ -11,7 +11,7 @@ load_tracks_file(filename)
 format. (','-delimited, header included)}
 }
 \value{
-A dataframe containing the tracking data
+A data table (not a data frame!) containing the tracking data
 }
 \description{
 Load a file containing bird tracking data. This file can
