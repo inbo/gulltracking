@@ -147,7 +147,7 @@ validate_bird_data <- function(bird_data) {
 	}
 	
 	# convert enumeration columns to factors
-	sex_choices <- c("male", "female")
+	# note that the allowed choices are saved as package data in 'data/'
 	bird_data[, sex:=as.factor(sex)]
 	if (sum(sort(levels(bird_data$sex)) != sort(sex_choices)) > 0) {
 			issues <- append(issues, paste("value found in column sex that does not match one of: ",
@@ -155,7 +155,6 @@ validate_bird_data <- function(bird_data) {
 									)
 						)
 	}
-	species_choices <- c("Larus argentatus", "Larus fuscus")
 	bird_data[, species:=as.factor(species)]
 	if (sum(sort(levels(bird_data$species)) != sort(species_choices)) > 0) {
 			issues <- append(issues, paste("value found in column species that does not match one of: ",
