@@ -14,3 +14,112 @@ vignette: >
 ## Intro
 
 At the [Research Institute for Nature and Forest](http://www.inbo.be) (INBO) we are tracking birds using the [UvA-BiTS system](http://www.uva-bits.nl/) as part of the [LifeWatch project](http://www.lifewatch.inbo.be). As tracking data volume grows quicker than human observation data (what we usually work with), we were in need for a data store that contains the cleaned and enriched tracking data in a system that is optimized for querying these *large-ish* data sets. Something like a data warehouse. This R package contains code to extract the data from the UvA-BiTS virtual lab, clean and enrich it, and load it in the data warehouse.
+
+## ETL procedure
+
+### Extracting and validating input data
+
+The data is loaded from csv files. The following input files are expected:
+
+#### Birds metadata
+
+Contains information about the tracked individuals. At the INBO, this file is managed in CartoDB and it is documented [here](https://github.com/LifeWatchINBO/bird-tracking/tree/master/cartodb#bird_tracking-table).
+
+The extraction procedure reads the bird metadata file and verifies whether all columns have the expected data types. Missing values are allowed, but values with an incorrect data type will cause the extraction to halt.
+
+The columns `sex` and `species` are only allowed to have values defined in the package data elements `sex_choices` and `species_choices`.
+
+#### Tracking data
+
+The tracking data is a dump from the UvA-BiTS virtual lab in csv format. It contains the following columns:
+
+| field name | type | description |
+| ---------- | ---- | ----------- |
+| device_info_serial | number | ID of the GPS tracker |
+| date_time | text | Date and time in format "yyyy-mm-dd hh:mm:ss" |
+| latitude | number | latitude in WGS84 |
+| longitude | number | longitude in WGS84 |
+| altitude | number | Altitude in meters above sea level recorded by the GPS tracker |
+| pressure | number | air pressure in ??? |
+| temperature | number | Temperature recorded by the GPS tracker in degrees Celsius |
+| satellites_used | number | Number of satellites used to get a GPS fix |
+| gps_fixtime | number | Time to get a GPS fix in seconds |
+| positiondop | number | ??? |
+| h_accuracy | number | Horizontal accuracy in meters |
+| v_accuracy | number | Vertical accuracy in meters |
+| x_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| y_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| z_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| speed_accuracy | number | accuracy of the speed measurement in ??? |
+| location | text | ??? |
+| userflag | number | ??? |
+| speed_3d | number | ??? |
+| speed_2d | number | ??? |
+| direction | number | Heading in degrees (0 is north, 90 is east). |
+| altitude_agl | number | ??? |
+
+### Enriching the data
+
+#### 1. Drop unused columns
+
+This is actually already done while extracting the data. The `location` column is deleted from the tracking data and the `cartodb_id` and `the_geom` columns are deleted from the bird metadata.
+
+#### 2. Join bird tracks with bird metadata
+
+Based on the `device_info_serial` field, the bird metadata is attached to every tracking record. If a record in the tracking data is fond for which no bird record exists, the procedure stops. On the other hand, birds that have no tracking records are ignored.
+
+#### 3. Delete test records
+
+```
+DELETE FROM lifewatch.bird_tracking_new_data
+USING lifewatch.bird_tracking_devices AS d
+WHERE
+    lifewatch.bird_tracking_new_data.device_info_serial = d.device_info_serial
+    AND lifewatch.bird_tracking_new_data.date_time < d.tracking_started_at
+```
+
+To be implemented;
+
+#### 4. Calculate time_since_previous_fix
+
+To be implemented;
+
+#### 5. Calculate speed
+
+To be implemented;
+
+#### 6. Calculate distance travelled
+
+To be implemented;
+
+#### 7. Calculate distance to colony
+
+To be implemented;
+
+#### 8. Flag outliers
+
+```
+-- SQL to flag outliers in the tracking data
+-- * Records in the future
+-- * Records with an altitude above 10km
+-- * Records with a speed above 120km/h
+-- * Records with a horizontal accuracy above 1000m
+```
+
+To be implemented;
+
+#### 9. Link with Corine land use
+
+To be implemented;
+
+#### 10. Link with 
+
+To be implemented;
+
+## CartoDB procedure
+
+This ETL procedure replaces the previous import procedure used for loading into CartoDB. That procedure is documented at [github](https://github.com/LifeWatchINBO/bird-tracking/blob/master/cartodb/import-procedure.md). However, the following steps of the CartoDB import procedure are not covered by the current ETL procedure:
+
+> 9. Optionally, check tracking days to discover birds with relatively low number of tracking days (could indicate bird is dead)
+
+
