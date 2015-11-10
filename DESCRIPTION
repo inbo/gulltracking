@@ -21,3 +21,5 @@ Suggests: testthat,
     knitr,
     data.table
 VignetteBuilder: knitr
+LazyData: true
+URL: https://github.com/LifeWatchINBO/uvabits-warehouse
