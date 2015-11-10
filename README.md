@@ -20,6 +20,10 @@ Seriously? Well, ok then:
 library(UvaBitsWarehouse)
 ```
 
+## How to use the package
+
+This is explained in the package [vignette](./vignettes/uva-bits-warehouse.Rmd).
+
 ## Get in touch
 
 Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/uvabits-warehouse/issues).
