@@ -22,4 +22,4 @@ library(UvaBitsWarehouse)
 
 ## Get in touch
 
-Should you encounter issues while using this package, get in touch by [filing an issue](./issues).
+Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/uvabits-warehouse/issues).
