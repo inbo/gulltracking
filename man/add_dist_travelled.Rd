@@ -7,7 +7,7 @@
 add_dist_travelled(dt)
 }
 \arguments{
-\item{tracking}{data as data.table}
+\item{dt}{tracking data as data.table}
 }
 \value{
 nothing. Data is added in place

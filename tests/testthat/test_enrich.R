@@ -1,3 +1,5 @@
+library(lubridate)
+
 # -------------------------------------------- # 
 #      Fixture data
 # -------------------------------------------- # 
@@ -5,7 +7,11 @@ fixture_tracking_data <- tracks_validated # from package data
 fixture_bird_data <- birds_validated # from package data
 fixture_data_table <- data.table(
 	device_info_serial=c(2, 2, 2, 2, 5, 5, 2, 5),
-	date_time=c(2, 3, 4, 1, 2, 6, 4, 3)
+	date_time=ymd_hms(c("2014-01-01 10:00:00", "2014-01-01 10:02:00",
+											"2014-01-01 10:04:00", "2014-01-01 10:06:00",
+											"2014-01-01 10:08:00", "2014-01-01 10:10:00",
+											"2014-01-01 10:12:00", "2014-01-01 10:14:00")
+								)
 )
 
 
@@ -34,10 +40,10 @@ test_that("deleting test records works", {
 })
 
 test_that("enrich can calculate diffs in date_time", {
-	fixt_expected_diff_col <- c(NA, 1, 1, 1, 0, NA, 1, 3)
+	fixt_expected_diff_col <- c(NA, 120, 120, 120, 360, NA, 120, 240)
 	setkey(fixture_data_table, device_info_serial, date_time)
 	add_time_since_previous_fix(fixture_data_table)
-	expect_equal(fixture_data_table$time_diff, fixt_expected_diff_col)
+	expect_equal(as.numeric(fixture_data_table$time_diff), fixt_expected_diff_col)
 })
 
 test_that("distances between consecutive points are calculated for each device", {
@@ -49,4 +55,15 @@ test_that("distances between consecutive points are calculated for each device",
 	expected_distances = c(NA, 157401.5610458, NA, 157401.5610458, NA, 0)
 	add_dist_travelled(data)
 	expect_equal(data$distance, expected_distances)
+})
+
+test_that("speed is calculated based on time diffs and distances", {
+	test_data <- data.table(
+		time_diff=as.difftime(c(1200, 1800, 3000), units="secs"),
+		distance=c(2000, 3000, 5000)
+	)
+	expected_speed <- c(6, 6, 6)
+	add_speed(test_data)
+	expect_equal(test_data$speed_km_h, expected_speed)
+	
 })

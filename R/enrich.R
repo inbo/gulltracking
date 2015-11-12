@@ -54,14 +54,15 @@ delete_test_records <- function(data) {
 #' add_time_since_previous_fix(tracking_data)
 #' }
 add_time_since_previous_fix <- function(datatable) {
-	datatable[, time_diff:=date_time-shift(date_time), by=device_info_serial]
+	datatable[, time_diff:=difftime(date_time, shift(date_time), units="secs"),
+						by=device_info_serial]
 }
 
 
 #' Add Distance travelled
 #' @description will calculate the distance travelled since previous GPS fix
 #' 
-#' @param tracking data as data.table
+#' @param dt tracking data as data.table
 #' @return nothing. Data is added in place
 #' @export
 #' @examples 
@@ -82,7 +83,22 @@ add_dist_travelled <- function(dt) {
 	dt[, tmp.select:=NULL]
 }
 
-# add_speed()
+#' Add speed
+#' @description calculates the average speed of the individual since the
+#' previous GPS fix
+#' 
+#' @param dt tracking data as data.table. Should contain column `distance`
+#' and column `time_diff`
+#' @return nothing. Data is added in place
+#' @export
+#' @examples
+#' \dontrun{
+#' add_speed(tracking_data)
+#' }
+add_speed <- function(dt) {
+	dt[, speed_km_h:=(distance/1000)/(as.numeric(time_diff)/3600)]
+}
+
 # add_dist_to_colony()
 # flag_outliers()
 # link_with_corine()
@@ -108,5 +124,5 @@ enrich_data <- function(tracking_data, bird_data) {
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
 	add_time_since_previous_fix(dt)
 	add_dist_travelled(dt)
-	# dt <- add_speed(dt)
+	add_speed(dt)
 }
