@@ -20,7 +20,7 @@ the time difference between a fix and its previous fix is calculated.
 }
 \examples{
 \dontrun{
-add_time_since_previous_fix
+add_time_since_previous_fix(tracking_data)
 }
 }
 
