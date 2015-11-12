@@ -40,9 +40,29 @@ delete_test_records <- function(data) {
 	return(data[date_time >= tracking_start_date_time])
 }
 
-# add_time_since_previous_fix()
-# add_speed()
+#' Add time since previous fix
+#' @description Calculates the time (in seconds) since the birds last fix.
+#' Data is first ordered by individual and date_time. Next, for each individual
+#' the time difference between a fix and its previous fix is calculated.
+#' 
+#' @param datatable A data.table with tracking data. Should at least include
+#' a column `device_info_serial` and `date_time`
+#' @return a new datatable with the time difference column added to it.
+#' @export
+#' @examples 
+#' \dontrun{
+#' add_time_since_previous_fix
+#' }
+add_time_since_previous_fix <- function(datatable) {
+	datatable <- datatable[order(device_info_serial, date_time)]
+	diffs <- datatable[, diff(date_time), by=device_info_serial]
+	diff_col <- diffs[, c(NA, V1), by=device_info_serial]
+	datatable <- datatable[, time_diff:=diff_col$V1]
+	return(datatable)
+}
+
 # add_dist_travelled()
+# add_speed()
 # add_dist_to_colony()
 # flag_outliers()
 # link_with_corine()
@@ -65,4 +85,7 @@ delete_test_records <- function(data) {
 enrich_data <- function(tracking_data, bird_data) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt)
+	dt <- add_time_since_previous_fix(dt)
+	dt <- add_dist_travelled(dt)
+	# dt <- add_speed(dt)
 }
