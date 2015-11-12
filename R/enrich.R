@@ -51,17 +51,37 @@ delete_test_records <- function(data) {
 #' @export
 #' @examples 
 #' \dontrun{
-#' add_time_since_previous_fix
+#' add_time_since_previous_fix(tracking_data)
 #' }
 add_time_since_previous_fix <- function(datatable) {
-	datatable <- datatable[order(device_info_serial, date_time)]
-	diffs <- datatable[, diff(date_time), by=device_info_serial]
-	diff_col <- diffs[, c(NA, V1), by=device_info_serial]
-	datatable <- datatable[, time_diff:=diff_col$V1]
-	return(datatable)
+	datatable[, time_diff:=date_time-shift(date_time), by=device_info_serial]
 }
 
-# add_dist_travelled()
+
+#' Add Distance travelled
+#' @description will calculate the distance travelled since previous GPS fix
+#' 
+#' @param tracking data as data.table
+#' @return nothing. Data is added in place
+#' @export
+#' @examples 
+#' \dontrun{
+#' add_dist_travelled(tracking_data)
+#' }
+#' @importFrom geosphere distCosine
+add_dist_travelled <- function(dt) {
+	dt[, tmp.select:=device_info_serial==shift(device_info_serial)]
+	distances <- distCosine(
+		  cbind(dt$longitude, dt$latitude),
+		  cbind(c(1, shift(dt$longitude)[-1]),
+						c(1, shift(dt$latitude)[-1])
+			)
+		)
+	distances[!dt$tmp.select | is.na(dt$tmp.select)] <- NA
+	dt[, distance:=distances]
+	dt[, tmp.select:=NULL]
+}
+
 # add_speed()
 # add_dist_to_colony()
 # flag_outliers()
@@ -85,7 +105,8 @@ add_time_since_previous_fix <- function(datatable) {
 enrich_data <- function(tracking_data, bird_data) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt)
-	dt <- add_time_since_previous_fix(dt)
-	dt <- add_dist_travelled(dt)
+	setkey(dt, device_info_serial, date_time) # will sort on those columns
+	add_time_since_previous_fix(dt)
+	add_dist_travelled(dt)
 	# dt <- add_speed(dt)
 }

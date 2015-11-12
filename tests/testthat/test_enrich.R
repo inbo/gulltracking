@@ -35,6 +35,18 @@ test_that("deleting test records works", {
 
 test_that("enrich can calculate diffs in date_time", {
 	fixt_expected_diff_col <- c(NA, 1, 1, 1, 0, NA, 1, 3)
-	result <- add_time_since_previous_fix(fixture_data_table)
-	expect_equal(result$time_diff, fixt_expected_diff_col)
+	setkey(fixture_data_table, device_info_serial, date_time)
+	add_time_since_previous_fix(fixture_data_table)
+	expect_equal(fixture_data_table$time_diff, fixt_expected_diff_col)
+})
+
+test_that("distances between consecutive points are calculated for each device", {
+	data <- data.table(
+		device_info_serial=c(1, 1, 2, 2, 3, 3),
+		latitude=c(1, 2, 1, 2, 3, 3),
+		longitude=c(1, 2, 1, 2, 3, 3)
+	)
+	expected_distances = c(NA, 157401.5610458, NA, 157401.5610458, NA, 0)
+	add_dist_travelled(data)
+	expect_equal(data$distance, expected_distances)
 })
