@@ -17,7 +17,7 @@ This vignette examines the performance of different computations implemented in 
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=6, fig.path='Figs/',
-                      echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE)
+                      warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
 ```{r profile}
@@ -28,5 +28,7 @@ d <- profiling_L1("../data/bird_track_logs_2000L.csv", "../data/two_birds.csv")
 q <- qplot(x=d$step, y=d$timing)
 q + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
+
+(if the image isn't shown, view it [here](./Figs/profile-1.png))
 
 After further investigation of the `validate_tracks_data` function, this turns out to be due to the fact that parsing date_times is slow.
