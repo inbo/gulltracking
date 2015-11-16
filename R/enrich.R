@@ -118,7 +118,29 @@ add_dist_to_colony <- function(dt) {
 	)]
 }
 
-# flag_outliers()
+
+#' Flag outliers
+#' @description Flag records that are suspect to be erronous.
+#' The following checks are made:
+#'     - date_time < current date
+#'     - altitude < 1000 km
+#'     - speed < 120 km per hour
+#'     - height_accuracy < 1000
+#' If one of these fails, the record gets flagged.
+#' 
+#' @param dt tracking data as data.table.
+#' @return nothing. Flagging happens in place
+#' @export
+#' @examples
+#' \dontrun{
+#' flag_outliers(tracking_data)
+#' }
+flag_outliers <- function(dt) {
+	today <- now()
+	dt[, outlier:=speed_km_h<0 | speed_km_h>120 | altitude>1000 | h_accuracy>1000 | date_time>today]
+}
+
+
 # link_with_corine()
 
 #' Enrich data
@@ -143,4 +165,6 @@ enrich_data <- function(tracking_data, bird_data) {
 	add_time_since_previous_fix(dt)
 	add_dist_travelled(dt)
 	add_speed(dt)
+	flag_outliers(dt)
+	link_with_corine(dt)
 }
