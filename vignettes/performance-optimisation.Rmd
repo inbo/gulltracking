@@ -38,7 +38,7 @@ q <- qplot(x=c("ymd_hms", "fast_strptime"), y=c(ymd_hms_time, fast_strptime_time
 q + geom_point()
 ```
 
-(See figure [here](Figs/date_time°parsing-1.png))
+(See figure [here](Figs/date_time_parsing-1.png))
 
 So, `ymd_hms` was replaced by `fast_strptime`. This cut off 73% of the `track_validation` step processing time.
 
