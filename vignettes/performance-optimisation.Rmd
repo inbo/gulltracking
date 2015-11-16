@@ -9,21 +9,43 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=6, fig.path='Figs/',
+                      warning=FALSE, message=FALSE, cache=TRUE)
+library(UvaBitsWarehouse)
+library(data.table)
+library(ggplot2)
+library(lubridate)
+```
+
 # Performance optimisation
 
 This vignette examines the performance of different computations implemented in the UvaBitsWarehouse package.
 
-## Profiling the different UvABiTSWarehouse steps
+## Date time parsing
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=7, fig.height=6, fig.path='Figs/',
-                      warning=FALSE, message=FALSE, cache=TRUE)
+During first profiling rounds, the slowest step turned out to be the date time parsing that happens during tracking data validation. Initially, lubridate's `ymd_hms` function was used but this turned out to be slow:
+
+```{r date_time_parsing}
+times <- c("2015-04-20 12:32:44", "2015-04-21 12:32:44", "2015-04-22 15:32:44",
+					 "2015-04-22 12:32:44", "2015-04-22 12:35:44", "2015-04-23 16:32:44",
+					 "2015-04-23 12:32:44", "2015-04-20 12:32:44", "2015-04-25 18:32:44"
+					 )
+
+ymd_hms_time <- as.numeric(system.time(ymd_hms(times))[3])
+fast_strptime_time <- as.numeric(system.time(fast_strptime(times, "%Y-%m-%d %H:%M:%OS"))[3])
+q <- qplot(x=c("ymd_hms", "fast_strptime"), y=c(ymd_hms_time, fast_strptime_time))
+q + geom_point()
 ```
 
+(See figure [here](Figs/date_time°parsing-1.png))
+
+So, `ymd_hms` was replaced by `fast_strptime`. This cut off 73% of the `track_validation` step processing time.
+
+## Profiling the different UvABiTSWarehouse steps
+
+
 ```{r profile}
-library(UvaBitsWarehouse)
-library(data.table)
-library(ggplot2)
 d <- profiling_L1("../data/bird_track_logs_2000L.csv", "../data/two_birds.csv")
 q <- qplot(x=d$step, y=d$timing)
 q + theme(axis.text.x = element_text(angle = 90, hjust = 1))

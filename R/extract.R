@@ -51,7 +51,7 @@ validate_tracks_data <- function(tracks_data)	{
 	issues <- c()
 	# set data types for non-character columns
 	nas_in_date_time <- sum(is.na(tracks_data$date_time))
-	tracks_data[, date_time:=lubridate::ymd_hms(date_time)]
+	tracks_data[, date_time:=lubridate::fast_strptime(date_time, "%Y-%m-%d %H:%M:%OS")]
 	if (sum(is.na(tracks_data$date_time)) > nas_in_date_time) {
 		issues <- c(issues, "unparsable values found in column date_time")
 	}
@@ -130,22 +130,22 @@ validate_bird_data <- function(bird_data) {
 	issues <- c()
 	# set date time data types
 	nas_in_tr_start_time <- sum(is.na(bird_data$tracking_start_date_time))
-	bird_data[, tracking_start_date_time:=lubridate::ymd_hms(tracking_start_date_time)]
+	bird_data[, tracking_start_date_time:=lubridate::fast_strptime(tracking_start_date_time, "%Y-%m-%d %H:%M:%OS")]
 	if (sum(is.na(bird_data$tracking_start_date_time)) > nas_in_tr_start_time) {
 		issues <- c(issues, "unparsable values found in column tracking_start_date_time")
 	}
 	nas_in_tr_end_time <- sum(is.na(bird_data$tracking_end_date_time))
-	bird_data[, tracking_end_date_time:=lubridate::ymd_hms(tracking_end_date_time)]
+	bird_data[, tracking_end_date_time:=lubridate::fast_strptime(tracking_end_date_time, "%Y-%m-%d %H:%M:%OS")]
 	if (sum(is.na(bird_data$tracking_end_date_time)) > nas_in_tr_end_time) {
 		issues <- c(issues, "unparsable values found in column tracking_end_date_time")
 	}
 	nas_in_created_at <- sum(is.na(bird_data$created_at))
-	bird_data[, created_at:=lubridate::ymd_hms(created_at)]
+	bird_data[, created_at:=lubridate::fast_strptime(created_at, "%Y-%m-%d %H:%M:%OS")]
 	if (sum(is.na(bird_data$created_at)) > nas_in_created_at) {
 		issues <- c(issues, "unparsable values found in column created_at")
 	}
 	nas_in_updated_at <- sum(is.na(bird_data$updated_at))
-	bird_data[, updated_at:=lubridate::ymd_hms(updated_at)]
+	bird_data[, updated_at:=lubridate::fast_strptime(updated_at, "%Y-%m-%d %H:%M:%OS")]
 	if (sum(is.na(bird_data$updated_at)) > nas_in_updated_at) {
 		issues <- c(issues, "unparsable values found in column created_at")
 	}
