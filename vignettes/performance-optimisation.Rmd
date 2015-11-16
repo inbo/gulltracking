@@ -17,10 +17,10 @@ This vignette examines the performance of different computations implemented in 
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=6, fig.path='Figs/',
-                      echo=FALSE, warning=FALSE, message=FALSE)
+                      echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
-```{r}
+```{r profile}
 library(UvaBitsWarehouse)
 library(data.table)
 library(ggplot2)
