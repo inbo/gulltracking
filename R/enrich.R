@@ -99,7 +99,25 @@ add_speed <- function(dt) {
 	dt[, speed_km_h:=(distance/1000)/(as.numeric(time_diff)/3600)]
 }
 
-# add_dist_to_colony()
+#' Add distance to colony
+#' @description calculates the distance from the GPS position to the colony
+#' 
+#' @param dt tracking data as data.table. Should contains columns `latitude`,
+#' `longitude`, `colony_latitude`, `colony_longitude`
+#' @return nothing. Adds distance (in meters) in place
+#' @export
+#' @examples
+#' \dontrun{
+#' add_dist_to_colony(tracking_data)
+#' }
+#' @importFrom geosphere distCosine
+add_dist_to_colony <- function(dt) {
+	dt[, dist_to_colony:=distCosine(
+		cbind(longitude, latitude),
+		cbind(colony_longitude, colony_latitude)
+	)]
+}
+
 # flag_outliers()
 # link_with_corine()
 

@@ -67,3 +67,17 @@ test_that("speed is calculated based on time diffs and distances", {
 	expect_equal(test_data$speed_km_h, expected_speed)
 	
 })
+
+test_that("distance to colony is calculated", {
+	data <- data.table(
+		latitude=c(1, 2, 1, 2, 1, 1),
+		longitude=c(1, 2, 1, 2, 1, 1),
+		colony_latitude=c(2, 1, 2, 1, 2, 2),
+		colony_longitude=c(2, 1, 2, 1, 2, 2)
+	)
+	expected_distances <- c(157401.5610458, 157401.5610458, 157401.5610458,
+													157401.5610458, 157401.5610458, 157401.5610458
+	)
+	add_dist_to_colony(data)
+	expect_equal(data$dist_to_colony, expected_distances)
+})
