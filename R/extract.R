@@ -25,6 +25,7 @@ check_numeric_values <- function(colname, col) {
 #' @param filename The file containing bird tracking data in csv
 #' format. (','-delimited, header included)
 #' @return A data table (not a data frame!) containing the tracking data
+#' @export
 #' @examples
 #' \dontrun{
 #' load_tracks_file(inputFile)
@@ -41,6 +42,7 @@ load_tracks_file <- function(filename) {
 #' 
 #' @param tracks_data The tracking data as a data table
 #' @return validated tracking data as a data table if no errors are found.
+#' @export
 #' @examples
 #' \dontrun{
 #' validate_tracks_data(tracking_data)
@@ -107,6 +109,7 @@ validate_tracks_data <- function(tracks_data)	{
 #' 
 #' @param filename The name of the file containing bird metadata
 #' @return A data table (not a data frame!) containing the bird metadata
+#' @export
 #' @examples 
 #' \dontrun{
 #' load_bird_file(inputFile)
