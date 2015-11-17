@@ -63,7 +63,7 @@ add_time_since_previous_fix <- function(datatable) {
 #' @description will calculate the distance travelled since previous GPS fix
 #' 
 #' @param dt tracking data as data.table
-#' @return nothing. Data is added in place
+#' @return nothing. Distance (in meters) is added in place
 #' @export
 #' @examples 
 #' \dontrun{
