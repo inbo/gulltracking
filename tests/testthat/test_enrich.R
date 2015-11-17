@@ -84,7 +84,7 @@ test_that("distance to colony is calculated", {
 
 test_that("flag_outliers returns FALSE if everything is ok", {
 	fixture_tracking_data[, speed_km_h:=c(0, 1, 2, 120, rep(80, 96))]
-	fixture_tracking_data[, altitude:=c(0, 1, 2, 1000, rep(938, 96))]
+	fixture_tracking_data[, altitude:=c(0, 1, 2, 10000, rep(938, 96))]
 	fixture_tracking_data[, h_accuracy:=c(0, 1, 2, 1000, rep(333, 96))]
 	flag_outliers(fixture_tracking_data)
 	expect_equal(sum(fixture_tracking_data$outlier), 0)
@@ -103,9 +103,9 @@ test_that("flag_outliers flags records if they fail certain checks", {
 	flag_outliers(error_data)
 	expect_equal(sum(error_data$outlier), 1)
 	
-	# altitude should be < 1000
+	# altitude should be < 10000
 	error_data <- copy(fixture_tracking_data)
-	error_data[, altitude:=c(0, 1, 2, 1001, rep(80, 96))]
+	error_data[, altitude:=c(0, 1, 2, 10001, rep(80, 96))]
 	flag_outliers(error_data)
 	expect_equal(sum(error_data$outlier), 1)
 	

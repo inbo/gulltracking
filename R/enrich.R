@@ -137,7 +137,7 @@ add_dist_to_colony <- function(dt) {
 #' }
 flag_outliers <- function(dt) {
 	today <- now()
-	dt[, outlier:=speed_km_h<0 | speed_km_h>120 | altitude>1000 | h_accuracy>1000 | date_time>today]
+	dt[, outlier:=speed_km_h<0 | speed_km_h>120 | altitude>10000 | h_accuracy>1000 | date_time>today]
 }
 
 
