@@ -1,5 +1,5 @@
 ---
-title: "UvA-BiTS Warehouse"
+title: "performance-optimisation"
 author: "Bart Aelterman <bart.aelterman@inbo.be>"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
