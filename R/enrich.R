@@ -13,6 +13,10 @@
 join_tracks_and_metadata <- function(tracking_data, bird_data) {
 	setkey(tracking_data, device_info_serial)
 	setkey(bird_data, device_info_serial)
+	bird_data[, colony_latitude:=latitude]
+	bird_data[, colony_longitude:=longitude]
+	bird_data[, latitude:=NULL]
+	bird_data[, longitude:=NULL]
 	joined <- bird_data[tracking_data, nomatch=0]
 	if (length(joined$device_info_serial) != length(tracking_data$device_info_serial)) {
 		msg <- paste(c("Error while joining tracking data and bird metadata.",
@@ -37,7 +41,7 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 #' delete_test_records(joined_data)
 #' }
 delete_test_records <- function(data) {
-	return(data[date_time >= tracking_start_date_time])
+	return(data[date_time >= tracking_started_at])
 }
 
 #' Add time since previous fix
@@ -183,6 +187,8 @@ enrich_data <- function(tracking_data, bird_data, raster_data) {
 	add_time_since_previous_fix(dt)
 	add_dist_travelled(dt)
 	add_speed(dt)
+	add_dist_to_colony(dt)
 	flag_outliers(dt)
 	raster_join(dt, raster_data)
+	return(dt)
 }
