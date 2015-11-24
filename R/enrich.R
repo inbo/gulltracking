@@ -160,7 +160,7 @@ flag_outliers <- function(dt) {
 #' @export
 raster_join <- function(dt, raster_data) {
 	pts <- SpatialPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
-	conv <- spTransform(pts, CRSobj=proj4string(raster_data))
+	conv <- spTransform(pts, CRSobj=CRS(proj4string(raster_data)))
 	results <- extract(raster_data, conv)
 	dt[, raster_value:=results]
 }
