@@ -145,8 +145,21 @@ flag_outliers <- function(dt) {
 		 ]
 }
 
-
-# link_with_corine()
+#' Raster join
+#' @description Join tracks with raster data
+#' 
+#' @param dt Data table with tracking data. Geospatial points are created based on the
+#' latitude and longitude field and WGS84 datum is expected.
+#' @param raster_data A raster data object. See the package "raster".
+#' @return nothing. The value of the raster for every point is added to the data
+#' table in place
+#' @export
+raster_join <- function(dt, raster_data) {
+	pts <- SpatialPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
+	conv <- spTransform(pts, CRSobj=proj4string(raster_data))
+	results <- extract(raster_data, conv)
+	dt[, raster_value:=results]
+}
 
 #' Enrich data
 #' @description Enrich the bird tracking data by precalculating attributes
@@ -163,7 +176,7 @@ flag_outliers <- function(dt) {
 #' \dontrun {
 #' enrich_data(tracking_data, bird_data)
 #' }
-enrich_data <- function(tracking_data, bird_data) {
+enrich_data <- function(tracking_data, bird_data, raster_data) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt)
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
@@ -171,5 +184,5 @@ enrich_data <- function(tracking_data, bird_data) {
 	add_dist_travelled(dt)
 	add_speed(dt)
 	flag_outliers(dt)
-	link_with_corine(dt)
+	raster_join(dt, raster_data)
 }

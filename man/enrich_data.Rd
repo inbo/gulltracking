@@ -4,7 +4,7 @@
 \alias{enrich_data}
 \title{Enrich data}
 \usage{
-enrich_data(tracking_data, bird_data)
+enrich_data(tracking_data, bird_data, raster_data)
 }
 \arguments{
 \item{tracking_data}{Data table obtained by using the validate_tracks_data
