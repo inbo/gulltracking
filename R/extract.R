@@ -104,7 +104,7 @@ validate_tracks_data <- function(tracks_data)	{
 
 #' Load bird metadata file
 #' @description Load a file containing bird metadata. This file is managed at the
-#' INBO using CartoDB Create a csv export of that file, and make sure it is
+#' INBO on Google Drive. Create a csv export of that file, and make sure it is
 #' "," delimited.
 #' 
 #' @param filename The name of the file containing bird metadata
@@ -129,26 +129,25 @@ load_bird_file <- function(filename) {
 validate_bird_data <- function(bird_data) {
 	issues <- c()
 	# set date time data types
-	nas_in_tr_start_time <- sum(is.na(bird_data$tracking_start_date_time))
-	bird_data[, tracking_start_date_time:=lubridate::fast_strptime(tracking_start_date_time, "%Y-%m-%d %H:%M:%OS")]
-	if (sum(is.na(bird_data$tracking_start_date_time)) > nas_in_tr_start_time) {
-		issues <- c(issues, "unparsable values found in column tracking_start_date_time")
+	nas_in_tr_start_time <- sum(is.na(bird_data$tracking_started_at))
+	bird_data[, tracking_started_at:=lubridate::fast_strptime(as.character(tracking_started_at), "%Y-%m-%dT%H:%M:%OS%z")]
+	if (sum(is.na(bird_data$tracking_started_at)) > nas_in_tr_start_time) {
+		issues <- c(issues, "unparsable values found in column tracking_started_at")
 	}
-	nas_in_tr_end_time <- sum(is.na(bird_data$tracking_end_date_time))
-	bird_data[, tracking_end_date_time:=lubridate::fast_strptime(tracking_end_date_time, "%Y-%m-%d %H:%M:%OS")]
-	if (sum(is.na(bird_data$tracking_end_date_time)) > nas_in_tr_end_time) {
-		issues <- c(issues, "unparsable values found in column tracking_end_date_time")
+	nas_in_tr_end_time <- sum(is.na(bird_data$tracking_ended_at))
+	bird_data[, tracking_ended_at:=lubridate::fast_strptime(as.character(tracking_ended_at), "%Y-%m-%dT%H:%M:%OS%z")]
+	if (sum(is.na(bird_data$tracking_ended_at)) > nas_in_tr_end_time) {
+		issues <- c(issues, "unparsable values found in column tracking_ended_at")
 	}
-	nas_in_created_at <- sum(is.na(bird_data$created_at))
-	bird_data[, created_at:=lubridate::fast_strptime(created_at, "%Y-%m-%d %H:%M:%OS")]
-	if (sum(is.na(bird_data$created_at)) > nas_in_created_at) {
-		issues <- c(issues, "unparsable values found in column created_at")
-	}
-	nas_in_updated_at <- sum(is.na(bird_data$updated_at))
-	bird_data[, updated_at:=lubridate::fast_strptime(updated_at, "%Y-%m-%d %H:%M:%OS")]
-	if (sum(is.na(bird_data$updated_at)) > nas_in_updated_at) {
-		issues <- c(issues, "unparsable values found in column created_at")
-	}
+	
+	# convert logical columns to Logical
+	tmp_is_active <- as.factor(bird_data$is_active)
+	tryCatch({
+		levels(tmp_is_active) <- c("TRUE", "FALSE")	
+	}, error=function(e) {
+		issues <<- append(issues, paste("could not parse boolean values from column is_active"))
+	})
+	bird_data[, is_active:=as.logical(tmp_is_active)]
 	
 	# convert enumeration columns to factors
 	# note that the allowed choices are saved as package data in 'data/'
@@ -159,17 +158,16 @@ validate_bird_data <- function(bird_data) {
 									)
 						)
 	}
-	bird_data[, species:=as.factor(species)]
-	if (!all(levels(bird_data$species) %in% species_choices)) {
-			issues <- append(issues, paste("value found in column species that does not match one of: ",
+	bird_data[, scientific_name:=as.factor(scientific_name)]
+	if (!all(levels(bird_data$scientific_name) %in% species_choices)) {
+			issues <- append(issues, paste("value found in column scientific_name that does not match one of: ",
 									paste(species_choices, collapse=", ")
 						  	)
 			)
 	}
 	
 	# check whether columns can be converted to numeric
-	numeric_cols <- c("device_info_serial", "weight_in_g", "colony_latitude",
-										"colony_longitude")
+	numeric_cols <- c("device_info_serial", "catch_weight", "latitude", "longitude")
 	lapply(numeric_cols, function(x) {
 		tryCatch({
 			check_numeric_values(x, bird_data[[x]])
@@ -181,19 +179,33 @@ validate_bird_data <- function(bird_data) {
 	
 	# convert to numeric columns
 	bird_data[, device_info_serial:=as.numeric(device_info_serial)]
-	bird_data[, weight_in_g:=as.numeric(weight_in_g)]
-	bird_data[, colony_latitude:=as.numeric(colony_latitude)]
-	bird_data[, colony_longitude:=as.numeric(colony_longitude)]
-	
-	# drop unused columns
-	# ... cartodb_id: this id has no use outside of CartoDB.
-	# ... the_geom: this is a binary blob from a geometric data type. Cannot be used.
-	bird_data[, cartodb_id:=NULL]
-	bird_data[, the_geom:=NULL]
+	bird_data[, catch_weight:=as.numeric(catch_weight)]
+	bird_data[, latitude:=as.numeric(latitude)]
+	bird_data[, longitude:=as.numeric(longitude)]
 	
 	if (length(issues) > 0) {
 		print(paste(issues, sep="\n"))
 		stop("Validation failed")
 	}
 	return(bird_data)
+}
+
+
+#' Read raster data
+#' @description Read raster data using the raster package. By default
+#' this function will set the CRS of this data to EPSG4326 (WGS 84).
+#' Use the data.CRS parameter to override this. 
+#' 
+#' @param filename Name of the file containing raster data
+#' @param data.CRS Coordinate Reference System of the data
+#' @return raster data as RasterLayer class
+#' @export
+#' @examples
+#' \dontrun{
+#' read_raster_data("raster_file.tiff", data.CRS="+init=epsg:2056")
+#' }
+read_raster_data <- function(filename, data.CRS="+init=epsg:4326") {
+	r <- raster(filename)
+	projection(r) <- CRS(data.CRS)
+	return(r)
 }

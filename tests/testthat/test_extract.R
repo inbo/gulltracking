@@ -27,32 +27,26 @@ fixture_tracking_data <- data.table(
 )
 
 fixture_bird_data <- data.table(
+	project_leader=c("Tony", "Tony", "Tony"),
 	device_info_serial=c("783", "328", "2"),
 	ring_code=c("32J", "2DZ", "238H"),
 	color_ring_code=c("HDUE", "JDUS", "DUS"),
-	species=c("Larus fuscus", "Larus fuscus", "Larus argentatus"),
+	species_code=c("lbbg", "lbbg", "hg"),
+	scientific_name=c("Larus fuscus", "Larus fuscus", "Larus argentatus"),
 	sex=c("male", "female", "female"),
-	weight_in_g=c("738", "481", "1953"),
-	tracking_start_date_time=c("2013-05-27 18:00:00",
-														 "2013-05-27 18:00:00",
-														 "2013-05-27 20:00:00"),
-	tracking_end_date_time=c("2013-05-27 18:00:00",
-													 "2013-05-27 18:00:00",
-													 "2013-05-27 20:00:00"),
-	colony_latitude=c("51.3493", "51.334", "51.356"),
-	colony_longitude=c("2.593", "3.2113", "2.904"),
+	catch_weight=c("738", "481", "1953"),
+	tracking_started_at=c("2013-05-27T18:00:00.0329+00",
+														 "2013-05-27T18:00:00.0329+00",
+														 "2013-05-27T20:00:00.0329+00"),
+	tracking_ended_at=c("2013-05-27T18:00:00.0329+00",
+													 "2013-05-27T18:00:00.0329+00",
+													 "2013-05-27T20:00:00.0329+00"),
+	latitude=c("51.3493", "51.334", "51.356"),
+	longitude=c("2.593", "3.2113", "2.904"),
 	remarks=c("", "", "nothing to say"),
-	cartodb_id=c("doesn't matter", "", ""),
-	created_at=c("2013-05-27 18:00:00",
-							 "2013-05-27 18:00:00",
-							 "2013-05-27 20:00:00"),
-	updated_at=c("2013-05-27 18:00:00",
-							 "2013-05-27 18:00:00",
-							 "2013-05-27 20:00:00"),
-	the_geom=c("IQE9JF93Q3JFIQ", "3IQH83F3NQI", "EIHQ83NQICE"),
 	bird_name=c("Wilma", "Hilbran", "Joke"),
-	colony_name=c("Vismijn", "APM", "APM"),
-	colony_location=c("Oostende", "Zeebrugge", "Zeebrugge")
+	catch_location=c("Oostende", "Zeebrugge", "Zeebrugge"),
+	is_active=c(NA, NA, "rubber")
 )
 
 # -------------------------------------------- # 
@@ -72,9 +66,9 @@ test_that("bird tracking validation returns data if no errors are found", {
 test_that("bird tracking validation stops if an error is found", {
 	# skip("too much output") # DELETE LATER
 	error_data <- copy(fixture_tracking_data)
-	error_data$date_time <- c("2013-05-31 16:31:31",
-														"2013-05-31 16:32:34",
-														"31/05/2013 16:33:37") # uh oh!
+	error_data$date_time <- c("2013-05-31 16:31:31.4402+00",
+														"2013-05-31 16:32:34.4402+00",
+														"31/05/2013 16:33:37.4402+00") # uh oh!
 	expect_error(validate_tracks_data(error_data))
 	error_data <- copy(fixture_tracking_data)
 	error_data$altitude <- c("4", "5", "a")
@@ -90,9 +84,9 @@ test_that("bird metadata validation stops if an error is found", {
 	error_data$device_info_serial <- c("a", "b", "1")
 	expect_error(validate_bird_data(error_data))
 	error_data <- copy(fixture_bird_data)
-	error_data$created_at <- c("2013-05-31 16:31:31",
-														 "2013-05-31 16:32:34",
-														 "2014/04/11 16:33:37")
+	error_data$tracking_started_at <- c("2013-05-31T16:31:31.0242+00",
+														 "2013-05-31T16:32:34.0242+00",
+														 "2014/04/11T16:33:37.0242+00")
 	expect_error(validate_bird_data(error_data))
 	error_data <- copy(fixture_bird_data)
 	error_data$sex <- c("male", "female", "unknown")

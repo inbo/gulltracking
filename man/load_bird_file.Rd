@@ -14,7 +14,7 @@ A data table (not a data frame!) containing the bird metadata
 }
 \description{
 Load a file containing bird metadata. This file is managed at the
-INBO using CartoDB Create a csv export of that file, and make sure it is
+INBO on Google Drive. Create a csv export of that file, and make sure it is
 "," delimited.
 }
 \examples{
