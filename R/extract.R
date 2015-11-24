@@ -130,12 +130,12 @@ validate_bird_data <- function(bird_data) {
 	issues <- c()
 	# set date time data types
 	nas_in_tr_start_time <- sum(is.na(bird_data$tracking_started_at))
-	bird_data[, tracking_started_at:=lubridate::fast_strptime(as.character(tracking_started_at), "%Y-%m-%dT%H:%M:%OS%z")]
+	bird_data[, tracking_started_at:=lubridate::fast_strptime(as.character(tracking_started_at), "%Y-%m-%dT%H:%M:%OS%Ou")]
 	if (sum(is.na(bird_data$tracking_started_at)) > nas_in_tr_start_time) {
 		issues <- c(issues, "unparsable values found in column tracking_started_at")
 	}
 	nas_in_tr_end_time <- sum(is.na(bird_data$tracking_ended_at))
-	bird_data[, tracking_ended_at:=lubridate::fast_strptime(as.character(tracking_ended_at), "%Y-%m-%dT%H:%M:%OS%z")]
+	bird_data[, tracking_ended_at:=lubridate::fast_strptime(as.character(tracking_ended_at), "%Y-%m-%dT%H:%M:%OS%Ou")]
 	if (sum(is.na(bird_data$tracking_ended_at)) > nas_in_tr_end_time) {
 		issues <- c(issues, "unparsable values found in column tracking_ended_at")
 	}
