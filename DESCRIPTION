@@ -16,7 +16,6 @@ Imports:
 	testthat,
 	lubridate,
 	data.table,
-	taRifx,
 	geosphere
 Suggests: testthat,
     knitr,

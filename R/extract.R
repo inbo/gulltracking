@@ -6,12 +6,11 @@
 #' @param col Column containing values to be tested
 #' @return col if all values can be converted to numeric. Otherwise error.
 #' @export
-#' @importFrom taRifx destring
 #' @examples
 #' check_numeric_values("testcol", c(1, 2, 3))
 check_numeric_values <- function(colname, col) {
 	testcol <- col[!is.na(col)]# drop NA's
-	if (length(testcol[is.na(destring(testcol))]) > 0) {
+	if (length(testcol[is.na(as.numeric(testcol))]) > 0) {
 		stop(paste("Non numeric values found for column ", colname))
 	}
 	return(col)
