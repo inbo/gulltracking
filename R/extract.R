@@ -116,7 +116,7 @@ validate_tracks_data <- function(tracks_data)	{
 #' }
 #' @import data.table
 load_bird_file <- function(filename) {
-	data <- fread(filename, dec=".", header=TRUE, sep=",")
+	data <- fread(filename, dec=".", header=TRUE, sep=",", na.strings=c(""))
 }
 
 
@@ -128,7 +128,8 @@ load_bird_file <- function(filename) {
 #' @export
 validate_bird_data <- function(bird_data) {
 	issues <- c()
-	# set date time data types
+	# set date time data types. Note that the timezone format string is Ou, which only matches the "Z"
+	# string, indicating "Zulu" (UTC) time zone. "+00" will not match.
 	nas_in_tr_start_time <- sum(is.na(bird_data$tracking_started_at))
 	bird_data[, tracking_started_at:=lubridate::fast_strptime(as.character(tracking_started_at), "%Y-%m-%dT%H:%M:%OS%Ou")]
 	if (sum(is.na(bird_data$tracking_started_at)) > nas_in_tr_start_time) {
