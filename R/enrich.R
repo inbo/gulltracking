@@ -51,7 +51,7 @@ delete_test_records <- function(data) {
 #' 
 #' @param datatable A data.table with tracking data. Should at least include
 #' a column `device_info_serial` and `date_time`
-#' @return a new datatable with the time difference column added to it.
+#' @return a new datatable with the time difference column (`time_diff`) added to it.
 #' @export
 #' @examples 
 #' \dontrun{
@@ -67,7 +67,7 @@ add_time_since_previous_fix <- function(datatable) {
 #' @description will calculate the distance travelled since previous GPS fix
 #' 
 #' @param dt tracking data as data.table
-#' @return nothing. Distance (in meters) is added in place
+#' @return nothing. Distance (in meters) is added in place (`distance_diff`)
 #' @export
 #' @examples 
 #' \dontrun{
@@ -83,24 +83,24 @@ add_dist_travelled <- function(dt) {
 			)
 		)
 	distances[!dt$tmp.select | is.na(dt$tmp.select)] <- NA
-	dt[, distance:=distances]
+	dt[, distance_diff:=distances]
 	dt[, tmp.select:=NULL]
 }
 
 #' Add speed
-#' @description calculates the average speed of the individual since the
+#' @description calculates the average 2 dimensional speed of the individual since the
 #' previous GPS fix
 #' 
-#' @param dt tracking data as data.table. Should contain column `distance`
+#' @param dt tracking data as data.table. Should contain column `distance_diff`
 #' and column `time_diff`
-#' @return nothing. Data is added in place
+#' @return nothing. Data is added in place as column `speed_2d`
 #' @export
 #' @examples
 #' \dontrun{
 #' add_speed(tracking_data)
 #' }
 add_speed <- function(dt) {
-	dt[, speed_km_h:=(distance/1000)/(as.numeric(time_diff)/3600)]
+	dt[, speed_2d:=(distance_diff)/(as.numeric(time_diff))]
 }
 
 #' Add distance to colony
@@ -108,7 +108,7 @@ add_speed <- function(dt) {
 #' 
 #' @param dt tracking data as data.table. Should contains columns `latitude`,
 #' `longitude`, `colony_latitude`, `colony_longitude`
-#' @return nothing. Adds distance (in meters) in place
+#' @return nothing. Adds distance (in meters) in place as columns `distance_to_colony`
 #' @export
 #' @examples
 #' \dontrun{
@@ -116,7 +116,7 @@ add_speed <- function(dt) {
 #' }
 #' @importFrom geosphere distCosine
 add_dist_to_colony <- function(dt) {
-	dt[, dist_to_colony:=distCosine(
+	dt[, distance_to_colony:=distCosine(
 		cbind(longitude, latitude),
 		cbind(colony_longitude, colony_latitude)
 	)]
@@ -128,12 +128,13 @@ add_dist_to_colony <- function(dt) {
 #' The following checks are made:
 #'     - date_time < current date
 #'     - altitude < 1000 km
-#'     - speed < 120 km per hour
+#'     - speed < 33.3333 meters per second (= 120 km per hour)
 #'     - height_accuracy < 1000
 #' If one of these fails, the record gets flagged.
 #' 
 #' @param dt tracking data as data.table.
-#' @return nothing. Flagging happens in place
+#' @return nothing. Flagging happens in place. New columns is called `outlier`
+#' and contains logical values.
 #' @export
 #' @examples
 #' \dontrun{
@@ -141,8 +142,8 @@ add_dist_to_colony <- function(dt) {
 #' }
 flag_outliers <- function(dt) {
 	today <- now()
-	dt[, outlier:=speed_km_h<0 |
-		 	speed_km_h>120 |
+	dt[, outlier:=speed_2d<0 |
+		 	speed_2d>33.33333 |
 		 	altitude>10000 |
 		 	h_accuracy>1000 |
 		 	date_time>today

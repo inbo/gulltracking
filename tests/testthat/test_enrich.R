@@ -54,17 +54,17 @@ test_that("distances between consecutive points are calculated for each device",
 	)
 	expected_distances = c(NA, 157401.5610458, NA, 157401.5610458, NA, 0)
 	add_dist_travelled(data)
-	expect_equal(data$distance, expected_distances)
+	expect_equal(data$distance_diff, expected_distances)
 })
 
 test_that("speed is calculated based on time diffs and distances", {
 	test_data <- data.table(
 		time_diff=as.difftime(c(1200, 1800, 3000), units="secs"),
-		distance=c(2000, 3000, 5000)
+		distance_diff=c(2000, 3000, 5000)
 	)
-	expected_speed <- c(6, 6, 6)
+	expected_speed <- c(10/6, 10/6, 10/6)
 	add_speed(test_data)
-	expect_equal(test_data$speed_km_h, expected_speed)
+	expect_equal(test_data$speed_2d, expected_speed)
 	
 })
 
@@ -79,11 +79,11 @@ test_that("distance to colony is calculated", {
 													157401.5610458, 157401.5610458, 157401.5610458
 	)
 	add_dist_to_colony(data)
-	expect_equal(data$dist_to_colony, expected_distances)
+	expect_equal(data$distance_to_colony, expected_distances)
 })
 
 test_that("flag_outliers returns FALSE if everything is ok", {
-	fixture_tracking_data[, speed_km_h:=c(0, 1, 2, 120, rep(80, 96))]
+	fixture_tracking_data[, speed_2d:=c(0, 1, 2, 33, rep(33, 96))]
 	fixture_tracking_data[, altitude:=c(0, 1, 2, 10000, rep(938, 96))]
 	fixture_tracking_data[, h_accuracy:=c(0, 1, 2, 1000, rep(333, 96))]
 	flag_outliers(fixture_tracking_data)
@@ -91,15 +91,15 @@ test_that("flag_outliers returns FALSE if everything is ok", {
 })
 
 test_that("flag_outliers flags records if they fail certain checks", {
-	# speed_km_h should be < 120
+	# speed_2d should be < 33.33333
 	error_data <- copy(fixture_tracking_data)
-	error_data[, speed_km_h:=c(0, 1, 2, 121, rep(80, 96))]
+	error_data[, speed_2d:=c(0, 1, 2, 34, rep(33, 96))]
 	flag_outliers(error_data)
 	expect_equal(sum(error_data$outlier), 1)
 	
-	# speed_km_h should be >= 0
+	# speed_2d should be >= 0
 	error_data <- copy(fixture_tracking_data)
-	error_data[, speed_km_h:=c(0, 1, 2, -1, rep(80, 96))]
+	error_data[, speed_2d:=c(0, 1, 2, -1, rep(33, 96))]
 	flag_outliers(error_data)
 	expect_equal(sum(error_data$outlier), 1)
 	

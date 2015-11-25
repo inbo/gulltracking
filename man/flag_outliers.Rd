@@ -10,14 +10,15 @@ flag_outliers(dt)
 \item{dt}{tracking data as data.table.}
 }
 \value{
-nothing. Flagging happens in place
+nothing. Flagging happens in place. New columns is called `outlier`
+and contains logical values.
 }
 \description{
 Flag records that are suspect to be erronous.
 The following checks are made:
     - date_time < current date
     - altitude < 1000 km
-    - speed < 120 km per hour
+    - speed < 33.3333 meters per second (= 120 km per hour)
     - height_accuracy < 1000
 If one of these fails, the record gets flagged.
 }

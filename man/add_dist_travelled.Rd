@@ -10,7 +10,7 @@ add_dist_travelled(dt)
 \item{dt}{tracking data as data.table}
 }
 \value{
-nothing. Distance (in meters) is added in place
+nothing. Distance (in meters) is added in place (`distance_diff`)
 }
 \description{
 will calculate the distance travelled since previous GPS fix

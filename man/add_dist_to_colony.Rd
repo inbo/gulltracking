@@ -11,7 +11,7 @@ add_dist_to_colony(dt)
 `longitude`, `colony_latitude`, `colony_longitude`}
 }
 \value{
-nothing. Adds distance (in meters) in place
+nothing. Adds distance (in meters) in place as columns `distance_to_colony`
 }
 \description{
 calculates the distance from the GPS position to the colony
