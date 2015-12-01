@@ -10,7 +10,7 @@ flag_outliers(dt)
 \item{dt}{tracking data as data.table.}
 }
 \value{
-nothing. Flagging happens in place. New columns is called `outlier`
+nothing. Flagging happens in place. New columns is called `inbo_outlier`
 and contains logical values.
 }
 \description{

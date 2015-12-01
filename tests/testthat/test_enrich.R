@@ -43,7 +43,7 @@ test_that("enrich can calculate diffs in date_time", {
 	fixt_expected_diff_col <- c(NA, 120, 120, 120, 360, NA, 120, 240)
 	setkey(fixture_data_table, device_info_serial, date_time)
 	add_time_since_previous_fix(fixture_data_table)
-	expect_equal(as.numeric(fixture_data_table$time_diff), fixt_expected_diff_col)
+	expect_equal(as.numeric(fixture_data_table$inbo_time_diff), fixt_expected_diff_col)
 })
 
 test_that("distances between consecutive points are calculated for each device", {
@@ -54,18 +54,17 @@ test_that("distances between consecutive points are calculated for each device",
 	)
 	expected_distances = c(NA, 157401.5610458, NA, 157401.5610458, NA, 0)
 	add_dist_travelled(data)
-	expect_equal(data$distance_diff, expected_distances)
+	expect_equal(data$inbo_distance_diff, expected_distances)
 })
 
 test_that("speed is calculated based on time diffs and distances", {
 	test_data <- data.table(
-		time_diff=as.difftime(c(1200, 1800, 3000), units="secs"),
-		distance_diff=c(2000, 3000, 5000)
+		inbo_time_diff=as.difftime(c(1200, 1800, 3000), units="secs"),
+		inbo_distance_diff=c(2000, 3000, 5000)
 	)
 	expected_speed <- c(10/6, 10/6, 10/6)
 	add_speed(test_data)
-	expect_equal(test_data$speed_2d, expected_speed)
-	
+	expect_equal(test_data$inbo_speed_2d, expected_speed)
 })
 
 test_that("distance to colony is calculated", {
@@ -79,40 +78,39 @@ test_that("distance to colony is calculated", {
 													157401.5610458, 157401.5610458, 157401.5610458
 	)
 	add_dist_to_colony(data)
-	expect_equal(data$distance_to_colony, expected_distances)
+	expect_equal(data$inbo_distance_to_colony, expected_distances)
 })
 
 test_that("flag_outliers returns FALSE if everything is ok", {
-	fixture_tracking_data[, speed_2d:=c(0, 1, 2, 33, rep(33, 96))]
+	fixture_tracking_data[, inbo_speed_2d:=c(0, 1, 2, 33, rep(33, 96))]
 	fixture_tracking_data[, altitude:=c(0, 1, 2, 10000, rep(938, 96))]
 	fixture_tracking_data[, h_accuracy:=c(0, 1, 2, 1000, rep(333, 96))]
 	flag_outliers(fixture_tracking_data)
-	expect_equal(sum(fixture_tracking_data$outlier), 0)
+	expect_equal(sum(fixture_tracking_data$inbo_outlier), 0)
 })
 
 test_that("flag_outliers flags records if they fail certain checks", {
 	# speed_2d should be < 33.33333
 	error_data <- copy(fixture_tracking_data)
-	error_data[, speed_2d:=c(0, 1, 2, 34, rep(33, 96))]
+	error_data[, inbo_speed_2d:=c(0, 1, 2, 34, rep(33, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$outlier), 1)
+	expect_equal(sum(error_data$inbo_outlier), 1)
 	
 	# speed_2d should be >= 0
 	error_data <- copy(fixture_tracking_data)
-	error_data[, speed_2d:=c(0, 1, 2, -1, rep(33, 96))]
+	error_data[, inbo_speed_2d:=c(0, 1, 2, -1, rep(33, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$outlier), 1)
+	expect_equal(sum(error_data$inbo_outlier), 1)
 	
 	# altitude should be < 10000
 	error_data <- copy(fixture_tracking_data)
 	error_data[, altitude:=c(0, 1, 2, 10001, rep(80, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$outlier), 1)
+	expect_equal(sum(error_data$inbo_outlier), 1)
 	
 	# h_accuracy should be < 1000
 	error_data <- copy(fixture_tracking_data)
 	error_data[, h_accuracy:=c(0, 1, 2, 1001, rep(80, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$outlier), 1)
-	
+	expect_equal(sum(error_data$inbo_outlier), 1)
 })

@@ -11,7 +11,7 @@ add_time_since_previous_fix(datatable)
 a column `device_info_serial` and `date_time`}
 }
 \value{
-a new datatable with the time difference column (`time_diff`) added to it.
+a new datatable with the time difference column (`inbo_time_diff`) added to it.
 }
 \description{
 Calculates the time (in seconds) since the birds last fix.

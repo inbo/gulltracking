@@ -16,7 +16,8 @@ Imports:
 	testthat,
 	lubridate,
 	data.table,
-	geosphere
+	geosphere,
+	sp
 Suggests: testthat,
     knitr,
     data.table

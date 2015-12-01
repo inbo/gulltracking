@@ -51,14 +51,14 @@ delete_test_records <- function(data) {
 #' 
 #' @param datatable A data.table with tracking data. Should at least include
 #' a column `device_info_serial` and `date_time`
-#' @return a new datatable with the time difference column (`time_diff`) added to it.
+#' @return a new datatable with the time difference column (`inbo_time_diff`) added to it.
 #' @export
 #' @examples 
 #' \dontrun{
 #' add_time_since_previous_fix(tracking_data)
 #' }
 add_time_since_previous_fix <- function(datatable) {
-	datatable[, time_diff:=difftime(date_time, shift(date_time), units="secs"),
+	datatable[, inbo_time_diff:=difftime(date_time, shift(date_time), units="secs"),
 						by=device_info_serial]
 }
 
@@ -67,7 +67,7 @@ add_time_since_previous_fix <- function(datatable) {
 #' @description will calculate the distance travelled since previous GPS fix
 #' 
 #' @param dt tracking data as data.table
-#' @return nothing. Distance (in meters) is added in place (`distance_diff`)
+#' @return nothing. Distance (in meters) is added in place (`inbo_distance_diff`)
 #' @export
 #' @examples 
 #' \dontrun{
@@ -83,7 +83,7 @@ add_dist_travelled <- function(dt) {
 			)
 		)
 	distances[!dt$tmp.select | is.na(dt$tmp.select)] <- NA
-	dt[, distance_diff:=distances]
+	dt[, inbo_distance_diff:=distances]
 	dt[, tmp.select:=NULL]
 }
 
@@ -91,16 +91,16 @@ add_dist_travelled <- function(dt) {
 #' @description calculates the average 2 dimensional speed of the individual since the
 #' previous GPS fix
 #' 
-#' @param dt tracking data as data.table. Should contain column `distance_diff`
-#' and column `time_diff`
-#' @return nothing. Data is added in place as column `speed_2d`
+#' @param dt tracking data as data.table. Should contain column `inbo_distance_diff`
+#' and column `inbo_time_diff`
+#' @return nothing. Data is added in place as column `inbo_speed_2d`
 #' @export
 #' @examples
 #' \dontrun{
 #' add_speed(tracking_data)
 #' }
 add_speed <- function(dt) {
-	dt[, speed_2d:=(distance_diff)/(as.numeric(time_diff))]
+	dt[, inbo_speed_2d:=(inbo_distance_diff)/(as.numeric(inbo_time_diff))]
 }
 
 #' Add distance to colony
@@ -108,7 +108,7 @@ add_speed <- function(dt) {
 #' 
 #' @param dt tracking data as data.table. Should contains columns `latitude`,
 #' `longitude`, `colony_latitude`, `colony_longitude`
-#' @return nothing. Adds distance (in meters) in place as columns `distance_to_colony`
+#' @return nothing. Adds distance (in meters) in place as columns `inbo_distance_to_colony`
 #' @export
 #' @examples
 #' \dontrun{
@@ -116,7 +116,7 @@ add_speed <- function(dt) {
 #' }
 #' @importFrom geosphere distCosine
 add_dist_to_colony <- function(dt) {
-	dt[, distance_to_colony:=distCosine(
+	dt[, inbo_distance_to_colony:=distCosine(
 		cbind(longitude, latitude),
 		cbind(colony_longitude, colony_latitude)
 	)]
@@ -133,7 +133,7 @@ add_dist_to_colony <- function(dt) {
 #' If one of these fails, the record gets flagged.
 #' 
 #' @param dt tracking data as data.table.
-#' @return nothing. Flagging happens in place. New columns is called `outlier`
+#' @return nothing. Flagging happens in place. New columns is called `inbo_outlier`
 #' and contains logical values.
 #' @export
 #' @examples
@@ -142,8 +142,8 @@ add_dist_to_colony <- function(dt) {
 #' }
 flag_outliers <- function(dt) {
 	today <- now()
-	dt[, outlier:=speed_2d<0 |
-		 	speed_2d>33.33333 |
+	dt[, inbo_outlier:=inbo_speed_2d<0 |
+		 	inbo_speed_2d>33.33333 |
 		 	altitude>10000 |
 		 	h_accuracy>1000 |
 		 	date_time>today
@@ -160,10 +160,10 @@ flag_outliers <- function(dt) {
 #' table in place
 #' @export
 raster_join <- function(dt, raster_data) {
-	pts <- SpatialPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
+	pts <- SpatialsqPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
 	conv <- spTransform(pts, CRSobj=CRS(proj4string(raster_data)))
 	results <- extract(raster_data, conv)
-	dt[, raster_value:=results]
+	dt[, inbo_raster_value:=results]
 }
 
 #' Enrich data
