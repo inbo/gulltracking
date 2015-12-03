@@ -2,7 +2,7 @@
 % Please edit documentation in R/profiling.R
 \name{profiling_L1}
 \alias{profiling_L1}
-\title{Profile UvA-BiTS Warehouse processing steps (Level 1)}
+\title{Profile UvA-BiTS ETL processing steps (Level 1)}
 \usage{
 profiling_L1(tracks_file, birds_file)
 }
@@ -18,7 +18,7 @@ representative)}
 Data.Frame with two columns: "step" and "timing"
 }
 \description{
-Profile the different processing steps in the UvaBitsWarehouse
+Profile the different processing steps in the UvaBitsETL
 package to find bottlenecks.
 }
 

@@ -1,5 +1,5 @@
 ---
-title: "UvA-BiTS Warehouse"
+title: "UvA-BiTS ETL"
 author: "Bart Aelterman <bart.aelterman@inbo.be>"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-# UvA-BiTS Warehouse
+# UvA-BiTS ETL
 
 ## Intro
 
@@ -74,19 +74,19 @@ Records are deleted if the `date_time` recorded by the tracker is before the `tr
 
 #### 4. Calculate time_since_previous_fix
 
-For every bird, the time since the previous GPS fix is calculated. The first fix of every bird gets a value `NA`. The output field is called `time_diff` and is stored in seconds.
+For every bird, the time since the previous GPS fix is calculated. The first fix of every bird gets a value `NA`. The output field is called `inbo_time_diff` and is stored in seconds.
 
 #### 5. Calculate distance travelled
 
-The distance travelled since the last GPS fix is calculated using R's `geosphere` package. The function used is `distCosine` which performs a great circle distance computation. This new field is called `distance` and is expressed in meters.
+The distance travelled since the last GPS fix is calculated using R's `geosphere` package. The function used is `distCosine` which performs a great circle distance computation. This new field is called `inbo_distance_diff` and is expressed in meters.
 
 #### 6. Calculate speed
 
-Based on the calculated `time_diff` and `distance` fields, the speed of the bird is calculated in kilometers per hour. The new field is called `speed_km_h`. 
+Based on the calculated `inbo_time_diff` and `inbo_distance_diff` fields, the two dimensional speed of the bird is calculated in meters per second. The new field is called `inbo_speed_2d`. 
 
 #### 7. Calculate distance to colony
 
-Based on the `colony_latitude` and `colony_longitude`, the distance from the GPS to the colony is computed using `geosphere`'s `distCosine` function. The new field is called `dist_to_colony` and the distance is stored in meters.
+Based on the `colony_latitude` and `colony_longitude`, the distance from the GPS to the colony is computed using `geosphere`'s `distCosine` function. The new field is called `inbo_dist_to_colony` and the distance is stored in meters.
 
 #### 8. Flag outliers
 
@@ -94,18 +94,14 @@ If a record:
 
 * has a `date_time` that is in the future
 * has a `altitude` higher than 10.000m (10km)
-* has a `speed_km_h` higher than 120km/h
+* has a `inbo_speed_2d` higher than 33.333 m/s (~120km/h) or below 0.
 * has a horizontal accuracy (`h_accuracy`) higher than 1000m
 
 it is flagged as outlier. This means that the new `outlier` field is set to `TRUE`.
 
 #### 9. Link with Corine land use
 
-To be implemented;
-
-#### 10. Link with 
-
-To be implemented;
+To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-3) category is matched with the birds position.
 
 ## CartoDB procedure
 

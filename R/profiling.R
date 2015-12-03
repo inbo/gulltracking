@@ -1,5 +1,5 @@
-#' Profile UvA-BiTS Warehouse processing steps (Level 1)
-#' @description Profile the different processing steps in the UvaBitsWarehouse
+#' Profile UvA-BiTS ETL processing steps (Level 1)
+#' @description Profile the different processing steps in the UvaBitsETL
 #' package to find bottlenecks.
 #' 
 #' @param tracks_file CSV file containing tracking data used for profiling.

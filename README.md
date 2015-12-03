@@ -1,4 +1,4 @@
-# UvA-BiTS Warehouse
+# UvA-BiTS ETL
 
 ## Background
 
@@ -6,15 +6,13 @@ At [the Research Institute for Nature and Forest](http://www.inbo.be), we're tra
 
 ## Install the package
 
-The package is not on CRAN. If you want to use it, download a copy of the code here, and [install it from source](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). You need a few third party packages, as documented in the package [DESCRIPTION](./DESCRIPTION) and I bloody hope R will take care of them for you.
+The package is not on CRAN. If you want to use it, download a copy of the code here, and [install it from source](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). You need a few third party packages, as documented in the package [DESCRIPTION](./DESCRIPTION). R should take care of that. If not, install `lubridate`, `data.table`, `geosphere`, `sp` and `DBI`. If you want to run the tests, you'll need `testthat` too.
 
 ## Run the tests
 
-Tests are written using [testthat](https://github.com/hadley/testthat). Run the tests in RStudio by opening the package main directory and pressing CTRL/CMD + SHIFT + T. (And again, I hope by then R will have loaded the required packages for you)
+Tests are written using [testthat](https://github.com/hadley/testthat). Run the tests in RStudio by opening the package main directory and pressing CTRL/CMD + SHIFT + T.
 
 ## Load the package
-
-Seriously? Well, ok then:
 
 ```
 library(UvaBitsWarehouse)
@@ -22,8 +20,8 @@ library(UvaBitsWarehouse)
 
 ## How to use the package
 
-This is explained in the package [vignette](./vignettes/uva-bits-warehouse.Rmd).
+This is explained in the package [vignette](./vignettes/uva-bits-etl.Rmd).
 
 ## Get in touch
 
-Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/uvabits-warehouse/issues).
+Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/uva-bits-etl/issues).

@@ -1,6 +1,6 @@
-Package: UvaBitsWarehouse
+Package: UvaBitsETL
 Type: Package
-Title: UvA-BiTS tracking data Warehouse
+Title: UvA-BiTS tracking data ETL
 Version: 1.0
 Date: 2015-11-09
 Author: Bart Aelterman, <bart.aelterman@inbo.be>
@@ -15,6 +15,7 @@ Encoding: UTF-8
 Imports: 
 	testthat,
 	lubridate,
+	DBI,
 	data.table,
 	geosphere,
 	sp
@@ -23,4 +24,4 @@ Suggests: testthat,
     data.table
 VignetteBuilder: knitr
 LazyData: true
-URL: https://github.com/LifeWatchINBO/uvabits-warehouse
+URL: https://github.com/LifeWatchINBO/uva-bits-etl

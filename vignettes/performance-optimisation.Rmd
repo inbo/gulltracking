@@ -12,7 +12,7 @@ vignette: >
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=6, fig.path='Figs/',
                       warning=FALSE, message=FALSE, cache=TRUE)
-library(UvaBitsWarehouse)
+library(UvaBitsETL)
 library(data.table)
 library(ggplot2)
 library(lubridate)
@@ -20,7 +20,7 @@ library(lubridate)
 
 # Performance optimisation
 
-This vignette examines the performance of different computations implemented in the UvaBitsWarehouse package.
+This vignette examines the performance of different computations implemented in the UvaBitsETL package.
 
 ## Date time parsing
 
@@ -42,7 +42,7 @@ q + geom_point()
 
 So, `ymd_hms` was replaced by `fast_strptime`. This cut off 73% of the `track_validation` step processing time.
 
-## Profiling the different UvABiTSWarehouse steps
+## Profiling the different UvABiTSETL steps
 
 
 ```{r profile}
