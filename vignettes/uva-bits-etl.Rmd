@@ -28,14 +28,15 @@ corine <- read_raster_data("corine_filename")
 proj4string(corine) <- CRS("+init=epsg:3035")
 ```
 
-Validate the data (for documentation, see the section `Extracting and validating input data` below):
+Validate the data (for documentation, see the section [Extracting and
+validating input data](#extracting-and-validating-input-data) below):
 
 ```
 birds <- validate_bird_data(birds)
 tracks <- validate_tracks_data(tracks)
 ```
 
-Enrich the data (see the section `Enriching the data` below)
+Enrich the data (see the section [Enriching the data](#enriching-the-data) below)
 
 ```
 dt <- enrich_data(tracks, birds, corine)
