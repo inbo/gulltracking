@@ -99,7 +99,7 @@ The tracking data is a dump from the UvA-BiTS virtual lab in csv format. It cont
 
 #### 1. Drop unused columns
 
-This is actually already done while extracting the data. The `location` column is deleted from the tracking data and the `cartodb_id` and `the_geom` columns are deleted from the bird metadata.
+This is actually already done while extracting the data. The `location` column is deleted from the tracking data.
 
 #### 2. Join bird tracks with bird metadata
 
