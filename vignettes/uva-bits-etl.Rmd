@@ -15,6 +15,42 @@ vignette: >
 
 At the [Research Institute for Nature and Forest](http://www.inbo.be) (INBO) we are tracking birds using the [UvA-BiTS system](http://www.uva-bits.nl/) as part of the [LifeWatch project](http://www.lifewatch.inbo.be). As tracking data volume grows quicker than human observation data (what we usually work with), we were in need for a data store that contains the cleaned and enriched tracking data in a system that is optimized for querying these *large-ish* data sets. Something like a data warehouse. This R package contains code to extract the data from the UvA-BiTS virtual lab, clean and enrich it, and load it in the data warehouse.
 
+## How to use this package?
+
+Install the package and load it in your R environment.
+
+Read the data files:
+
+```
+birds <- load_bird_file("birds_filename")
+tracks <- load_tracks_file("tracks_filename")
+corine <- read_raster_data("corine_filename")
+proj4string(corine) <- CRS("+init=epsg:3035")
+```
+
+Validate the data (for documentation, see the section `Extracting and validating input data` below):
+
+```
+birds <- validate_bird_data(birds)
+tracks <- validate_tracks_data(tracks)
+```
+
+Enrich the data (see the section `Enriching the data` below)
+
+```
+dt <- enrich_data(tracks, birds, corine)
+```
+
+Load the data in a PostgreSQL database. Make sure a database exists. A table `tracking_warehouse` will be created.
+
+```
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname="bird_tracking", host="localhost")
+data2table(con, dt)
+```
+
+To add indexes to the table, perform the `CREATE INDEX` statements in [this file](https://github.com/LifeWatchINBO/uva-bits-etl/blob/master/sql/create_wh_table).
+
 ## ETL procedure
 
 ### Extracting and validating input data
