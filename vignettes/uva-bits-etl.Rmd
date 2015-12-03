@@ -144,6 +144,6 @@ To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu
 
 This ETL procedure replaces the previous import procedure used for loading into CartoDB. That procedure is documented at [github](https://github.com/LifeWatchINBO/bird-tracking/blob/master/cartodb/import-procedure.md). However, the following steps of the CartoDB import procedure are not covered by the current ETL procedure:
 
-> 9. Optionally, check tracking days to discover birds with relatively low number of tracking days (could indicate bird is dead)
+> \9. Optionally, check tracking days to discover birds with relatively low number of tracking days (could indicate bird is dead)
 
 
