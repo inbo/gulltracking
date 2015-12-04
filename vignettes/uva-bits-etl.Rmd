@@ -60,7 +60,7 @@ The data is loaded from csv files. The following input files are expected:
 
 #### Birds metadata
 
-Contains information about the tracked individuals. At the INBO, this file is managed in CartoDB and it is documented [here](https://github.com/LifeWatchINBO/bird-tracking/tree/master/cartodb#bird_tracking-table).
+Contains information about the tracked individuals. At the INBO, this file is managed on Google Drive and it is documented [here](https://github.com/LifeWatchINBO/bird-tracking/tree/master/cartodb#bird_tracking-table).
 
 The extraction procedure reads the bird metadata file and verifies whether all columns have the expected data types. Missing values are allowed, but values with an incorrect data type will cause the extraction to halt.
 
