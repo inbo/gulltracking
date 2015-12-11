@@ -44,6 +44,22 @@ delete_test_records <- function(data) {
 	return(data[date_time >= tracking_started_at])
 }
 
+#' Add year, month, hour columns
+#' @description Add the year, month and hour of the GPS fix in separate columns
+#' 
+#' @param dt Tracking data as a data.table.
+#' @return Nothing, columns are added in place
+#' @export
+#' @examples 
+#' \dontrun{
+#' add_year_month_hour(tracks_data)
+#' }
+add_year_month_hour <- function(data) {
+	data[, inbo_year:=year(date_time)]
+	data[, inbo_month:=month(date_time)]
+	data[, inbo_hour:=hour(date_time)]
+}
+
 #' Add time since previous fix
 #' @description Calculates the time (in seconds) since the birds last fix.
 #' Data is first ordered by individual and date_time. Next, for each individual
@@ -185,6 +201,7 @@ enrich_data <- function(tracking_data, bird_data, raster_data) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt)
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
+	add_year_month_hour(dt)
 	add_time_since_previous_fix(dt)
 	add_dist_travelled(dt)
 	add_speed(dt)

@@ -18,7 +18,8 @@ Imports:
 	DBI,
 	data.table,
 	geosphere,
-	sp
+	sp,
+	raster
 Suggests: testthat,
     knitr,
     data.table

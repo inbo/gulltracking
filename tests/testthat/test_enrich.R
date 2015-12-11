@@ -39,6 +39,18 @@ test_that("deleting test records works", {
 	expect_equal(length(result$date_time), 18) # manually checked this. Only 18 records should be returned
 })
 
+test_that("year, month and hour columns are added", {
+	data <- copy(fixture_data_table)
+	add_year_month_hour(data)
+	expected_years <- rep(2014, 8)
+	expected_months <- rep(1, 8)
+	expected_hours <- rep(10, 8)
+	add_year_month_hour(data)
+	expect_equal(data$inbo_year, expected_years)
+	expect_equal(data$inbo_month, expected_months)
+	expect_equal(data$inbo_hour, expected_hours)
+})
+
 test_that("enrich can calculate diffs in date_time", {
 	fixt_expected_diff_col <- c(NA, 120, 120, 120, 360, NA, 120, 240)
 	setkey(fixture_data_table, device_info_serial, date_time)
