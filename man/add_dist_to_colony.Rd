@@ -7,7 +7,7 @@
 add_dist_to_colony(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table. Should contains columns `latitude`,
+\item{dt}{tracking data as data.table. Should contain columns `latitude`,
 `longitude`, `colony_latitude`, `colony_longitude`}
 }
 \value{

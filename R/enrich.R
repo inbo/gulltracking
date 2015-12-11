@@ -106,7 +106,7 @@ add_speed <- function(dt) {
 #' Add distance to colony
 #' @description calculates the distance from the GPS position to the colony
 #' 
-#' @param dt tracking data as data.table. Should contains columns `latitude`,
+#' @param dt tracking data as data.table. Should contain columns `latitude`,
 #' `longitude`, `colony_latitude`, `colony_longitude`
 #' @return nothing. Adds distance (in meters) in place as columns `inbo_distance_to_colony`
 #' @export
