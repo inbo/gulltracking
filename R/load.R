@@ -56,6 +56,7 @@ data2table <- function(dbConnection, data) {
 		inbo_distance_diff=data$inbo_distance_diff,
 		inbo_speed_2d=data$inbo_speed_2d,
 		inbo_distance_to_colony=data$inbo_distance_to_colony,
+		inbo_sunlight=data$inbo_sunlight,
 		inbo_outlier=data$inbo_outlier, # might need to map for boolean type
 		inbo_corine_category=data$inbo_raster_value
 	)

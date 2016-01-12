@@ -1,3 +1,31 @@
+#' Calculate sunrise and sunset
+#' @description This function calculates the sunrise and sunset in UTC
+#' for a given location and date. Function was slightly modified but inspired
+#' from this post: http://www.r-bloggers.com/approximate-sunrise-and-sunset-times/
+#' 
+#' @param dates vector containing POSIX dates
+#' @param Lat Latitudes in WGS84
+#' @param Long Longitudes in WGS84
+#' @return named list with elements "sunrise" and "sunset"
+#' @export
+#' @importFrom maptools sunriset
+#' @examples 
+#' {
+#' suncalc.custom(ymd("2015-01-01"), Lat=50.821, Long=4.366)
+#' }
+suncalc.custom <- function(dates,Lat,Long){
+	sunrise <- sunriset(matrix(c(Long, Lat), ncol = 2),
+										 with_tz(dates, "UTC"),
+										 direction="sunrise",
+										 POSIXct.out=TRUE)
+	sunset <- sunriset(matrix(c(Long, Lat), ncol = 2),
+										 with_tz(dates, "UTC"),
+										 direction="sunset",
+										 POSIXct.out=TRUE)
+	return(list("sunrise" = with_tz(sunrise$time, "UTC"),
+							"sunset" = with_tz(sunset$time, "UTC")))
+}
+
 #' Join tracks and metadata
 #' @description Join tracking data with bird metadata. If tracking records
 #' are found that cannot be matched with bird metadata, the function stops.
@@ -138,6 +166,28 @@ add_dist_to_colony <- function(dt) {
 	)]
 }
 
+#' Presence of sunlight
+#' @description calculate the presence of sunlight for every GPS fix. This is done
+#' using the `suncalc` function of the package `RAtmosphere`. If the date_time of 
+#' the GPS fix is after sunrise and before sunset, presence of sunlight is 1. Otherwise
+#' it is set to 0.
+#' 
+#' @param dt tracking data as data.table. Should contain columns `latitude`, `longitude`
+#' and `date_time`.
+#' @return nothing. Column `sunlight` is added in place. This is a logical vector, indicating
+#' wether sunlight was present at time and location of the GPS fix.
+#' @export
+#' @examples
+#' \dontrun{
+#' add_sunlight(tracking_data)
+#' }
+#' @importFrom RAtmosphere suncalc
+add_sunlight <- function(dt) {
+	results <- suncalc.custom(dt$date_time, dt$latitude, dt$longitude)
+	dt[, inbo_sunlight:=date_time > results$sunrise & date_time < results$sunset]
+	print(dt)
+}
+
 
 #' Flag outliers
 #' @description Flag records that are suspect to be erronous.
@@ -176,7 +226,7 @@ flag_outliers <- function(dt) {
 #' table in place
 #' @export
 raster_join <- function(dt, raster_data) {
-	pts <- SpatialsqPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
+	pts <- SpatialPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
 	conv <- spTransform(pts, CRSobj=CRS(proj4string(raster_data)))
 	results <- extract(raster_data, conv)
 	dt[, inbo_raster_value:=results]
@@ -206,6 +256,7 @@ enrich_data <- function(tracking_data, bird_data, raster_data) {
 	add_dist_travelled(dt)
 	add_speed(dt)
 	add_dist_to_colony(dt)
+	add_sunlight(dt)
 	flag_outliers(dt)
 	raster_join(dt, raster_data)
 	return(dt)

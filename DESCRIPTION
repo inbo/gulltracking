@@ -18,6 +18,7 @@ Imports:
 	DBI,
 	data.table,
 	geosphere,
+	maptools,
 	sp,
 	raster
 Suggests: testthat,

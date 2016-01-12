@@ -17,7 +17,31 @@ fixture_data_table <- data.table(
 
 # -------------------------------------------- # 
 #      Tests
-# -------------------------------------------- # 
+# -------------------------------------------- #
+
+test_that("sunrise and sunset can be calculated with an error of less then 5 minutes", {
+	latitudes <- c(50.821, 50.821, 50.821, 21.166) # 3 times Brussels, 1 time Cancun
+	longitudes <- c(4.366, 4.366, 4.366, -86.849) # 3 times Brussels, 1 time Cancun
+	dates <- force_tz(c(ymd("2013-05-31"), ymd("2000-01-01"), ymd("2015-12-30"), ymd("2015-12-30")),
+										tz="UTC")
+	expected.sunrises.UTC <- ymd_hms(c("2013-05-31 03:35:00",
+												  	 "2000-01-01 07:45:00",
+														 "2015-12-30 07:45:00",
+														 "2015-12-30 12:24:00"), tz="UTC")
+	expected.sunsets.UTC <- ymd_hms(c("2013-05-31 19:46:00",
+														"2000-01-01 15:47:00",
+														"2015-12-30 15:45:00",
+														"2015-12-30 23:16:00"), tz="UTC")
+	results <- suncalc.custom(dates, latitudes, longitudes)
+	sunrise.diff <- expected.sunrises.UTC - results$sunrise
+	sunset.diff <- expected.sunsets.UTC - results$sunset
+	units(sunrise.diff) <- "mins"
+	units(sunset.diff) <- "mins"
+	for (diff in c(sunrise.diff, sunset.diff)) {
+		expect_true(abs(as.numeric(diff)) < 5)
+	}
+})
+
 test_that("tracking data and bird metadata can be joined in 1 data table", {
   joined <- join_tracks_and_metadata(fixture_tracking_data, fixture_bird_data)
 	expect_equal(length(joined), length(colnames(fixture_bird_data)) +
@@ -91,6 +115,18 @@ test_that("distance to colony is calculated", {
 	)
 	add_dist_to_colony(data)
 	expect_equal(data$inbo_distance_to_colony, expected_distances)
+})
+
+test_that("presence of sunlight can be calculated", {
+	data <- data.table(
+		latitude=c(51, 51, 47, 47),
+		longitude=c(3, 37, 107, 107),
+		date_time=ymd_hms(c("2014-01-01 10:00:00", "2014-01-01 10:02:00",
+												"2014-01-01 10:04:00", "2014-01-01 09:00:00"),
+											tz="UTC")
+	)
+	add_sunlight(data)
+	expect_equal(sum(data$inbo_sunlight), 3) # records 1, 2, and 4 are in sunlight. 3 is not.
 })
 
 test_that("flag_outliers returns FALSE if everything is ok", {

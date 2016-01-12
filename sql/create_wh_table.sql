@@ -39,6 +39,7 @@ CREATE TABLE tracking_warehouse (
   inbo_distance_diff real,
   inbo_speed_2d double precision,
   inbo_distance_to_colony real,
+  inbo_sunlight boolean,
   inbo_outlier boolean,
   inbo_corine_category integer
 );
@@ -82,5 +83,6 @@ CREATE INDEX inbo_time_diff_index on tracking_warehouse (inbo_time_diff);
 CREATE INDEX inbo_distance_diff_index on tracking_warehouse (inbo_distance_diff);
 CREATE INDEX inbo_speed_2d_index on tracking_warehouse (inbo_speed_2d);
 CREATE INDEX inbo_distance_to_colony_index on tracking_warehouse (inbo_distance_to_colony);
+CREATE INDEX inbo_sunlight_index on tracking_warehouse (inbo_sunlight);
 CREATE INDEX inbo_outlier_index on tracking_warehouse (inbo_outlier);
 CREATE INDEX inbo_corine_category_index on tracking_warehouse (inbo_corine_category);
