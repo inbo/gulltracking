@@ -109,7 +109,7 @@ Most of the output fields will be familiar as they are entirely copied from the 
 | 42           | calc_speed_2d | number | Average two dimensional speed (in meters per seconds) of the bird between the last GPS fix and the current fix |
 | 43           | calc_distance_to_colony | number | Distance (in meters) to the colony (indicated by colony_latitude and colony_longitude) |
 | 44           | calc_sunlight | boolean | `TRUE` if sunlight was available at the given time and location |
-| 45           | calc_outlier | boolean | `TRUE` if according to [this set of rules](8-flag-outliers) the record is considered an outlier and should be removed from the analysis |
+| 45           | calc_outlier | boolean | `TRUE` if according to [this set of rules](#8-flag-outliers) the record is considered an outlier and should be removed from the analysis |
 | 46           | calc_corine_value | text | Value of the Corine land use map at the position of the bird |
 
 
