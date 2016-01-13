@@ -101,16 +101,16 @@ Most of the output fields will be familiar as they are entirely copied from the 
 | 34           | speed_2d | number | Speed on 2D, m/s |
 | 35           | direction | number | Heading in degrees (0 is north, 90 is east). |
 | 36           | altitude_agl | number | Reported GPS altitude MINUS terrain elevation on the coordinate based on Digital Elevation Model data used in the e-ecology database |
-| 37           | inbo_year | number | Year from the date_time (column 17) field |
-| 38           | inbo_month | number | Month from the date_time (column 17) field |
-| 39           | inbo_hour | number | Hour from the date_time (column 17) field |
-| 40           | inbo_time_diff | number | Time (in seconds) since the birds last GPS fix |
-| 41           | inbo_distance_diff | number | Distance (in meters) from the birds last GPS fix |
-| 42           | inbo_speed_2d | number | Average two dimensional speed (in meters per seconds) of the bird between the last GPS fix and the current fix |
-| 43           | inbo_distance_to_colony | number | Distance (in meters) to the colony (indicated by colony_latitude and colony_longitude) |
-| 44           | inbo_sunlight | boolean | `TRUE` if sunlight was available at the given time and location |
-| 45           | inbo_outlier | boolean | `TRUE` if according to [this set of rules](8-flag-outliers) the record is considered an outlier and should be removed from the analysis |
-| 46           | inbo_corine_value | text | Value of the Corine land use map at the position of the bird |
+| 37           | calc_year | number | Year from the date_time (column 17) field |
+| 38           | calc_month | number | Month from the date_time (column 17) field |
+| 39           | calc_hour | number | Hour from the date_time (column 17) field |
+| 40           | calc_time_diff | number | Time (in seconds) since the birds last GPS fix |
+| 41           | calc_distance_diff | number | Distance (in meters) from the birds last GPS fix |
+| 42           | calc_speed_2d | number | Average two dimensional speed (in meters per seconds) of the bird between the last GPS fix and the current fix |
+| 43           | calc_distance_to_colony | number | Distance (in meters) to the colony (indicated by colony_latitude and colony_longitude) |
+| 44           | calc_sunlight | boolean | `TRUE` if sunlight was available at the given time and location |
+| 45           | calc_outlier | boolean | `TRUE` if according to [this set of rules](8-flag-outliers) the record is considered an outlier and should be removed from the analysis |
+| 46           | calc_corine_value | text | Value of the Corine land use map at the position of the bird |
 
 
 ## ETL procedure
@@ -172,19 +172,19 @@ Records are deleted if the `date_time` recorded by the tracker is before the `tr
 
 #### 4. Calculate time_since_previous_fix
 
-For every bird, the time since the previous GPS fix is calculated. The first fix of every bird gets a value `NA`. The output field is called `inbo_time_diff` and is stored in seconds.
+For every bird, the time since the previous GPS fix is calculated. The first fix of every bird gets a value `NA`. The output field is called `calc_time_diff` and is stored in seconds.
 
 #### 5. Calculate distance travelled
 
-The distance travelled since the last GPS fix is calculated using R's `geosphere` package. The function used is `distCosine` which performs a great circle distance computation. This new field is called `inbo_distance_diff` and is expressed in meters.
+The distance travelled since the last GPS fix is calculated using R's `geosphere` package. The function used is `distCosine` which performs a great circle distance computation. This new field is called `calc_distance_diff` and is expressed in meters.
 
 #### 6. Calculate speed
 
-Based on the calculated `inbo_time_diff` and `inbo_distance_diff` fields, the two dimensional speed of the bird is calculated in meters per second. The new field is called `inbo_speed_2d`. 
+Based on the calculated `calc_time_diff` and `calc_distance_diff` fields, the two dimensional speed of the bird is calculated in meters per second. The new field is called `calc_speed_2d`. 
 
 #### 7. Calculate distance to colony
 
-Based on the `colony_latitude` and `colony_longitude`, the distance from the GPS to the colony is computed using `geosphere`'s `distCosine` function. The new field is called `inbo_dist_to_colony` and the distance is stored in meters.
+Based on the `colony_latitude` and `colony_longitude`, the distance from the GPS to the colony is computed using `geosphere`'s `distCosine` function. The new field is called `calc_dist_to_colony` and the distance is stored in meters.
 
 #### 8. Flag outliers
 
@@ -192,14 +192,14 @@ If a record:
 
 * has a `date_time` that is in the future
 * has a `altitude` higher than 10.000m (10km)
-* has a `inbo_speed_2d` higher than 33.333 m/s (~120km/h) or below 0.
+* has a `calc_speed_2d` higher than 33.333 m/s (~120km/h) or below 0.
 * has a horizontal accuracy (`h_accuracy`) higher than 1000m
 
 it is flagged as outlier. This means that the new `outlier` field is set to `TRUE`.
 
 #### 9. Link with Corine land use
 
-To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-3) category is matched with the birds position.
+To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-3) category is matched with the birds position. The new field is called `calc_corine_value` and represents the value of the matched category in the Corine dataset.
 
 ## CartoDB procedure
 

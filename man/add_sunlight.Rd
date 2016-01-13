@@ -11,7 +11,7 @@ add_sunlight(dt)
 and `date_time`.}
 }
 \value{
-nothing. Column `sunlight` is added in place. This is a logical vector, indicating
+nothing. Column `calc_sunlight` is added in place. This is a logical vector, indicating
 wether sunlight was present at time and location of the GPS fix.
 }
 \description{

@@ -83,9 +83,9 @@ delete_test_records <- function(data) {
 #' add_year_month_hour(tracks_data)
 #' }
 add_year_month_hour <- function(data) {
-	data[, inbo_year:=year(date_time)]
-	data[, inbo_month:=month(date_time)]
-	data[, inbo_hour:=hour(date_time)]
+	data[, calc_year:=year(date_time)]
+	data[, calc_month:=month(date_time)]
+	data[, calc_hour:=hour(date_time)]
 }
 
 #' Add time since previous fix
@@ -95,14 +95,14 @@ add_year_month_hour <- function(data) {
 #' 
 #' @param datatable A data.table with tracking data. Should at least include
 #' a column `device_info_serial` and `date_time`
-#' @return a new datatable with the time difference column (`inbo_time_diff`) added to it.
+#' @return a new datatable with the time difference column (`calc_time_diff`) added to it.
 #' @export
 #' @examples 
 #' \dontrun{
 #' add_time_since_previous_fix(tracking_data)
 #' }
 add_time_since_previous_fix <- function(datatable) {
-	datatable[, inbo_time_diff:=difftime(date_time, shift(date_time), units="secs"),
+	datatable[, calc_time_diff:=difftime(date_time, shift(date_time), units="secs"),
 						by=device_info_serial]
 }
 
@@ -111,7 +111,7 @@ add_time_since_previous_fix <- function(datatable) {
 #' @description will calculate the distance travelled since previous GPS fix
 #' 
 #' @param dt tracking data as data.table
-#' @return nothing. Distance (in meters) is added in place (`inbo_distance_diff`)
+#' @return nothing. Distance (in meters) is added in place (`calc_distance_diff`)
 #' @export
 #' @examples 
 #' \dontrun{
@@ -127,7 +127,7 @@ add_dist_travelled <- function(dt) {
 			)
 		)
 	distances[!dt$tmp.select | is.na(dt$tmp.select)] <- NA
-	dt[, inbo_distance_diff:=distances]
+	dt[, calc_distance_diff:=distances]
 	dt[, tmp.select:=NULL]
 }
 
@@ -135,16 +135,16 @@ add_dist_travelled <- function(dt) {
 #' @description calculates the average 2 dimensional speed of the individual since the
 #' previous GPS fix
 #' 
-#' @param dt tracking data as data.table. Should contain column `inbo_distance_diff`
-#' and column `inbo_time_diff`
-#' @return nothing. Data is added in place as column `inbo_speed_2d`
+#' @param dt tracking data as data.table. Should contain column `calc_distance_diff`
+#' and column `calc_time_diff`
+#' @return nothing. Data is added in place as column `calc_speed_2d`
 #' @export
 #' @examples
 #' \dontrun{
 #' add_speed(tracking_data)
 #' }
 add_speed <- function(dt) {
-	dt[, inbo_speed_2d:=(inbo_distance_diff)/(as.numeric(inbo_time_diff))]
+	dt[, calc_speed_2d:=(calc_distance_diff)/(as.numeric(calc_time_diff))]
 }
 
 #' Add distance to colony
@@ -152,7 +152,7 @@ add_speed <- function(dt) {
 #' 
 #' @param dt tracking data as data.table. Should contain columns `latitude`,
 #' `longitude`, `colony_latitude`, `colony_longitude`
-#' @return nothing. Adds distance (in meters) in place as columns `inbo_distance_to_colony`
+#' @return nothing. Adds distance (in meters) in place as columns `calc_distance_to_colony`
 #' @export
 #' @examples
 #' \dontrun{
@@ -160,7 +160,7 @@ add_speed <- function(dt) {
 #' }
 #' @importFrom geosphere distCosine
 add_dist_to_colony <- function(dt) {
-	dt[, inbo_distance_to_colony:=distCosine(
+	dt[, calc_distance_to_colony:=distCosine(
 		cbind(longitude, latitude),
 		cbind(colony_longitude, colony_latitude)
 	)]
@@ -174,17 +174,16 @@ add_dist_to_colony <- function(dt) {
 #' 
 #' @param dt tracking data as data.table. Should contain columns `latitude`, `longitude`
 #' and `date_time`.
-#' @return nothing. Column `sunlight` is added in place. This is a logical vector, indicating
+#' @return nothing. Column `calc_sunlight` is added in place. This is a logical vector, indicating
 #' wether sunlight was present at time and location of the GPS fix.
 #' @export
 #' @examples
 #' \dontrun{
 #' add_sunlight(tracking_data)
 #' }
-#' @importFrom RAtmosphere suncalc
 add_sunlight <- function(dt) {
 	results <- suncalc.custom(dt$date_time, dt$latitude, dt$longitude)
-	dt[, inbo_sunlight:=date_time > results$sunrise & date_time < results$sunset]
+	dt[, calc_sunlight:=date_time > results$sunrise & date_time < results$sunset]
 	print(dt)
 }
 
@@ -199,7 +198,7 @@ add_sunlight <- function(dt) {
 #' If one of these fails, the record gets flagged.
 #' 
 #' @param dt tracking data as data.table.
-#' @return nothing. Flagging happens in place. New columns is called `inbo_outlier`
+#' @return nothing. Flagging happens in place. New columns is called `calc_outlier`
 #' and contains logical values.
 #' @export
 #' @examples
@@ -208,8 +207,8 @@ add_sunlight <- function(dt) {
 #' }
 flag_outliers <- function(dt) {
 	today <- now()
-	dt[, inbo_outlier:=inbo_speed_2d<0 |
-		 	inbo_speed_2d>33.33333 |
+	dt[, calc_outlier:=calc_speed_2d<0 |
+		 	calc_speed_2d>33.33333 |
 		 	altitude>10000 |
 		 	h_accuracy>1000 |
 		 	date_time>today
@@ -229,7 +228,7 @@ raster_join <- function(dt, raster_data) {
 	pts <- SpatialPoints(data.frame(x=dt$longitude, y=dt$latitude), proj4string=CRS("+init=epsg:4326"))
 	conv <- spTransform(pts, CRSobj=CRS(proj4string(raster_data)))
 	results <- extract(raster_data, conv)
-	dt[, inbo_raster_value:=results]
+	dt[, calc_raster_value:=results]
 }
 
 #' Enrich data
@@ -241,13 +240,15 @@ raster_join <- function(dt, raster_data) {
 #' function
 #' @param bird_data Bird metadata obtained by using the validate_bird_data
 #' function
+#' @param corine_raster_data Filename containing corine raster data to be joined
+#' with bird tracking data.
 #' @return Data table containing enriched data
 #' @export
 #' @examples 
 #' \dontrun {
 #' enrich_data(tracking_data, bird_data)
 #' }
-enrich_data <- function(tracking_data, bird_data, raster_data) {
+enrich_data <- function(tracking_data, bird_data, corine_raster_data) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt)
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
@@ -258,6 +259,7 @@ enrich_data <- function(tracking_data, bird_data, raster_data) {
 	add_dist_to_colony(dt)
 	add_sunlight(dt)
 	flag_outliers(dt)
-	raster_join(dt, raster_data)
+	raster_join(dt, corine_raster_data)
+	setnames(dt, "calc_raster_value", "calc_corine_value")
 	return(dt)
 }

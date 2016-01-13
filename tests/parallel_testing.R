@@ -48,18 +48,20 @@ mcF <- function(n) {
 	stopCluster(cl)
 	return(as.numeric(t[3]))
 }
-input <- c(1000, 2000, 3000, 4000, 5000, 10000, 20000, 40000, 80000)
-f_timing <- sapply(input, f)
-parF_timing <- sapply(input, parF)
-dtF_timing <- sapply(input, dtF)
-mcF_timing <- sapply(input, mcF)
 
-d <- data.table(n=input,
-								not_parallel=f_timing,
-								parallel=parF_timing,
-								mcParallel=mcF_timing,
-								data.table_way=dtF_timing)
-d2 <- melt(d, id=c("n"))
-p <- ggplot(d2, aes(x=n, y=value, colour=variable))
-p + geom_line()
+# uncomment to run tests:
+#input <- c(1000, 2000, 3000, 4000, 5000, 10000, 20000, 40000, 80000)
+#f_timing <- sapply(input, f)
+#parF_timing <- sapply(input, parF)
+#dtF_timing <- sapply(input, dtF)
+#mcF_timing <- sapply(input, mcF)
+#
+#d <- data.table(n=input,
+#								not_parallel=f_timing,
+#								parallel=parF_timing,
+#								mcParallel=mcF_timing,
+#								data.table_way=dtF_timing)
+#d2 <- melt(d, id=c("n"))
+#p <- ggplot(d2, aes(x=n, y=value, colour=variable))
+#p + geom_line()
 

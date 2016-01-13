@@ -70,16 +70,16 @@ test_that("year, month and hour columns are added", {
 	expected_months <- rep(1, 8)
 	expected_hours <- rep(10, 8)
 	add_year_month_hour(data)
-	expect_equal(data$inbo_year, expected_years)
-	expect_equal(data$inbo_month, expected_months)
-	expect_equal(data$inbo_hour, expected_hours)
+	expect_equal(data$calc_year, expected_years)
+	expect_equal(data$calc_month, expected_months)
+	expect_equal(data$calc_hour, expected_hours)
 })
 
 test_that("enrich can calculate diffs in date_time", {
 	fixt_expected_diff_col <- c(NA, 120, 120, 120, 360, NA, 120, 240)
 	setkey(fixture_data_table, device_info_serial, date_time)
 	add_time_since_previous_fix(fixture_data_table)
-	expect_equal(as.numeric(fixture_data_table$inbo_time_diff), fixt_expected_diff_col)
+	expect_equal(as.numeric(fixture_data_table$calc_time_diff), fixt_expected_diff_col)
 })
 
 test_that("distances between consecutive points are calculated for each device", {
@@ -90,17 +90,17 @@ test_that("distances between consecutive points are calculated for each device",
 	)
 	expected_distances = c(NA, 157401.5610458, NA, 157401.5610458, NA, 0)
 	add_dist_travelled(data)
-	expect_equal(data$inbo_distance_diff, expected_distances)
+	expect_equal(data$calc_distance_diff, expected_distances)
 })
 
 test_that("speed is calculated based on time diffs and distances", {
 	test_data <- data.table(
-		inbo_time_diff=as.difftime(c(1200, 1800, 3000), units="secs"),
-		inbo_distance_diff=c(2000, 3000, 5000)
+		calc_time_diff=as.difftime(c(1200, 1800, 3000), units="secs"),
+		calc_distance_diff=c(2000, 3000, 5000)
 	)
 	expected_speed <- c(10/6, 10/6, 10/6)
 	add_speed(test_data)
-	expect_equal(test_data$inbo_speed_2d, expected_speed)
+	expect_equal(test_data$calc_speed_2d, expected_speed)
 })
 
 test_that("distance to colony is calculated", {
@@ -114,7 +114,7 @@ test_that("distance to colony is calculated", {
 													157401.5610458, 157401.5610458, 157401.5610458
 	)
 	add_dist_to_colony(data)
-	expect_equal(data$inbo_distance_to_colony, expected_distances)
+	expect_equal(data$calc_distance_to_colony, expected_distances)
 })
 
 test_that("presence of sunlight can be calculated", {
@@ -126,39 +126,39 @@ test_that("presence of sunlight can be calculated", {
 											tz="UTC")
 	)
 	add_sunlight(data)
-	expect_equal(sum(data$inbo_sunlight), 3) # records 1, 2, and 4 are in sunlight. 3 is not.
+	expect_equal(sum(data$calc_sunlight), 3) # records 1, 2, and 4 are in sunlight. 3 is not.
 })
 
 test_that("flag_outliers returns FALSE if everything is ok", {
-	fixture_tracking_data[, inbo_speed_2d:=c(0, 1, 2, 33, rep(33, 96))]
+	fixture_tracking_data[, calc_speed_2d:=c(0, 1, 2, 33, rep(33, 96))]
 	fixture_tracking_data[, altitude:=c(0, 1, 2, 10000, rep(938, 96))]
 	fixture_tracking_data[, h_accuracy:=c(0, 1, 2, 1000, rep(333, 96))]
 	flag_outliers(fixture_tracking_data)
-	expect_equal(sum(fixture_tracking_data$inbo_outlier), 0)
+	expect_equal(sum(fixture_tracking_data$calc_outlier), 0)
 })
 
 test_that("flag_outliers flags records if they fail certain checks", {
 	# speed_2d should be < 33.33333
 	error_data <- copy(fixture_tracking_data)
-	error_data[, inbo_speed_2d:=c(0, 1, 2, 34, rep(33, 96))]
+	error_data[, calc_speed_2d:=c(0, 1, 2, 34, rep(33, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$inbo_outlier), 1)
+	expect_equal(sum(error_data$calc_outlier), 1)
 	
 	# speed_2d should be >= 0
 	error_data <- copy(fixture_tracking_data)
-	error_data[, inbo_speed_2d:=c(0, 1, 2, -1, rep(33, 96))]
+	error_data[, calc_speed_2d:=c(0, 1, 2, -1, rep(33, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$inbo_outlier), 1)
+	expect_equal(sum(error_data$calc_outlier), 1)
 	
 	# altitude should be < 10000
 	error_data <- copy(fixture_tracking_data)
 	error_data[, altitude:=c(0, 1, 2, 10001, rep(80, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$inbo_outlier), 1)
+	expect_equal(sum(error_data$calc_outlier), 1)
 	
 	# h_accuracy should be < 1000
 	error_data <- copy(fixture_tracking_data)
 	error_data[, h_accuracy:=c(0, 1, 2, 1001, rep(80, 96))]
 	flag_outliers(error_data)
-	expect_equal(sum(error_data$inbo_outlier), 1)
+	expect_equal(sum(error_data$calc_outlier), 1)
 })

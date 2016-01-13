@@ -1,4 +1,4 @@
 library(testthat)
-library(UvaBitsWarehouse)
+library(UvaBitsETL)
 
-test_check("UvaBitsWarehouse")
+test_check("UvaBitsETL")

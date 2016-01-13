@@ -4,7 +4,7 @@
 \alias{enrich_data}
 \title{Enrich data}
 \usage{
-enrich_data(tracking_data, bird_data, raster_data)
+enrich_data(tracking_data, bird_data, corine_raster_data)
 }
 \arguments{
 \item{tracking_data}{Data table obtained by using the validate_tracks_data
@@ -12,6 +12,9 @@ function}
 
 \item{bird_data}{Bird metadata obtained by using the validate_bird_data
 function}
+
+\item{corine_raster_data}{Filename containing corine raster data to be joined
+with bird tracking data.}
 }
 \value{
 Data table containing enriched data

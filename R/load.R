@@ -49,16 +49,16 @@ data2table <- function(dbConnection, data) {
 		speed_2d=data$speed_2d,
 		direction=data$direction,
 		altitude_agl=data$altitude_agl,
-		inbo_year=data$inbo_year,
-		inbo_month=data$inbo_month,
-		inbo_hour=data$inbo_hour,
-		inbo_time_diff=data$inbo_time_diff,
-		inbo_distance_diff=data$inbo_distance_diff,
-		inbo_speed_2d=data$inbo_speed_2d,
-		inbo_distance_to_colony=data$inbo_distance_to_colony,
-		inbo_sunlight=data$inbo_sunlight,
-		inbo_outlier=data$inbo_outlier, # might need to map for boolean type
-		inbo_corine_category=data$inbo_raster_value
+		calc_year=data$calc_year,
+		calc_month=data$calc_month,
+		calc_hour=data$calc_hour,
+		calc_time_diff=data$calc_time_diff,
+		calc_distance_diff=data$calc_distance_diff,
+		calc_speed_2d=data$calc_speed_2d,
+		calc_distance_to_colony=data$calc_distance_to_colony,
+		calc_sunlight=data$calc_sunlight,
+		calc_outlier=data$calc_outlier, # might need to map for boolean type
+		calc_corine_category=data$calc_raster_value
 	)
 	dbWriteTable(dbConnection, "tracking_warehouse", df, row.names=FALSE)
 }

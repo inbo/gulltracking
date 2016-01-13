@@ -7,11 +7,11 @@
 add_speed(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table. Should contain column `inbo_distance_diff`
-and column `inbo_time_diff`}
+\item{dt}{tracking data as data.table. Should contain column `calc_distance_diff`
+and column `calc_time_diff`}
 }
 \value{
-nothing. Data is added in place as column `inbo_speed_2d`
+nothing. Data is added in place as column `calc_speed_2d`
 }
 \description{
 calculates the average 2 dimensional speed of the individual since the

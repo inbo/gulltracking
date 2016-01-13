@@ -35,13 +35,13 @@ CREATE TABLE tracking_warehouse (
   speed_2d double precision,
   direction double precision,
   altitude_agl integer,
-  inbo_time_diff integer,
-  inbo_distance_diff real,
-  inbo_speed_2d double precision,
-  inbo_distance_to_colony real,
-  inbo_sunlight boolean,
-  inbo_outlier boolean,
-  inbo_corine_category integer
+  calc_time_diff integer,
+  calc_distance_diff real,
+  calc_speed_2d double precision,
+  calc_distance_to_colony real,
+  calc_sunlight boolean,
+  calc_outlier boolean,
+  calc_corine_category integer
 );
 
 -- create indices
@@ -79,10 +79,10 @@ CREATE INDEX speed_3d_index on tracking_warehouse (speed_3d);
 CREATE INDEX speed_2d_index on tracking_warehouse (speed_2d);
 CREATE INDEX direction_index on tracking_warehouse (direction);
 CREATE INDEX altitude_agl_index on tracking_warehouse (altitude_agl);
-CREATE INDEX inbo_time_diff_index on tracking_warehouse (inbo_time_diff);
-CREATE INDEX inbo_distance_diff_index on tracking_warehouse (inbo_distance_diff);
-CREATE INDEX inbo_speed_2d_index on tracking_warehouse (inbo_speed_2d);
-CREATE INDEX inbo_distance_to_colony_index on tracking_warehouse (inbo_distance_to_colony);
-CREATE INDEX inbo_sunlight_index on tracking_warehouse (inbo_sunlight);
-CREATE INDEX inbo_outlier_index on tracking_warehouse (inbo_outlier);
-CREATE INDEX inbo_corine_category_index on tracking_warehouse (inbo_corine_category);
+CREATE INDEX calc_time_diff_index on tracking_warehouse (calc_time_diff);
+CREATE INDEX calc_distance_diff_index on tracking_warehouse (calc_distance_diff);
+CREATE INDEX calc_speed_2d_index on tracking_warehouse (calc_speed_2d);
+CREATE INDEX calc_distance_to_colony_index on tracking_warehouse (calc_distance_to_colony);
+CREATE INDEX calc_sunlight_index on tracking_warehouse (calc_sunlight);
+CREATE INDEX calc_outlier_index on tracking_warehouse (calc_outlier);
+CREATE INDEX calc_corine_category_index on tracking_warehouse (calc_corine_category);
