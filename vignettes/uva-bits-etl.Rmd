@@ -85,22 +85,22 @@ Most of the output fields will be familiar as they are entirely copied from the 
 | 18           | latitude | number | latitude in WGS84 |
 | 19           | longitude | number | longitude in WGS84 |
 | 20           | altitude | number | Altitude in meters above sea level recorded by the GPS tracker |
-| 21           | pressure | number | air pressure in ??? |
+| 21           | pressure | number | Pressure measured by GPS tag sensor in Pascals |
 | 22           | temperature | number | Temperature recorded by the GPS tracker in degrees Celsius |
 | 23           | satellites_used | number | Number of satellites used to get a GPS fix |
 | 24           | gps_fixtime | number | Time to get a GPS fix in seconds |
-| 25           | positiondop | number | ??? |
+| 25           | positiondop | number | Positional DOP (Dilution of Precision), unitless |
 | 26           | h_accuracy | number | Horizontal accuracy in meters |
 | 27           | v_accuracy | number | Vertical accuracy in meters |
 | 28           | x_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
 | 29           | y_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
 | 30           | z_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
-| 31           | speed_accuracy | number | accuracy of the speed measurement in ??? |
-| 32           | userflag | number | ??? |
-| 33           | speed_3d | number | ??? |
-| 34           | speed_2d | number | ??? |
+| 31           | speed_accuracy | number | accuracy of the speed measurement |
+| 32           | userflag | number | Acceptable = 0; Data flagged as unacceptable by user if not equal to 0 |
+| 33           | speed_3d | number | sqrt(d.x_speed^2 + d.y_speed^2 + d.z_speed^2), m/s |
+| 34           | speed_2d | number | Speed on 2D, m/s |
 | 35           | direction | number | Heading in degrees (0 is north, 90 is east). |
-| 36           | altitude_agl | number | ??? |
+| 36           | altitude_agl | number | Reported GPS altitude MINUS terrain elevation on the coordinate based on Digital Elevation Model data used in the e-ecology database |
 | 37           | inbo_year | number | Year from the date_time (column 17) field |
 | 38           | inbo_month | number | Month from the date_time (column 17) field |
 | 39           | inbo_hour | number | Hour from the date_time (column 17) field |
@@ -138,23 +138,23 @@ The tracking data is a dump from the UvA-BiTS virtual lab in csv format. It cont
 | latitude | number | latitude in WGS84 |
 | longitude | number | longitude in WGS84 |
 | altitude | number | Altitude in meters above sea level recorded by the GPS tracker |
-| pressure | number | air pressure in ??? |
+| pressure | number | Pressure measured by GPS tag sensor in Pascals |
 | temperature | number | Temperature recorded by the GPS tracker in degrees Celsius |
 | satellites_used | number | Number of satellites used to get a GPS fix |
 | gps_fixtime | number | Time to get a GPS fix in seconds |
-| positiondop | number | ??? |
+| positiondop | number | Positional DOP (Dilution of Precision), unitless |
 | h_accuracy | number | Horizontal accuracy in meters |
 | v_accuracy | number | Vertical accuracy in meters |
 | x_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
 | y_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
 | z_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
-| speed_accuracy | number | accuracy of the speed measurement in ??? |
-| location | text | ??? |
-| userflag | number | ??? |
-| speed_3d | number | ??? |
-| speed_2d | number | ??? |
+| speed_accuracy | number | accuracy of the speed measurement |
+| location | text | postgreSQL geometry; to allow GIS operations |
+| userflag | number | Acceptable = 0; Data flagged as unacceptable by user if not equal to 0 |
+| speed_3d | number | sqrt(d.x_speed^2 + d.y_speed^2 + d.z_speed^2), m/s |
+| speed_2d | number | Speed on 2D, m/s |
 | direction | number | Heading in degrees (0 is north, 90 is east). |
-| altitude_agl | number | ??? |
+| altitude_agl | number | Reported GPS altitude MINUS terrain elevation on the coordinate based on Digital Elevation Model data used in the e-ecology database |
 
 ### Enriching the data
 
