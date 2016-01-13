@@ -15,6 +15,13 @@ vignette: >
 
 At the [Research Institute for Nature and Forest](http://www.inbo.be) (INBO) we are tracking birds using the [UvA-BiTS system](http://www.uva-bits.nl/) as part of the [LifeWatch project](http://www.lifewatch.inbo.be). As tracking data volume grows quicker than human observation data (what we usually work with), we were in need for a data store that contains the cleaned and enriched tracking data in a system that is optimized for querying these *large-ish* data sets. Something like a data warehouse. This R package contains code to extract the data from the UvA-BiTS virtual lab, clean and enrich it, and load it in the data warehouse.
 
+In this vignette, you can find:
+
+- [How to use this package](#how-to-use-this-package)
+- [A description of all the fields in the output](#output-format)
+- [A detailed explanation of the processing procedure](#etl-procedure)
+- [Documentation about the deprecated procedure at CartoDB](#cartodb-procedure)
+
 ## How to use this package?
 
 Install the package and load it in your R environment.
@@ -51,6 +58,60 @@ data2table(con, dt)
 ```
 
 To add indexes to the table, perform the `CREATE INDEX` statements in [this file](https://github.com/LifeWatchINBO/uva-bits-etl/blob/master/sql/create_wh_table).
+
+## Output format
+
+Most of the output fields will be familiar as they are entirely copied from the input tables. However, a number of fields are added during the `enrich` step of the procedure. These fields are prefixed with `inbo_` to make the distinction clear. All output fields are documented in the table below:
+
+| field number | field name | type | description |
+| ------------ | ---------- | ---- | ----------- |
+| 1            | project_leader | text | Project leader of the research project for which these trackers are used |
+| 2            | device_info_serial | number | ID of the GPS tracker |
+| 3            | bird_name  | text | Name given to individual bird by the researcher |
+| 4            | ring_code | text | Code of the metal leg ring on the individual bird |
+| 5            | colour_ring_code | text | Code of the coloured leg ring on the individual bird |
+| 6            | species_code | text | Code for the species for which these trackers are used |
+| 7            | scientific_name | text | Species name of the individual bird |
+| 8            | catch_weight | number | Weight of the individual bird in grams when catched |
+| 9            | sex | text | Sex of the individual bird (noted as `male` or `female`) |
+| 10           | catch_location | text | Name of area where the bird was catched. Gulls are catched on nest, so this is can be considered their colony location. Harriers are catched near their nest, so this can be considered their home range for at least the first year |
+| 11           | tracking_started_at | date time | UTC timestamp for when tracking is (considered) operational (= somewhat later than tagging). Used to exclude pre-tracking test records during import |
+| 12           | tracking_ended_at | date time | UTC timestamp for when tracking is no longer (considered) operational |
+| 13           | is_active | boolean | `FALSE` if individual bird is confirmed or likely dead, or if we assume tracker is no longer active |
+| 14           | remarks | text | Remarks by the researcher regarding the tracker or bird |
+| 15           | colony_latitude | number | WGS84 latitude of the estimated catch position |
+| 16           | colony_longitude | number | WGS84 longitude of the estimated catch position |
+| 17           | date_time | date time | Date and time in format "yyyy-mm-dd hh:mm:ss" |
+| 18           | latitude | number | latitude in WGS84 |
+| 19           | longitude | number | longitude in WGS84 |
+| 20           | altitude | number | Altitude in meters above sea level recorded by the GPS tracker |
+| 21           | pressure | number | air pressure in ??? |
+| 22           | temperature | number | Temperature recorded by the GPS tracker in degrees Celsius |
+| 23           | satellites_used | number | Number of satellites used to get a GPS fix |
+| 24           | gps_fixtime | number | Time to get a GPS fix in seconds |
+| 25           | positiondop | number | ??? |
+| 26           | h_accuracy | number | Horizontal accuracy in meters |
+| 27           | v_accuracy | number | Vertical accuracy in meters |
+| 28           | x_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| 29           | y_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| 30           | z_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| 31           | speed_accuracy | number | accuracy of the speed measurement in ??? |
+| 32           | userflag | number | ??? |
+| 33           | speed_3d | number | ??? |
+| 34           | speed_2d | number | ??? |
+| 35           | direction | number | Heading in degrees (0 is north, 90 is east). |
+| 36           | altitude_agl | number | ??? |
+| 37           | inbo_year | number | Year from the date_time (column 17) field |
+| 38           | inbo_month | number | Month from the date_time (column 17) field |
+| 39           | inbo_hour | number | Hour from the date_time (column 17) field |
+| 40           | inbo_time_diff | number | Time (in seconds) since the birds last GPS fix |
+| 41           | inbo_distance_diff | number | Distance (in meters) from the birds last GPS fix |
+| 42           | inbo_speed_2d | number | Average two dimensional speed (in meters per seconds) of the bird between the last GPS fix and the current fix |
+| 43           | inbo_distance_to_colony | number | Distance (in meters) to the colony (indicated by colony_latitude and colony_longitude) |
+| 44           | inbo_sunlight | boolean | `TRUE` if sunlight was available at the given time and location |
+| 45           | inbo_outlier | boolean | `TRUE` if according to [this set of rules](8-flag-outliers) the record is considered an outlier and should be removed from the analysis |
+| 46           | inbo_corine_value | text | Value of the Corine land use map at the position of the bird |
+
 
 ## ETL procedure
 
