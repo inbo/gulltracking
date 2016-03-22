@@ -204,8 +204,26 @@ validate_bird_data <- function(bird_data) {
 #' \dontrun{
 #' read_raster_data("raster_file.tiff", data.CRS="+init=epsg:2056")
 #' }
+#' @import raster
 read_raster_data <- function(filename, data.CRS="+init=epsg:4326") {
 	r <- raster(filename)
 	proj4string(r) <- CRS(data.CRS)
+	return(r)
+}
+
+#' Read the raster legend
+#' @description Read the raster legend. The legend is expected to contain two columns:
+#' `id` containing the actual values used in the raster layer, and `value` which contains
+#' the labels.
+#' 
+#' @param filename Name of the csv file containing the raster legend
+#' @return a data table containing the raster legend
+#' @export
+#' @examples
+#' \dontrun{
+#' read_raster_legend("raster_legend.csv")
+#' }
+read_raster_legend <- function(filename) {
+	r <- fread(filename, dec=".", header=TRUE, sep=",", na.strings=c(""))
 	return(r)
 }

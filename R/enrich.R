@@ -231,6 +231,22 @@ raster_join <- function(dt, raster_data) {
 	dt[, calc_raster_value:=results]
 }
 
+#' Join raster value with legend
+#' @description Join the raster value with its legend
+#' 
+#' @param dt Data table with tracking data. Expected to contain a column `calc_raster_value`
+#' which is the result of joining this table with a raster layer.
+#' @param legend a data table with the legend of the raster layer. It should contain a column
+#' `id` and a column `value`. The `id` column should contain the values that are used in the
+#' raster layer, while the `value` column contains the labels for these values.
+join_raster_value_with_legend <- function(dt, legend) {
+	setkey(dt, calc_raster_value)
+	colnames(legend) <- c("calc_raster_value", "calc_raster_legend")
+	setkey(legend, calc_raster_value)
+	newdt <- merge(dt, legend, all.x=TRUE)
+	return(newdt)
+}
+
 #' Enrich data
 #' @description Enrich the bird tracking data by precalculating attributes
 #' and joining data with other sources. See the package vignette for a complete
@@ -248,7 +264,7 @@ raster_join <- function(dt, raster_data) {
 #' \dontrun {
 #' enrich_data(tracking_data, bird_data)
 #' }
-enrich_data <- function(tracking_data, bird_data, corine_raster_data) {
+enrich_data <- function(tracking_data, bird_data, corine_raster_data, corine_legend) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt)
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
@@ -260,6 +276,7 @@ enrich_data <- function(tracking_data, bird_data, corine_raster_data) {
 	add_sunlight(dt)
 	flag_outliers(dt)
 	raster_join(dt, corine_raster_data)
+	join_raster_value_with_legend(dt, corine_legend)
 	setnames(dt, "calc_raster_value", "calc_corine_value")
 	return(dt)
 }

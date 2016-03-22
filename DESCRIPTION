@@ -12,7 +12,7 @@ Description: Extract, Transform and Load procedures for cleaning, enriching
 	in advance (only tested using PostgreSQL)
 License: MIT (https://tldrlegal.com/license/mit-license)
 Encoding: UTF-8
-Imports: 
+Depends: 
 	testthat,
 	lubridate,
 	DBI,
