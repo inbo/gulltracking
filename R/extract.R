@@ -206,6 +206,6 @@ validate_bird_data <- function(bird_data) {
 #' }
 read_raster_data <- function(filename, data.CRS="+init=epsg:4326") {
 	r <- raster(filename)
-	projection(r) <- CRS(data.CRS)
+	proj4string(r) <- CRS(data.CRS)
 	return(r)
 }
