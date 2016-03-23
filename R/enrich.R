@@ -278,5 +278,6 @@ enrich_data <- function(tracking_data, bird_data, corine_raster_data, corine_leg
 	raster_join(dt, corine_raster_data)
 	join_raster_value_with_legend(dt, corine_legend)
 	setnames(dt, "calc_raster_value", "calc_corine_value")
+	setnames(dt, "calc_raster_legend", "calc_corine_legend")
 	return(dt)
 }

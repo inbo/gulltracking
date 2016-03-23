@@ -58,7 +58,8 @@ data2table <- function(dbConnection, data) {
 		calc_distance_to_colony=data$calc_distance_to_colony,
 		calc_sunlight=data$calc_sunlight,
 		calc_outlier=data$calc_outlier, # might need to map for boolean type
-		calc_corine_category=data$calc_raster_value
+		calc_corine_category=data$calc_raster_value,
+		calc_corine_legend=data$calc_raster_legend
 	)
 	dbWriteTable(dbConnection, "tracking_warehouse", df, row.names=FALSE)
 }
