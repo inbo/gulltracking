@@ -102,7 +102,7 @@ add_year_month_hour <- function(data) {
 #' add_time_since_previous_fix(tracking_data)
 #' }
 add_time_since_previous_fix <- function(datatable) {
-	datatable[, calc_time_diff:=difftime(date_time, shift(date_time), units="secs"),
+	datatable[, calc_time_diff:=difftime(date_time, data.table::shift(date_time), units="secs"),
 						by=device_info_serial]
 }
 
@@ -119,11 +119,11 @@ add_time_since_previous_fix <- function(datatable) {
 #' }
 #' @importFrom geosphere distCosine
 add_dist_travelled <- function(dt) {
-	dt[, tmp.select:=device_info_serial==shift(device_info_serial)]
+	dt[, tmp.select:=device_info_serial==data.table::shift(device_info_serial)]
 	distances <- distCosine(
 		  cbind(dt$longitude, dt$latitude),
-		  cbind(c(1, shift(dt$longitude)[-1]),
-						c(1, shift(dt$latitude)[-1])
+		  cbind(c(1, data.table::shift(dt$longitude)[-1]),
+						c(1, data.table::shift(dt$latitude)[-1])
 			)
 		)
 	distances[!dt$tmp.select | is.na(dt$tmp.select)] <- NA

@@ -12,8 +12,7 @@ Description: Extract, Transform and Load procedures for cleaning, enriching
 	in advance (only tested using PostgreSQL)
 License: MIT (https://tldrlegal.com/license/mit-license)
 Encoding: UTF-8
-Depends: 
-	testthat,
+Imports: 
 	lubridate,
 	DBI,
 	data.table,
@@ -23,7 +22,6 @@ Depends:
 	raster
 Suggests: testthat,
     knitr,
-    data.table
 VignetteBuilder: knitr
 LazyData: true
 URL: https://github.com/LifeWatchINBO/uva-bits-etl
