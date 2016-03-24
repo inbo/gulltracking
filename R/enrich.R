@@ -239,6 +239,12 @@ raster_join <- function(dt, raster_data) {
 #' @param legend a data table with the legend of the raster layer. It should contain a column
 #' `id` and a column `value`. The `id` column should contain the values that are used in the
 #' raster layer, while the `value` column contains the labels for these values.
+#' @return New data table with an additional column "calc_raster_legend"
+#' @export
+#' @examples
+#' \dontrun {
+#' join_raster_value_with_legend(datatable, legendcsv)
+#' }
 join_raster_value_with_legend <- function(dt, legend) {
 	setkey(dt, calc_raster_value)
 	colnames(legend) <- c("calc_raster_value", "calc_raster_legend")
@@ -276,7 +282,7 @@ enrich_data <- function(tracking_data, bird_data, corine_raster_data, corine_leg
 	add_sunlight(dt)
 	flag_outliers(dt)
 	raster_join(dt, corine_raster_data)
-	join_raster_value_with_legend(dt, corine_legend)
+	dt <- join_raster_value_with_legend(dt, corine_legend)
 	setnames(dt, "calc_raster_value", "calc_corine_value")
 	setnames(dt, "calc_raster_legend", "calc_corine_legend")
 	return(dt)
