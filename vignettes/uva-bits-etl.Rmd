@@ -57,7 +57,7 @@ con <- dbConnect(drv, dbname="bird_tracking", host="localhost")
 data2table(con, dt)
 ```
 
-To add indexes to the table, perform the `CREATE INDEX` statements in [this file](../sql/create_wh_table).
+To add indexes to the table, perform the `CREATE INDEX` statements in [this file](../sql/create_wh_table.sql).
 
 ## Output format
 
