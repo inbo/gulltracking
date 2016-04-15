@@ -50,7 +50,7 @@ validate_tracks_data <- function(tracks_data)	{
 	issues <- c()
 	# set data types for non-character columns
 	nas_in_date_time <- sum(is.na(tracks_data$date_time))
-	tracks_data[, date_time:=lubridate::fast_strptime(date_time, "%Y-%m-%d %H:%M:%OS")]
+	tracks_data[, date_time:=lubridate::fast_strptime(date_time, "%Y-%m-%d %H:%M:%OS", lt=FALSE)]
 	if (sum(is.na(tracks_data$date_time)) > nas_in_date_time) {
 		issues <- c(issues, "unparsable values found in column date_time")
 	}
@@ -130,12 +130,14 @@ validate_bird_data <- function(bird_data) {
 	# set date time data types. Note that the timezone format string is Ou, which only matches the "Z"
 	# string, indicating "Zulu" (UTC) time zone. "+00" will not match.
 	nas_in_tr_start_time <- sum(is.na(bird_data$tracking_started_at))
-	bird_data[, tracking_started_at:=lubridate::fast_strptime(as.character(tracking_started_at), "%Y-%m-%dT%H:%M:%OS%Ou")]
+	bird_data[, tracking_started_at:=lubridate::fast_strptime(as.character(tracking_started_at),
+																														"%Y-%m-%dT%H:%M:%OS%Ou", lt=FALSE)]
 	if (sum(is.na(bird_data$tracking_started_at)) > nas_in_tr_start_time) {
 		issues <- c(issues, "unparsable values found in column tracking_started_at")
 	}
 	nas_in_tr_end_time <- sum(is.na(bird_data$tracking_ended_at))
-	bird_data[, tracking_ended_at:=lubridate::fast_strptime(as.character(tracking_ended_at), "%Y-%m-%dT%H:%M:%OS%Ou")]
+	bird_data[, tracking_ended_at:=lubridate::fast_strptime(as.character(tracking_ended_at),
+																													"%Y-%m-%dT%H:%M:%OS%Ou", lt=FALSE)]
 	if (sum(is.na(bird_data$tracking_ended_at)) > nas_in_tr_end_time) {
 		issues <- c(issues, "unparsable values found in column tracking_ended_at")
 	}
