@@ -57,7 +57,7 @@ con <- dbConnect(drv, dbname="bird_tracking", host="localhost")
 data2table(con, dt)
 ```
 
-To add indexes to the table, perform the `CREATE INDEX` statements in [this file](https://github.com/LifeWatchINBO/uva-bits-etl/blob/master/sql/create_wh_table).
+To add indexes to the table, perform the `CREATE INDEX` statements in [this file](../sql/create_wh_table.sql).
 
 ## Output format
 
@@ -111,6 +111,7 @@ Most of the output fields will be familiar as they are entirely copied from the 
 | 44           | calc_sunlight | boolean | `TRUE` if sunlight was available at the given time and location |
 | 45           | calc_outlier | boolean | `TRUE` if according to [this set of rules](#8-flag-outliers) the record is considered an outlier and should be removed from the analysis |
 | 46           | calc_corine_value | text | Value of the Corine land use map at the position of the bird |
+| 47           | calc_corine_legend | text | Three level corine land use category that corresponds to the value of `calc_corine_value`. See [overview of these categories here](http://wiki.openstreetmap.org/wiki/Corine_Land_Cover) |
 
 
 ## ETL procedure
@@ -199,7 +200,7 @@ it is flagged as outlier. This means that the new `outlier` field is set to `TRU
 
 #### 9. Link with Corine land use
 
-To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-3) category is matched with the birds position. The new field is called `calc_corine_value` and represents the value of the matched category in the Corine dataset.
+To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-3) category is matched with the birds position. Two new fields are added: `calc_corine_value` and represents the value of the Corine dataset land cover dataset and `calc_corine_legend` contains the legend for that value. This legend contains the three-level categories defined by Corine.
 
 ## CartoDB procedure
 
