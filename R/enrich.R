@@ -45,10 +45,12 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 	bird_data[, colony_longitude:=longitude]
 	bird_data[, latitude:=NULL]
 	bird_data[, longitude:=NULL]
-	joined <- bird_data[tracking_data, nomatch=0]
-	if (length(joined$device_info_serial) != length(tracking_data$device_info_serial)) {
+	joined <- bird_data[tracking_data] # right outer join
+	if (nrow(joined[is.na(bird_name)]) > 0) {
 		msg <- paste(c("Error while joining tracking data and bird metadata.",
-				"... tracking data found that could not be matched with bird metadata."),
+				"... tracking data found that could not be matched with bird metadata.",
+				"The following devices are unknown:",
+				unique(joined[is.na(bird_name), device_info_serial])),
 				sep="\n")
 		stop(msg)
 	}

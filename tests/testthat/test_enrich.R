@@ -31,7 +31,7 @@ test_that("sunrise and sunset can be calculated with an error of less then 5 min
 														"2000-01-01 15:47:00",
 														"2015-12-30 15:45:00",
 														"2015-12-30 23:16:00"), tz="UTC")
-	results <- suncalc.custom(dates, latitudes, longitudes)
+	results <- suncalc.custom(as.POSIXct(dates), latitudes, longitudes)
 	sunrise.diff <- expected.sunrises.UTC - results$sunrise
 	sunset.diff <- expected.sunsets.UTC - results$sunset
 	units(sunrise.diff) <- "mins"
