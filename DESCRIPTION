@@ -1,6 +1,6 @@
-Package: UvaBitsETL
+Package: bird-tracking-etl
 Type: Package
-Title: UvA-BiTS tracking data ETL
+Title: Bird tracking ETL
 Version: 1.0
 Date: 2015-11-09
 Author: Bart Aelterman, <bart.aelterman@inbo.be>
