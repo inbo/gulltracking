@@ -1,4 +1,4 @@
-Package: bird-tracking-etl
+Package: BirdTrackingEtl
 Type: Package
 Title: Bird tracking ETL
 Version: 1.0
