@@ -20,8 +20,8 @@ library(UvaBitsWarehouse)
 
 ## How to use the package
 
-This is explained in the package [vignette](./vignettes/uva-bits-etl.Rmd).
+This is explained in the package [vignette](./vignettes/bird-tracking-etl.Rmd).
 
 ## Get in touch
 
-Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/uva-bits-etl/issues).
+Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/bird-tracking-etl/issues).
