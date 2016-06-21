@@ -25,4 +25,4 @@ Suggests: testthat (== 0.9.1),
     knitr (== 1.11),
 VignetteBuilder: knitr
 LazyData: true
-URL: https://github.com/LifeWatchINBO/uva-bits-etl
+URL: https://github.com/inbo/bird-tracking-etl
