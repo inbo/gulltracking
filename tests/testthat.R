@@ -1,4 +1,4 @@
 library(testthat)
-library(UvaBitsETL)
+library(BirdTrackingEtl)
 
-test_check("UvaBitsETL")
+test_check("BirdTrackingEtl")
