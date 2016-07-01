@@ -21,7 +21,7 @@ Imports:
 	maptools (== 0.8.36),
 	sp (== 1.1.1),
 	raster (== 2.4.18)
-Suggests: testthat (== 0.9.1),
+Suggests: testthat (== 1.0.1),
     knitr (== 1.11),
 VignetteBuilder: knitr
 LazyData: true
