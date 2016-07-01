@@ -56,6 +56,38 @@ test_that("joining stops when tracking records cannot be joined with bird metada
 	expect_error(join_tracks_and_metadata(error_data, fixture_bird_data))
 })
 
+test_that("joining checks tracking start and end time", {
+  error_bird_data <- copy(fixture_bird_data)
+  error_bird_data[device_info_serial==744,
+                  c("tracking_started_at", "tracking_ended_at") := list(ymd_hms("2013-05-30 18:00:00", tz="UTC"),
+                                                  ymd_hms("2013-05-31 18:00:00", tz="UTC"))]
+  # add a row to the bird_data. This is a second entry with device_info_serial = 744
+  # To properly join tracking data from this device, the "tracing_started_at" and
+  # "tracking_ended_at" columns need to be considered.
+  error_bird_data <- rbind(error_bird_data, list("Me", 744, "Some name", "X73294", "IEJS",
+    "hg", "Larus argentatus", 784, "female", "Vismijn, Oostende", 51.2,
+    2.9, ymd_hms("2013-06-01 10:00:00", tz="UTC"), ymd_hms("2016-01-01 10:00:00", tz="UTC"),
+    NA, NA
+  ))
+  # Add a record to the tracking data. This one should get matched to the first
+  # device_info_serial=744 entry in the bird_data (the one going from 2013-05-30 to
+  # 2013-05-31)
+  fixture_tracking_data <- rbind(fixture_tracking_data,
+        list(744, ymd_hms("2013-05-30 21:00:00", tz="UTC"),
+             51, 3, 10, NA, 22, 4,51, 5, 8, 10, 1, 1, 1, 2, 0, 1, 1, 90, 8
+        )
+  )
+  # Add another record to the tracking data. This one should get matched to the second
+  # device_info_serial=744 entry in the bird_data (the one going from 2013-06-01 to
+  # 2016-01-01)
+  fixture_tracking_data <- rbind(fixture_tracking_data,
+        list(744, ymd_hms("2014-01-30 21:00:00", tz="UTC"),
+             50, 4, 11, NA, 22, 4,51, 5, 8, 10, 1, 1, 1, 2, 0, 1, 1, 90, 8
+        )
+  )
+  joined <- join_tracks_and_metadata(fixture_tracking_data, error_bird_data)
+})
+
 test_that("deleting test records works", {
 	joined <- join_tracks_and_metadata(fixture_tracking_data, fixture_bird_data)
 	result <- delete_test_records(joined)
