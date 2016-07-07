@@ -1,5 +1,7 @@
 .Rproj.user
+*.Rproj
 .Rhistory
 .RData
 inst/doc
 UvaBitsWarehouse.Rproj
+install.R
