@@ -46,6 +46,28 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 	bird_data[, latitude := NULL]
 	bird_data[, longitude := NULL]
 	joined <- bird_data[tracking_data] # right outer join
+
+	# START
+	#add dummy column with end date to the
+	fixture_tracking_data[, dummy_date_time := date_time]
+
+	# define merging keys
+	setkey(fixture_tracking_data, device_info_serial, date_time, dummy_date_time)
+	setkey(error_bird_data, device_info_serial, tracking_started_at, tracking_ended_at)
+
+	# replace NaN values to 'NOW' values...
+	error_bird_data[is.na(error_bird_data$tracking_ended_at)]$tracking_ended_at <- Sys.time()
+
+	joined <- foverlaps(fixture_tracking_data, error_bird_data,
+	                    c("device_info_serial", "date_time", "dummy_date_time"),
+	                    c("device_info_serial", "tracking_started_at", "tracking_ended_at"),
+	                    type = "within",
+	                    mult = "all")
+	# remove dummy date
+	joined[, dummy_date_time := NULL]
+	# END
+
+
 	if (nrow(joined[is.na(bird_name)]) > 0) {
 		msg <- paste(c("Error while joining tracking data and bird metadata.",
 				"... tracking data found that could not be matched with bird metadata.",
