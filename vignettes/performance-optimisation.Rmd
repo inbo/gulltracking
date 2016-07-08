@@ -12,7 +12,7 @@ vignette: >
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=6, fig.path='Figs/',
                       warning=FALSE, message=FALSE, cache=TRUE)
-library(UvaBitsETL)
+library(BirdTrackingEtl)
 library(data.table)
 library(ggplot2)
 library(lubridate)
@@ -20,7 +20,7 @@ library(lubridate)
 
 # Performance optimisation
 
-This vignette examines the performance of different computations implemented in the UvaBitsETL package.
+This vignette examines the performance of different computations implemented in the BirdTrackingEtl package.
 
 ## Date time parsing
 

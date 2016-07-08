@@ -1,7 +1,7 @@
 #' Profile UvA-BiTS ETL processing steps (Level 1)
-#' @description Profile the different processing steps in the UvaBitsETL
+#' @description Profile the different processing steps in the bird-trakcing-etl
 #' package to find bottlenecks.
-#' 
+#'
 #' @param tracks_file CSV file containing tracking data used for profiling.
 #' Don't use a file that is too big (because it will take some time), but don't
 #' make it too small either (because that can introduces biases that are not
@@ -15,14 +15,14 @@ profiling_L1 <- function(tracks_file, birds_file) {
 	reading_birds_time <- system.time(bird_data <- load_bird_file(birds_file))
 	track_validation_time <- system.time(v_tr_data <- validate_tracks_data(tr_data))
 	bird_validation_time <- system.time(v_bird_data <- validate_bird_data(bird_data))
-	
+
 	join_time <- system.time(joined_data <- join_tracks_and_metadata(v_tr_data, v_bird_data))
 	delete_time <- system.time(subset <- delete_test_records(joined_data))
 	setkey_time <- system.time(setkey(subset, device_info_serial, date_time))
 	time_calc_time <- system.time(add_time_since_previous_fix(subset))
 	dist_travld_time <- system.time(add_dist_travelled(subset))
 	speed_time <- system.time(add_speed(subset))
-	
+
 	plt_data <- data.frame(
 		tracks_reading=c(as.numeric(reading_tracks_time[3])),
 		birds_reading=c(as.numeric(reading_birds_time[3])),
@@ -35,7 +35,7 @@ profiling_L1 <- function(tracks_file, birds_file) {
 		distance_travelled=c(as.numeric(dist_travld_time[3])),
 		speed=c(as.numeric(speed_time[3]))
 	)
-	
+
 	d <- melt(plt_data,variable.name="step", value.name="timing")
 	return(d)
 }
