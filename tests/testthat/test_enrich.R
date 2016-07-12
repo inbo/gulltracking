@@ -47,8 +47,30 @@ test_that("tracking data and bird metadata can be joined in 1 data table", {
   joined <- join_tracks_and_metadata(fixture_tracking_data, fixture_bird_data)
 	expect_equal(length(joined), length(colnames(fixture_bird_data)) +
 								length(colnames(fixture_tracking_data)) - 1)
-	expect_equal(length(joined$device_info_serial),
-							 length(fixture_tracking_data$device_info_serial))
+	# equal or lower (when outside date range) ->
+	expect_lte(length(joined$device_info_serial),
+	           length(fixture_tracking_data$device_info_serial))
+})
+
+test_that("tracking data outside bird metadata date range are excluded", {
+    # compare datetime and ranges -> count outside portion
+    # Test is setup without taking into account multiple trackers on same bird,
+    # corresponding to data set
+    setkey(fixture_tracking_data, device_info_serial)
+    setkey(fixture_bird_data, device_info_serial)
+    joined <- fixture_bird_data[fixture_tracking_data] # right outer join
+    date_info <- joined[, .(date_time, tracking_started_at, tracking_ended_at)]
+    date_info[is.na(date_info$tracking_ended_at)]$tracking_ended_at <- Sys.time()
+    # get the number of records outside the range
+    outsiders <- sum(date_info$date_time < date_info$tracking_started_at |
+                         date_info$date_time > date_info$tracking_ended_at)
+
+    # perform functional ETL join
+    joined <- join_tracks_and_metadata(fixture_tracking_data, fixture_bird_data)
+
+    # check that the number of outsiders equal the excluded records by the join
+    excluders <- length(fixture_tracking_data$device_info_serial) - length(joined$device_info_serial)
+    expect_equal(excluders, outsiders)
 })
 
 test_that("joining stops when tracking records cannot be joined with bird metadata", {
@@ -87,7 +109,13 @@ test_that("joining checks tracking start and end time", {
              50, 4, 11, NA, 22, 4,51, 5, 8, 10, 1, 1, 1, 2, 0, 1, 1, 90, 8
         )
   )
+  # For this small set, the table will be provided, giving rise to a nxm number
+  # of rows (2x2=4), making each combination. However, for large tables R
+  # provides an error (as it results in huge tables). We include this behavior
+  # in the test set here:
+  # length(joined) <= max(length(tracking), length(bird))
   joined <- join_tracks_and_metadata(fixture_tracking_data, error_bird_data)
+  expect_lte(nrow(joined), max(nrow(fixture_tracking_data), nrow(error_bird_data)))
 })
 
 test_that("deleting test records works", {

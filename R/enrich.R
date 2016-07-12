@@ -42,7 +42,6 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
     # pre-check for device_info_serial -> are devices in logs present in the metadata
     log_devices <- unique(tracking_data$device_info_serial)
     known_devices <- unique(bird_data$device_info_serial)
-
 	if (sum(log_devices %in% known_devices) < length(log_devices)) {
 		msg <- paste(c("Error while joining tracking data and bird metadata.",
 				"... tracking data found that could not be matched with bird metadata.",
@@ -83,18 +82,8 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 	joined[, dummy_tracking_ended_at := NULL]
 
 	# remaining none-matched records are device-logs outside the provided time
-	# range and can be ignored
+	# range and can be excluded
 	joined <- joined[!is.na(joined$ring_code), ]
-
-    # obsolete:
-# 	if (nrow(joined[is.na(ring_code)]) > 0) {
-# 		msg <- paste(c("Error while joining tracking data and bird metadata.",
-# 				"... tracking data found that could not be matched with bird metadata.",
-# 				"The following devices are unknown:",
-# 				paste(unique(joined[is.na(bird_name), device_info_serial])), collapse = ","),
-# 				collapse = "\n")
-# 		stop(msg)
-# 	}
 	return(joined)
 }
 
