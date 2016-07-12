@@ -39,43 +39,62 @@ suncalc.custom <- function(dates,Lat,Long){
 #' join_tracks_and_metadata(tracks_validated, birds_validated)
 #' }
 join_tracks_and_metadata <- function(tracking_data, bird_data) {
-	setkey(tracking_data, device_info_serial)
-	setkey(bird_data, device_info_serial)
+    # pre-check for device_info_serial -> are devices in logs present in the metadata
+    log_devices <- unique(tracking_data$device_info_serial)
+    known_devices <- unique(bird_data$device_info_serial)
+
+	if (sum(log_devices %in% known_devices) < length(log_devices)) {
+		msg <- paste(c("Error while joining tracking data and bird metadata.",
+				"... tracking data found that could not be matched with bird metadata.",
+				"The following devices are unknown:",
+				paste(log_devices[!log_devices %in% known_devices], collapse = ", ")),
+				collapse = "\n")
+		stop(msg)
+	    }
+
+    # Prepare coorindates information
 	bird_data[, colony_latitude := latitude]
 	bird_data[, colony_longitude := longitude]
 	bird_data[, latitude := NULL]
 	bird_data[, longitude := NULL]
-	joined <- bird_data[tracking_data] # right outer join
 
-	# START
-	#add dummy column with end date to the
-	fixture_tracking_data[, dummy_date_time := date_time]
+	#add dummy column with end date equal to the start date for tracking log
+	tracking_data[, dummy_date_time := date_time]
 
-	# define merging keys
-	setkey(fixture_tracking_data, device_info_serial, date_time, dummy_date_time)
-	setkey(error_bird_data, device_info_serial, tracking_started_at, tracking_ended_at)
+	#add dummy column to incorporate end dates to end bird log
+	bird_data[, dummy_tracking_ended_at := tracking_ended_at]
+	# replace NaN values to 'NOW' values in dummy column...
+	bird_data[is.na(bird_data$dummy_tracking_ended_at)]$dummy_tracking_ended_at <- Sys.time()
 
-	# replace NaN values to 'NOW' values...
-	error_bird_data[is.na(error_bird_data$tracking_ended_at)]$tracking_ended_at <- Sys.time()
-
-	joined <- foverlaps(fixture_tracking_data, error_bird_data,
+	# define merging keys: device_id + date containing columns
+	setkeyv(tracking_data, c("device_info_serial", "date_time",
+	                         "dummy_date_time"))
+	setkeyv(bird_data, c("device_info_serial", "tracking_started_at",
+	                     "dummy_tracking_ended_at"))
+	# join by the overlap of the time sequence
+	joined <- foverlaps(tracking_data, bird_data,
 	                    c("device_info_serial", "date_time", "dummy_date_time"),
-	                    c("device_info_serial", "tracking_started_at", "tracking_ended_at"),
+	                    c("device_info_serial", "tracking_started_at",
+	                      "dummy_tracking_ended_at"),
 	                    type = "within",
 	                    mult = "all")
-	# remove dummy date
+	# remove dummy date columns
 	joined[, dummy_date_time := NULL]
-	# END
+	joined[, dummy_tracking_ended_at := NULL]
 
+	# remaining none-matched records are device-logs outside the provided time
+	# range and can be ignored
+	joined <- joined[!is.na(joined$ring_code), ]
 
-	if (nrow(joined[is.na(bird_name)]) > 0) {
-		msg <- paste(c("Error while joining tracking data and bird metadata.",
-				"... tracking data found that could not be matched with bird metadata.",
-				"The following devices are unknown:",
-				paste(unique(joined[is.na(bird_name), device_info_serial])), collapse = ","),
-				collapse = "\n")
-		stop(msg)
-	}
+    # obsolete:
+# 	if (nrow(joined[is.na(ring_code)]) > 0) {
+# 		msg <- paste(c("Error while joining tracking data and bird metadata.",
+# 				"... tracking data found that could not be matched with bird metadata.",
+# 				"The following devices are unknown:",
+# 				paste(unique(joined[is.na(bird_name), device_info_serial])), collapse = ","),
+# 				collapse = "\n")
+# 		stop(msg)
+# 	}
 	return(joined)
 }
 
