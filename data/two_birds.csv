@@ -1,3 +1,3 @@
-"device_info_serial","ring_code","color_ring_code","species","sex","weight_in_g","tracking_start_date_time","tracking_end_date_time","colony_latitude","colony_longitude","remarks","created_at","updated_at","bird_name","colony_name","colony_location"
-753,"L907407","USAT","Larus fuscus","female",712,2013-06-10 18:00:00,NA,51.339311,3.17913,"",2014-02-18 13:05:06,2014-03-04 11:54:58,"Joke","APM","Zeebrugge"
-847,"L906543","UPAV","Larus fuscus","female",711,2013-05-31 18:00:00,NA,51.339311,3.17913,"poor functioning after bird has removed antenna",2014-02-18 13:05:06,2014-03-04 11:55:01,"Jozsa","APM","Zeebrugge"
+"project_leader","device_info_serial","bird_name","ring_code","colour_ring_code","species_code","scientific_name","catch_weight","sex","catch_location","latitude","longitude","tracking_started_at","tracking_ended_at","is_active","remarks"
+"Eric Stienen",753,"Joke","L907407","USAT","lbbg","Larus fuscus",712,"female","APM Terminals, Zeebrugge",51.339311,3.17913,2013-06-10T18:00:00Z,,,
+"Eric Stienen",847,"Jozsa","L906543","UPAV","lbbg","Larus fuscus",711,"female","APM Terminals, Zeebrugge",51.339311,3.17913,2013-05-31T18:00:00Z,,,"bird has removed antenna"
