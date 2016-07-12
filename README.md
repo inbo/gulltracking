@@ -15,7 +15,7 @@ Tests are written using [testthat](https://github.com/hadley/testthat). Run the 
 ## Load the package
 
 ```
-library(UvaBitsWarehouse)
+library(BirdTrackingEtl)
 ```
 
 ## How to use the package
