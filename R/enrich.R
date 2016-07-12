@@ -46,7 +46,8 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 		msg <- paste(c("Error while joining tracking data and bird metadata.",
 				"... tracking data found that could not be matched with bird metadata.",
 				"The following devices are unknown:",
-				paste(log_devices[!log_devices %in% known_devices], collapse = ", ")),
+				paste(log_devices[!log_devices %in% known_devices],
+				      collapse = ", ")),
 				collapse = "\n")
 		stop(msg)
 	    }
