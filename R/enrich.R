@@ -1,5 +1,5 @@
 #' Calculate sunrise and sunset
-#' @description This function calculates the sunrise and sunset in UTC
+#' @description This function calculate the sunrise and sunset in UTC
 #' for a given location and date. Function was slightly modified but inspired
 #' from this post: http://www.r-bloggers.com/approximate-sunrise-and-sunset-times/
 #'
