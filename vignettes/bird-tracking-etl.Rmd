@@ -61,7 +61,7 @@ To add indexes to the table, perform the `CREATE INDEX` statements in [this file
 
 ## Output format
 
-Most of the output fields will be familiar as they are entirely copied from the input tables. However, a number of fields are added during the `enrich` step of the procedure. These fields are prefixed with `inbo_` to make the distinction clear. All output fields are documented in the table below:
+Most of the output fields will be familiar as they are entirely copied from the input tables. However, a number of fields are added during the `enrich` step of the procedure. These fields are prefixed with `calc_` to make the distinction clear. All output fields are documented in the table below:
 
 | field number | field name | type | description |
 | ------------ | ---------- | ---- | ----------- |
