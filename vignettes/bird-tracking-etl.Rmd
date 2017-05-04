@@ -93,8 +93,8 @@ Most of the output fields will be familiar as they are entirely copied from the 
 | 26           | h_accuracy | number | Horizontal accuracy in meters |
 | 27           | v_accuracy | number | Vertical accuracy in meters |
 | 28           | x_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
-| 29           | y_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
-| 30           | z_speed | number | speed in the x dimension measured by the accelerometer in meters per second |
+| 29           | y_speed | number | speed in the y dimension measured by the accelerometer in meters per second |
+| 30           | z_speed | number | speed in the z dimension measured by the accelerometer in meters per second |
 | 31           | speed_accuracy | number | accuracy of the speed measurement |
 | 32           | userflag | number | Acceptable = 0; Data flagged as unacceptable by user if not equal to 0 |
 | 33           | speed_3d | number | sqrt(d.x_speed^2 + d.y_speed^2 + d.z_speed^2), m/s |
