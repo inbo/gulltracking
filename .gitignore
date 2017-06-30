@@ -7,3 +7,4 @@ UvaBitsWarehouse.Rproj
 *.Rproj
 install.R
 vignettes/performance-optimisation_cache
+draft/
