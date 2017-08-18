@@ -52,7 +52,7 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 		stop(msg)
 	    }
 
-    # Prepare coorindates information
+    # Prepare coordinates information
 	bird_data[, colony_latitude := latitude]
 	bird_data[, colony_longitude := longitude]
 	bird_data[, latitude := NULL]
@@ -158,7 +158,7 @@ add_dist_travelled <- function(dt) {
 	distances <- distCosine(
 		  cbind(dt$longitude, dt$latitude),
 		  cbind(c(1, data.table::shift(dt$longitude)[-1]),
-						c(1, data.table::shift(dt$latitude)[-1])
+				c(1, data.table::shift(dt$latitude)[-1])
 			)
 		)
 	distances[!dt$tmp.select | is.na(dt$tmp.select)] <- NA
@@ -219,7 +219,7 @@ add_dist_to_colony <- function(dt) {
 add_sunlight <- function(dt) {
 	results <- suncalc.custom(dt$date_time, dt$latitude, dt$longitude)
 	dt[, calc_sunlight := date_time > results$sunrise & date_time < results$sunset]
-	print(dt)
+	#print(dt)
 }
 
 
@@ -308,7 +308,7 @@ join_raster_value_with_legend <- function(dt, legend) {
 #' }
 enrich_data <- function(tracking_data, bird_data, corine_raster_data, corine_legend) {
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
-	dt <- delete_test_records(dt)
+	dt <- delete_test_records(dt) # actually redundant due to date-based join
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
 	add_year_month_hour(dt)
 	add_time_since_previous_fix(dt)
@@ -319,6 +319,7 @@ enrich_data <- function(tracking_data, bird_data, corine_raster_data, corine_leg
 	flag_outliers(dt)
 	raster_join(dt, corine_raster_data)
 	dt <- join_raster_value_with_legend(dt, corine_legend)
+	setkey(dt, device_info_serial, date_time) # will sort on those columns
 	setnames(dt, "calc_raster_value", "calc_corine_value")
 	setnames(dt, "calc_raster_legend", "calc_corine_legend")
 	return(dt)
