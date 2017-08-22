@@ -5,6 +5,6 @@
 inst/doc
 UvaBitsWarehouse.Rproj
 *.Rproj
-install.R
+instal*.R
 vignettes/performance-optimisation_cache
 draft/
