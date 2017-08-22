@@ -1,7 +1,7 @@
 #' Check numeric values
 #' @description Check whether values in given column can be converted to
 #' numeric types. If not, this function will call stop().
-#' 
+#'
 #' @param colname Name of the column to be tested
 #' @param col Column containing values to be tested
 #' @return col if all values can be converted to numeric. Otherwise error.
@@ -38,7 +38,7 @@ load_tracks_file <- function(filename) {
 #' Validate tracking data
 #' @description Validate the data coming either from a csv file or
 #' from the UvA-BiTS virtual lab directly.
-#' 
+#'
 #' @param tracks_data The tracking data as a data table
 #' @return validated tracking data as a data table if no errors are found.
 #' @export
@@ -50,25 +50,28 @@ validate_tracks_data <- function(tracks_data)	{
 	issues <- c()
 	# set data types for non-character columns
 	nas_in_date_time <- sum(is.na(tracks_data$date_time))
-	tracks_data[, date_time:=lubridate::fast_strptime(date_time, "%Y-%m-%d %H:%M:%OS", lt=FALSE)]
+	tracks_data[, date_time := lubridate::fast_strptime(date_time,
+	                                                    "%Y-%m-%d %H:%M:%OS",
+	                                                    lt = FALSE)]
 	if (sum(is.na(tracks_data$date_time)) > nas_in_date_time) {
 		issues <- c(issues, "unparsable values found in column date_time")
 	}
-	
+
 	# check whether columns can be converted to numeric
-	numeric_cols <- c("device_info_serial", "latitude", "longitude", "altitude", "pressure",
-										"temperature", "satellites_used", "gps_fixtime", "positiondop",
-										"h_accuracy", "v_accuracy", "x_speed", "y_speed", "z_speed",
-										"speed_accurracy", "speed_3d", "speed_2d", "direction", "altitude_agl")
+	numeric_cols <- c("device_info_serial", "latitude", "longitude", "altitude",
+	                  "pressure", "temperature", "satellites_used",
+	                  "gps_fixtime", "positiondop", "h_accuracy", "v_accuracy",
+	                  "x_speed", "y_speed", "z_speed", "speed_accurracy",
+	                  "speed_3d", "speed_2d", "direction", "altitude_agl")
 	lapply(numeric_cols, function(x) {
 		tryCatch({
 			check_numeric_values(x, tracks_data[[x]])
-		}, error=function(e) {
+		}, error = function(e) {
 				issues <<- append(issues, paste("non numeric values found in column ", x))
 		}
 		)
 	})
-	
+
 	# convert to numeric columns
 	tracks_data[, device_info_serial:=as.numeric(device_info_serial)]
 	tracks_data[, latitude:=as.numeric(latitude)]
@@ -89,11 +92,11 @@ validate_tracks_data <- function(tracks_data)	{
 	tracks_data[, speed_2d:=as.numeric(speed_2d)]
 	tracks_data[, direction:=as.numeric(direction)]
 	tracks_data[, altitude_agl:=as.numeric(altitude_agl)]
-	
+
 	# drop unused columns
 	# ... location: this is a binary blob from a geometric data type. Cannot be used.
 	tracks_data[, location:=NULL]
-	
+
 	if (length(issues) > 0) {
 		print(paste(issues, sep="\n"))
 		stop("Validation failed")
@@ -105,11 +108,11 @@ validate_tracks_data <- function(tracks_data)	{
 #' @description Load a file containing bird metadata. This file is managed at the
 #' INBO on Google Drive. Create a csv export of that file, and make sure it is
 #' "," delimited.
-#' 
+#'
 #' @param filename The name of the file containing bird metadata
 #' @return A data table (not a data frame!) containing the bird metadata
 #' @export
-#' @examples 
+#' @examples
 #' \dontrun{
 #' load_bird_file(inputFile)
 #' }
@@ -121,7 +124,7 @@ load_bird_file <- function(filename) {
 
 #' Validate bird data
 #' @description Validate the bird metadata
-#' 
+#'
 #' @param bird_data The bird metadata as a data table
 #' @return validated bird metadata as a data table if no errors are found.
 #' @export
@@ -141,16 +144,16 @@ validate_bird_data <- function(bird_data) {
 	if (sum(is.na(bird_data$tracking_ended_at)) > nas_in_tr_end_time) {
 		issues <- c(issues, "unparsable values found in column tracking_ended_at")
 	}
-	
+
 	# convert logical columns to Logical
 	tmp_is_active <- as.factor(bird_data$is_active)
 	tryCatch({
-		levels(tmp_is_active) <- c("TRUE", "FALSE")	
+		levels(tmp_is_active) <- c("TRUE", "FALSE")
 	}, error=function(e) {
 		issues <<- append(issues, paste("could not parse boolean values from column is_active"))
 	})
 	bird_data[, is_active:=as.logical(tmp_is_active)]
-	
+
 	# convert enumeration columns to factors
 	# note that the allowed choices are saved as package data in 'data/'
 	bird_data[, sex:=as.factor(sex)]
@@ -167,7 +170,7 @@ validate_bird_data <- function(bird_data) {
 						  	)
 			)
 	}
-	
+
 	# check whether columns can be converted to numeric
 	numeric_cols <- c("device_info_serial", "catch_weight", "latitude", "longitude")
 	lapply(numeric_cols, function(x) {
@@ -178,13 +181,13 @@ validate_bird_data <- function(bird_data) {
 		}
 		)
 	})
-	
+
 	# convert to numeric columns
 	bird_data[, device_info_serial:=as.numeric(device_info_serial)]
 	bird_data[, catch_weight:=as.numeric(catch_weight)]
 	bird_data[, latitude:=as.numeric(latitude)]
 	bird_data[, longitude:=as.numeric(longitude)]
-	
+
 	if (length(issues) > 0) {
 		print(paste(issues, sep="\n"))
 		stop("Validation failed")
@@ -196,8 +199,8 @@ validate_bird_data <- function(bird_data) {
 #' Read raster data
 #' @description Read raster data using the raster package. By default
 #' this function will set the CRS of this data to EPSG4326 (WGS 84).
-#' Use the data.CRS parameter to override this. 
-#' 
+#' Use the data.CRS parameter to override this.
+#'
 #' @param filename Name of the file containing raster data
 #' @param data.CRS Coordinate Reference System of the data
 #' @return raster data as RasterLayer class
@@ -217,7 +220,7 @@ read_raster_data <- function(filename, data.CRS="+init=epsg:4326") {
 #' @description Read the raster legend. The legend is expected to contain two columns:
 #' `id` containing the actual values used in the raster layer, and `value` which contains
 #' the labels.
-#' 
+#'
 #' @param filename Name of the csv file containing the raster legend
 #' @return a data table containing the raster legend
 #' @export
