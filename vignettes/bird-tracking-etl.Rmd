@@ -171,34 +171,41 @@ Based on the `device_info_serial` field, the bird metadata is attached to every 
 
 Records are deleted if the `date_time` recorded by the tracker is before the `tracking_started_at` of the bird.
 
-#### 4. Calculate time_since_previous_fix
-
-For every bird, the time since the previous GPS fix is calculated. The first fix of every bird gets a value `NA`. The output field is called `calc_time_diff` and is stored in seconds.
-
-#### 5. Calculate distance travelled
-
-The distance travelled since the last GPS fix is calculated using R's `geosphere` package. The function used is `distCosine` which performs a great circle distance computation. This new field is called `calc_distance_diff` and is expressed in meters.
-
-#### 6. Calculate speed
-
-Based on the calculated `calc_time_diff` and `calc_distance_diff` fields, the two dimensional speed of the bird is calculated in meters per second. The new field is called `calc_speed_2d`. 
-
-#### 7. Calculate distance to colony
-
-Based on the `colony_latitude` and `colony_longitude`, the distance from the GPS to the colony is computed using `geosphere`'s `distCosine` function. The new field is called `calc_dist_to_colony` and the distance is stored in meters.
-
-#### 8. Flag outliers
+#### 4. Flag outliers of the raw data
 
 If a record:
 
 * has a `date_time` that is in the future
 * has a `altitude` higher than 10.000m (10km)
-* has a `calc_speed_2d` higher than 33.333 m/s (~120km/h) or below 0.
 * has a horizontal accuracy (`h_accuracy`) higher than 1000m
 
 it is flagged as outlier. This means that the new `outlier` field is set to `TRUE`.
 
-#### 9. Link with Corine land use
+#### 5. Calculate time_since_previous_fix
+
+For every bird, the time since the previous GPS fix is calculated. The first fix of every bird gets a value `NA`. The output field is called `calc_time_diff` and is stored in seconds.
+
+#### 6. Calculate distance travelled
+
+The distance travelled since the last GPS fix is calculated using R's `geosphere` package. The function used is `distCosine` which performs a great circle distance computation. This new field is called `calc_distance_diff` and is expressed in meters.
+
+#### 7. Calculate speed
+
+Based on the calculated `calc_time_diff` and `calc_distance_diff` fields, the two dimensional speed of the bird is calculated in meters per second. The new field is called `calc_speed_2d`. 
+
+#### 8. Calculate distance to colony
+
+Based on the `colony_latitude` and `colony_longitude`, the distance from the GPS to the colony is computed using `geosphere`'s `distCosine` function. The new field is called `calc_dist_to_colony` and the distance is stored in meters.
+
+#### 9. Flag outliers derived values
+
+If a derived/calculated record:
+
+* has a `calc_speed_2d` higher than 33.333 m/s (~120km/h) or below 0.
+
+it is flagged as outlier. This means that the existing `outlier` field is set to `TRUE`.
+
+#### 10. Link with Corine land use
 
 To investigate the habitat use, the [Corine land cover](http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-3) category is matched with the birds position. Two new fields are added: `calc_corine_value` and represents the value of the Corine dataset land cover dataset and `calc_corine_legend` contains the legend for that value. This legend contains the three-level categories defined by Corine.
 
