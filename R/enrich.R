@@ -179,7 +179,8 @@ add_dist_travelled <- function(dt) {
 #' add_speed(tracking_data)
 #' }
 add_speed <- function(dt) {
-	dt[, calc_speed_2d := (calc_distance_diff)/(as.numeric(calc_time_diff))]
+	dt[calc_outlier != TRUE,
+	   calc_speed_2d := (calc_distance_diff)/(as.numeric(calc_time_diff))]
 }
 
 #' Add distance to colony
