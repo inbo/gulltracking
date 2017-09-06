@@ -223,12 +223,11 @@ add_sunlight <- function(dt) {
 }
 
 
-#' Flag outliers
-#' @description Flag records that are suspect to be erronous.
+#' Flag outliers on raw data
+#' @description Flag records that are suspect to be erronous on the raw records.
 #' The following checks are made:
 #'     - date_time < current date
 #'     - altitude < 1000 km
-#'     - speed < 33.3333 meters per second (= 120 km per hour)
 #'     - height_accuracy < 1000
 #' If one of these fails, the record gets flagged.
 #'
@@ -238,16 +237,36 @@ add_sunlight <- function(dt) {
 #' @export
 #' @examples
 #' \dontrun{
-#' flag_outliers(tracking_data)
+#' flag_outliers_raw(tracking_data)
 #' }
-flag_outliers <- function(dt) {
+flag_outliers_raw <- function(dt) {
 	today <- now()
-	dt[, calc_outlier := calc_speed_2d < 0 |
-		 	calc_speed_2d > 33.33333 |
-		 	altitude > 10000 |
+	dt[, calc_outlier := altitude > 10000 |
 		 	h_accuracy > 1000 |
 		 	date_time > today
 		 ]
+}
+
+#' Flag outliers on derived data
+#' @description Flag records that are suspect to be erronous on the raw records.
+#' The following checks are made:
+#'     - speed > 33.3333 meters per second (= 120 km per hour)
+#'     - speed < 0  meters per second
+#' If one of these fails, the record gets flagged.
+#'
+#' @param dt tracking data as data.table.
+#' @return nothing. Flagging happens in place. New columns is called `calc_outlier`
+#' and contains logical values.
+#' @export
+#' @examples
+#' \dontrun{
+#' flag_outliers_derived(tracking_data)
+#' }
+flag_outliers_derived <- function(dt) {
+    today <- now()
+    dt[, calc_outlier := calc_speed_2d < 0 |
+           calc_speed_2d > 33.33333
+       ]
 }
 
 #' Raster join
@@ -310,13 +329,14 @@ enrich_data <- function(tracking_data, bird_data, corine_raster_data, corine_leg
 	dt <- join_tracks_and_metadata(tracking_data, bird_data)
 	dt <- delete_test_records(dt) # actually redundant due to date-based join
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
+	flag_outliers_raw(dt)
 	add_year_month_hour(dt)
 	add_time_since_previous_fix(dt)
 	add_dist_travelled(dt)
 	add_speed(dt)
 	add_dist_to_colony(dt)
 	add_sunlight(dt)
-	flag_outliers(dt)
+	flag_outliers_derived(dt)
 	raster_join(dt, corine_raster_data)
 	dt <- join_raster_value_with_legend(dt, corine_legend)
 	setkey(dt, device_info_serial, date_time) # will sort on those columns
