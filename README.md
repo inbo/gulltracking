@@ -1,27 +1,26 @@
-# UvA-BiTS ETL
+# uvabits
 
-## Background
 
-At [the Research Institute for Nature and Forest](http://www.inbo.be), we're tracking large birds as part of [our LifeWatch contribution](http://lifewatch.inbo.be). We are using small solar-powered GPS devices, developed by [UvA-BiTS](http://www.uva-bits.nl). The data are stored in the UvA-BiTS virtual lab and we frequently get a dump from that database on which we work. As tracking data volume grows quicker than human observation data (what we usually work with), we were in need for a data store that contains the cleaned and enriched tracking data in a system that is optimized for querying these *large-ish* data sets. Something like a data warehouse. This R package contains code to extract the data from the UvA-BiTS virtual lab, clean and enrich it, and load it in the data warehouse.
+uvabits provides an R interface to the [UvA-BiTS database](http://www.uva-bits.nl/), which stores bird movement data collected with UvA-BiTS GPS trackers. The package provides functionality to download data and metadata, calculate some metrics, and load the data into a  query-optimized SQLite database for local analysis. It also allows to download the data in a format that can easily be uploaded to [Movebank](https://www.movebank.org/), a free online database for animal tracking data.
 
-## Install the package
+## Installation
 
-The package is not on CRAN. If you want to use it, download a copy of the code here, and [install it from source](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). You need a few third party packages, as documented in the package [DESCRIPTION](./DESCRIPTION). R should take care of that. If not, install `lubridate`, `data.table`, `geosphere`, `sp` and `DBI`. If you want to run the tests, you'll need `testthat` too.
+You can install uvabits from [GitHub](https://github.com/inbo/uvabits) with:
 
-## Run the tests
-
-Tests are written using [testthat](https://github.com/hadley/testthat). Run the tests in RStudio by opening the package main directory and pressing CTRL/CMD + SHIFT + T.
-
-## Load the package
-
-```
-library(BirdTrackingEtl)
+```r
+# install.packages("devtools")
+devtools::install_github("inbo/uvabits")
 ```
 
-## How to use the package
+Then load the package with:
 
-This is explained in the package [vignette](./vignettes/bird-tracking-etl.Rmd).
+```r
+library(uvabits)
+```
 
-## Get in touch
+## Meta
 
-Should you encounter issues while using this package, get in touch by [filing an issue](https://github.com/LifeWatchINBO/bird-tracking-etl/issues).
+* We welcome [contributions](.github/CONTRIBUTING.md) including bug reports.
+* License: MIT
+* Get citation information for `uvabits` in R doing `citation("uvabits")`.
+* Please note that this project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
