@@ -2,18 +2,18 @@
 % Please edit documentation in R/enrich.R
 \name{add_dist_travelled}
 \alias{add_dist_travelled}
-\title{Add Distance travelled}
+\title{Add distance travelled.}
 \usage{
 add_dist_travelled(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table}
+\item{dt}{Tracking data as data.table.}
 }
 \value{
-nothing. Distance (in meters) is added in place (`calc_distance_diff`)
+Nothing. Distance (in meters) is added in place (\code{calc_distance_diff}).
 }
 \description{
-will calculate the distance travelled since previous GPS fix
+Will calculate the distance travelled since previous GPS fix.
 }
 \examples{
 \dontrun{

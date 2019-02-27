@@ -2,21 +2,21 @@
 % Please edit documentation in R/load.R
 \name{data2table}
 \alias{data2table}
-\title{data2table}
+\title{Data to table.}
 \usage{
 data2table(dbConnection, data)
 }
 \arguments{
-\item{dbConnection}{a DBI database connection}
+\item{dbConnection}{A DBI database connection.}
 
-\item{data}{A data table containing all data. See the vignette to see the required
-columns and how they are written to the database.}
+\item{data}{A data table containing all data. See the vignette to see the
+required columns and how they are written to the database.}
 }
 \value{
-Nothing
+Nothing.
 }
 \description{
-Load all the enriched data to a RDBMS table
+Load all the enriched data to a RDBMS table.
 }
 \examples{
 \dontrun{data2table(dbConnection, datatable)}

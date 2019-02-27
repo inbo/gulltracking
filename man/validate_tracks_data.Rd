@@ -2,19 +2,19 @@
 % Please edit documentation in R/extract.R
 \name{validate_tracks_data}
 \alias{validate_tracks_data}
-\title{Validate tracking data}
+\title{Validate tracking data.}
 \usage{
 validate_tracks_data(tracks_data)
 }
 \arguments{
-\item{tracks_data}{The tracking data as a data table}
+\item{tracks_data}{The tracking data as a data table.}
 }
 \value{
-validated tracking data as a data table if no errors are found.
+Validated tracking data as a data table if no errors are found.
 }
 \description{
-Validate the data coming either from a csv file or
-from the UvA-BiTS virtual lab directly.
+Validate the data coming either from a csv file or from the UvA-BiTS virtual
+lab directly.
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/profiling.R
 \name{profiling_L1}
 \alias{profiling_L1}
-\title{Profile UvA-BiTS ETL processing steps (Level 1)}
+\title{Profile UvA-BiTS ETL processing steps (Level 1).}
 \usage{
 profiling_L1(tracks_file, birds_file)
 }
@@ -10,14 +10,14 @@ profiling_L1(tracks_file, birds_file)
 \item{tracks_file}{CSV file containing tracking data used for profiling.
 Don't use a file that is too big (because it will take some time), but don't
 make it too small either (because that can introduces biases that are not
-representative)}
+representative).}
 
 \item{birds_file}{CSV file containing bird tracking metadata.}
 }
 \value{
-Data.Frame with two columns: "step" and "timing"
+Data.Frame with two columns: \code{step} and \code{timing}.
 }
 \description{
-Profile the different processing steps in the bird-trakcing-etl
-package to find bottlenecks.
+Profile the different processing steps in the bird-trakcing-etl package to
+find bottlenecks.
 }

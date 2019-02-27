@@ -1,11 +1,15 @@
-#' Check numeric values
-#' @description Check whether values in given column can be converted to
-#' numeric types. If not, this function will call stop().
+#' Check numeric values.
 #'
-#' @param colname Name of the column to be tested
-#' @param col Column containing values to be tested
-#' @return col if all values can be converted to numeric. Otherwise error.
+#' Check whether values in given column can be converted to numeric types. If
+#' not, this function will call `stop()`.
+#'
+#' @param colname Name of the column to be tested.
+#' @param col Column containing values to be tested.
+#'
+#' @return `col` if all values can be converted to numeric. Otherwise error.
+#'
 #' @export
+#'
 #' @examples
 #' check_numeric_values("testcol", c(1, 2, 3))
 check_numeric_values <- function(colname, col) {
@@ -16,15 +20,18 @@ check_numeric_values <- function(colname, col) {
 	return(col)
 }
 
-
-#' Load file containing bird tracking data
-#' @description Load a file containing bird tracking data. This file can
-#' be obtained by requesting a dump from the UvA-BiTS virtual lab.
+#' Load file containing bird tracking data.
+#'
+#' Load a file containing bird tracking data. This file can be obtained by
+#' requesting a dump from the UvA-BiTS virtual lab.
 #'
 #' @param filename The file containing bird tracking data in csv
-#' format. (','-delimited, header included)
-#' @return A data table (not a data frame!) containing the tracking data
+#' format. (','-delimited, header included).
+#'
+#' @return A data table (not a data frame!) containing the tracking data.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' load_tracks_file(inputFile)
@@ -34,14 +41,17 @@ load_tracks_file <- function(filename) {
 	data <- fread(filename, dec=".", header=TRUE, sep=",", na.strings=c("\\N"))
 }
 
-
-#' Validate tracking data
-#' @description Validate the data coming either from a csv file or
-#' from the UvA-BiTS virtual lab directly.
+#' Validate tracking data.
 #'
-#' @param tracks_data The tracking data as a data table
-#' @return validated tracking data as a data table if no errors are found.
+#' Validate the data coming either from a csv file or from the UvA-BiTS virtual
+#' lab directly.
+#'
+#' @param tracks_data The tracking data as a data table.
+#'
+#' @return Validated tracking data as a data table if no errors are found.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' validate_tracks_data(tracking_data)
@@ -104,14 +114,17 @@ validate_tracks_data <- function(tracks_data)	{
 	return(tracks_data)
 }
 
-#' Load bird metadata file
-#' @description Load a file containing bird metadata. This file is managed at the
-#' INBO on Google Drive. Create a csv export of that file, and make sure it is
-#' "," delimited.
+#' Load bird metadata file.
 #'
-#' @param filename The name of the file containing bird metadata
-#' @return A data table (not a data frame!) containing the bird metadata
+#' Load a file containing bird metadata. This file is managed at the INBO on
+#' Google Drive. Create a csv export of that file, and make sure it is `,`
+#' delimited.
+#'
+#' @param filename The name of the file containing bird metadata.
+#' @return A data table (not a data frame!) containing the bird metadata.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' load_bird_file(inputFile)
@@ -122,11 +135,14 @@ load_bird_file <- function(filename) {
 }
 
 
-#' Validate bird data
-#' @description Validate the bird metadata
+#' Validate bird data.
 #'
-#' @param bird_data The bird metadata as a data table
-#' @return validated bird metadata as a data table if no errors are found.
+#' Validate the bird metadata.
+#'
+#' @param bird_data The bird metadata as a data table.
+#'
+#' @return Validated bird metadata as a data table if no errors are found.
+#'
 #' @export
 validate_bird_data <- function(bird_data) {
 	issues <- c()
@@ -196,15 +212,19 @@ validate_bird_data <- function(bird_data) {
 }
 
 
-#' Read raster data
-#' @description Read raster data using the raster package. By default
-#' this function will set the CRS of this data to EPSG4326 (WGS 84).
-#' Use the data.CRS parameter to override this.
+#' Read raster data.
 #'
-#' @param filename Name of the file containing raster data
-#' @param data.CRS Coordinate Reference System of the data
-#' @return raster data as RasterLayer class
+#' Read raster data using the raster package. By default this function will set
+#' the CRS of this data to EPSG4326 (WGS 84). Use the data.CRS parameter to
+#' override this.
+#'
+#' @param filename Name of the file containing raster data.
+#' @param data.CRS Coordinate Reference System of the data.
+#'
+#' @return Raster data as RasterLayer class.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' read_raster_data("raster_file.tiff", data.CRS="+init=epsg:2056")
@@ -216,14 +236,18 @@ read_raster_data <- function(filename, data.CRS="+init=epsg:4326") {
 	return(r)
 }
 
-#' Read the raster legend
-#' @description Read the raster legend. The legend is expected to contain two columns:
-#' `id` containing the actual values used in the raster layer, and `value` which contains
-#' the labels.
+#' Read the raster legend.
 #'
-#' @param filename Name of the csv file containing the raster legend
-#' @return a data table containing the raster legend
+#' @description Read the raster legend. The legend is expected to contain two
+#' columns: `id` containing the actual values used in the raster layer, and
+#' `value` which contains the labels.
+#'
+#' @param filename Name of the csv file containing the raster legend.
+#'
+#' @return A data table containing the raster legend.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' read_raster_legend("raster_legend.csv")

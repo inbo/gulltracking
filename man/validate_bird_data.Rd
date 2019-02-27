@@ -2,16 +2,16 @@
 % Please edit documentation in R/extract.R
 \name{validate_bird_data}
 \alias{validate_bird_data}
-\title{Validate bird data}
+\title{Validate bird data.}
 \usage{
 validate_bird_data(bird_data)
 }
 \arguments{
-\item{bird_data}{The bird metadata as a data table}
+\item{bird_data}{The bird metadata as a data table.}
 }
 \value{
-validated bird metadata as a data table if no errors are found.
+Validated bird metadata as a data table if no errors are found.
 }
 \description{
-Validate the bird metadata
+Validate the bird metadata.
 }

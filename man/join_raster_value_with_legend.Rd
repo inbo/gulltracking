@@ -2,23 +2,25 @@
 % Please edit documentation in R/enrich.R
 \name{join_raster_value_with_legend}
 \alias{join_raster_value_with_legend}
-\title{Join raster value with legend}
+\title{Join raster value with legend.}
 \usage{
 join_raster_value_with_legend(dt, legend)
 }
 \arguments{
-\item{dt}{Data table with tracking data. Expected to contain a column `calc_raster_value`
-which is the result of joining this table with a raster layer.}
+\item{dt}{Data table with tracking data. Expected to contain a column
+\code{calc_raster_value} which is the result of joining this table with a raster
+layer.}
 
-\item{legend}{a data table with the legend of the raster layer. It should contain a column
-`id` and a column `value`. The `id` column should contain the values that are used in the
-raster layer, while the `value` column contains the labels for these values.}
+\item{legend}{Data table with the legend of the raster layer. It should
+contain a column \code{id} and a column \code{value}. The \code{id} column should contain
+the values that are used in the raster layer, while the \code{value} column
+contains the labels for these values.}
 }
 \value{
-New data table with an additional column "calc_raster_legend"
+New data table with an additional column \code{calc_raster_legend}.
 }
 \description{
-Join the raster value with its legend
+Join the raster value with its legend.
 }
 \examples{
 \dontrun {

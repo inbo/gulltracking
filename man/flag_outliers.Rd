@@ -2,25 +2,26 @@
 % Please edit documentation in R/enrich.R
 \name{flag_outliers}
 \alias{flag_outliers}
-\title{Flag outliers}
+\title{Flag outliers.}
 \usage{
 flag_outliers(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table.}
+\item{dt}{Tracking data as data.table.}
 }
 \value{
-nothing. Flagging happens in place. New columns is called `calc_outlier`
-and contains logical values.
+Nothing. Flagging happens in place. New columns is called
+\code{calc_outlier} and contains logical values.
 }
 \description{
-Flag records that are suspect to be erronous.
-The following checks are made:
-    - date_time < current date
-    - altitude < 1000 km
-    - speed < 33.3333 meters per second (= 120 km per hour)
-    - height_accuracy < 1000
+Flag records that are suspect to be erronous. The following checks are made:
+\itemize{
+\item \code{date_time} < current date
+\item \code{altitude} < 1000 km
+\item \code{speed} < 33.3333 meters per second (= 120 km per hour)
+\item \code{height_accuracy} < 1000
 If one of these fails, the record gets flagged.
+}
 }
 \examples{
 \dontrun{

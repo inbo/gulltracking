@@ -2,20 +2,20 @@
 % Please edit documentation in R/extract.R
 \name{load_tracks_file}
 \alias{load_tracks_file}
-\title{Load file containing bird tracking data}
+\title{Load file containing bird tracking data.}
 \usage{
 load_tracks_file(filename)
 }
 \arguments{
 \item{filename}{The file containing bird tracking data in csv
-format. (','-delimited, header included)}
+format. (','-delimited, header included).}
 }
 \value{
-A data table (not a data frame!) containing the tracking data
+A data table (not a data frame!) containing the tracking data.
 }
 \description{
-Load a file containing bird tracking data. This file can
-be obtained by requesting a dump from the UvA-BiTS virtual lab.
+Load a file containing bird tracking data. This file can be obtained by
+requesting a dump from the UvA-BiTS virtual lab.
 }
 \examples{
 \dontrun{

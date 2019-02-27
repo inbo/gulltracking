@@ -2,21 +2,21 @@
 % Please edit documentation in R/enrich.R
 \name{join_tracks_and_metadata}
 \alias{join_tracks_and_metadata}
-\title{Join tracks and metadata}
+\title{Join tracks and metadata.}
 \usage{
 join_tracks_and_metadata(tracking_data, bird_data)
 }
 \arguments{
-\item{tracking_data}{Tracking data as data table}
+\item{tracking_data}{Tracking data as data table.}
 
-\item{bird_data}{Bird metadata as data table}
+\item{bird_data}{Bird metadata as data table.}
 }
 \value{
-data table containing the joined input data tables
+Data table containing the joined input data tables.
 }
 \description{
-Join tracking data with bird metadata. If tracking records
-are found that cannot be matched with bird metadata, the function stops.
+Join tracking data with bird metadata. If tracking records are found that
+cannot be matched with bird metadata, the function stops.
 }
 \examples{
 \dontrun{

@@ -3,7 +3,7 @@
 \docType{data}
 \name{tracks_validated}
 \alias{tracks_validated}
-\title{Tracks validated}
+\title{Tracks validated.}
 \format{data table}
 \usage{
 tracks_validated

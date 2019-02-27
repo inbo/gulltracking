@@ -2,23 +2,24 @@
 % Please edit documentation in R/enrich.R
 \name{add_sunlight}
 \alias{add_sunlight}
-\title{Presence of sunlight}
+\title{Presence of sunlight.}
 \usage{
 add_sunlight(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table. Should contain columns `latitude`, `longitude`
-and `date_time`.}
+\item{dt}{Tracking data as data.table. Should contain columns \code{latitude},
+\code{longitude} and \code{date_time}.}
 }
 \value{
-nothing. Column `calc_sunlight` is added in place. This is a logical vector, indicating
-wether sunlight was present at time and location of the GPS fix.
+Nothing. Column \code{calc_sunlight} is added in place. This is a logical
+vector, indicating whether sunlight was present at time and location of the
+GPS fix.
 }
 \description{
-calculate the presence of sunlight for every GPS fix. This is done
-using the `suncalc` function of the package `RAtmosphere`. If the date_time of
-the GPS fix is after sunrise and before sunset, presence of sunlight is 1. Otherwise
-it is set to 0.
+Calculate the presence of sunlight for every GPS fix. This is done using the
+\code{suncalc()} function of the package \code{RAtmosphere}. If the \code{date_time} of the
+GPS fix is after sunrise and before sunset, presence of sunlight is \code{1}.
+Otherwise it is set to \code{0}.
 }
 \examples{
 \dontrun{

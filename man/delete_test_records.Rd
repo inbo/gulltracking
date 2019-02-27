@@ -2,21 +2,20 @@
 % Please edit documentation in R/enrich.R
 \name{delete_test_records}
 \alias{delete_test_records}
-\title{Delete test records}
+\title{Delete test records.}
 \usage{
 delete_test_records(data)
 }
 \arguments{
 \item{data}{Tracking data as a data table. Data should already be joined
-using the join_tracks_and_metadata function as both the date_time and the
-tracking_start_date_time column are needed.}
+using the \code{join_tracks_and_metadata()} function as both the \code{date_time} and
+the \code{tracking_start_date_time} column are needed.}
 }
 \value{
-New data table without the test records
+New data table without the test records.
 }
 \description{
-Remove data that was recorded by a device before it was
-mounted on the bird
+Remove data that was recorded by a device before it was mounted on the bird.
 }
 \examples{
 \dontrun{

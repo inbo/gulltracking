@@ -1,14 +1,18 @@
-#' Calculate sunrise and sunset
-#' @description This function calculate the sunrise and sunset in UTC
-#' for a given location and date. Function was slightly modified but inspired
-#' from this post: http://www.r-bloggers.com/approximate-sunrise-and-sunset-times/
+#' Calculate sunrise and sunset.
 #'
-#' @param dates vector containing POSIX dates
-#' @param Lat Latitudes in WGS84
-#' @param Long Longitudes in WGS84
-#' @return named list with elements "sunrise" and "sunset"
+#' This function calculate the sunrise and sunset in UTC for a given location
+#' and date. Function was slightly modified but inspired from this post:
+#' <http://www.r-bloggers.com/approximate-sunrise-and-sunset-times/>
+#'
+#' @param dates Vector containing POSIX dates.
+#' @param Lat Latitudes in WGS84.
+#' @param Long Longitudes in WGS84.
+#'
+#' @return Named list with elements `sunrise` and `sunset`.
+#'
 #' @export
 #' @importFrom maptools sunriset
+#'
 #' @examples
 #' {
 #' suncalc.custom(ymd("2015-01-01"), Lat=50.821, Long=4.366)
@@ -26,14 +30,18 @@ suncalc.custom <- function(dates,Lat,Long){
 							"sunset" = with_tz(sunset$time, "UTC")))
 }
 
-#' Join tracks and metadata
-#' @description Join tracking data with bird metadata. If tracking records
-#' are found that cannot be matched with bird metadata, the function stops.
+#' Join tracks and metadata.
 #'
-#' @param tracking_data Tracking data as data table
-#' @param bird_data Bird metadata as data table
-#' @return data table containing the joined input data tables
+#' Join tracking data with bird metadata. If tracking records are found that
+#' cannot be matched with bird metadata, the function stops.
+#'
+#' @param tracking_data Tracking data as data table.
+#' @param bird_data Bird metadata as data table.
+#'
+#' @return Data table containing the joined input data tables.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' join_tracks_and_metadata(tracks_validated, birds_validated)
@@ -88,15 +96,18 @@ join_tracks_and_metadata <- function(tracking_data, bird_data) {
 	return(joined)
 }
 
-#' Delete test records
-#' @description Remove data that was recorded by a device before it was
-#' mounted on the bird
+#' Delete test records.
+#'
+#' Remove data that was recorded by a device before it was mounted on the bird.
 #'
 #' @param data Tracking data as a data table. Data should already be joined
-#' using the join_tracks_and_metadata function as both the date_time and the
-#' tracking_start_date_time column are needed.
-#' @return New data table without the test records
+#' using the `join_tracks_and_metadata()` function as both the `date_time` and
+#' the `tracking_start_date_time` column are needed.
+#'
+#' @return New data table without the test records.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' delete_test_records(joined_data)
@@ -105,12 +116,16 @@ delete_test_records <- function(data) {
 	return(data[date_time >= tracking_started_at])
 }
 
-#' Add year, month, hour columns
-#' @description Add the year, month and hour of the GPS fix in separate columns
+#' Add year, month, hour columns.
+#'
+#' Add the year, month and hour of the GPS fix in separate columns.
 #'
 #' @param dt Tracking data as a data.table.
-#' @return Nothing, columns are added in place
+#'
+#' @return Nothing, columns are added in place.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' add_year_month_hour(tracks_data)
@@ -121,15 +136,19 @@ add_year_month_hour <- function(data) {
 	data[, calc_hour := hour(date_time)]
 }
 
-#' Add time since previous fix
-#' @description Calculates the time (in seconds) since the birds last fix.
-#' Data is first ordered by individual and date_time. Next, for each individual
-#' the time difference between a fix and its previous fix is calculated.
+#' Add time since previous fix.
 #'
-#' @param datatable A data.table with tracking data. Should at least include
-#' a column `device_info_serial` and `date_time`
-#' @return a new datatable with the time difference column (`calc_time_diff`) added to it.
+#' Calculates the time (in seconds) since the birds last fix. Data is first
+#' ordered by `individual` and `date_time`. Next, for each individual the time
+#' difference between a fix and its previous fix is calculated.
+#'
+#' @param datatable A data.table with tracking data. Should at least include a
+#' column `device_info_serial` and `date_time`.
+#' @return a new datatable with the time difference column (`calc_time_diff`)
+#' added to it.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' add_time_since_previous_fix(tracking_data)
@@ -142,12 +161,16 @@ add_time_since_previous_fix <- function(datatable) {
 }
 
 
-#' Add Distance travelled
-#' @description will calculate the distance travelled since previous GPS fix
+#' Add distance travelled.
 #'
-#' @param dt tracking data as data.table
-#' @return nothing. Distance (in meters) is added in place (`calc_distance_diff`)
+#' Will calculate the distance travelled since previous GPS fix.
+#'
+#' @param dt Tracking data as data.table.
+#'
+#' @return Nothing. Distance (in meters) is added in place (`calc_distance_diff`).
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' add_dist_travelled(tracking_data)
@@ -166,14 +189,18 @@ add_dist_travelled <- function(dt) {
 	dt[, tmp.select := NULL]
 }
 
-#' Add speed
-#' @description calculates the average 2 dimensional speed of the individual since the
-#' previous GPS fix
+#' Add speed.
 #'
-#' @param dt tracking data as data.table. Should contain column `calc_distance_diff`
-#' and column `calc_time_diff`
-#' @return nothing. Data is added in place as column `calc_speed_2d`
+#' Calculates the average 2 dimensional speed of the individual since the
+#' previous GPS fix.
+#'
+#' @param dt Tracking data as data.table. Should contain column
+#' `calc_distance_diff` and `calc_time_diff`.
+#'
+#' @return Nothing. Data is added in place as column `calc_speed_2d`.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' add_speed(tracking_data)
@@ -182,13 +209,18 @@ add_speed <- function(dt) {
 	dt[, calc_speed_2d := (calc_distance_diff)/(as.numeric(calc_time_diff))]
 }
 
-#' Add distance to colony
-#' @description calculates the distance from the GPS position to the colony
+#' Add distance to colony.
 #'
-#' @param dt tracking data as data.table. Should contain columns `latitude`,
-#' `longitude`, `colony_latitude`, `colony_longitude`
-#' @return nothing. Adds distance (in meters) in place as columns `calc_distance_to_colony`
+#' Calculates the distance from the GPS position to the colony.
+#'
+#' @param dt Tracking data as data.table. Should contain columns `latitude`,
+#' `longitude`, `colony_latitude`, `colony_longitude`.
+#'
+#' @return Nothing. Adds distance (in meters) in place as column
+#' `calc_distance_to_colony`.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' add_dist_to_colony(tracking_data)
@@ -201,17 +233,22 @@ add_dist_to_colony <- function(dt) {
 	)]
 }
 
-#' Presence of sunlight
-#' @description calculate the presence of sunlight for every GPS fix. This is done
-#' using the `suncalc` function of the package `RAtmosphere`. If the date_time of
-#' the GPS fix is after sunrise and before sunset, presence of sunlight is 1. Otherwise
-#' it is set to 0.
+#' Presence of sunlight.
 #'
-#' @param dt tracking data as data.table. Should contain columns `latitude`, `longitude`
-#' and `date_time`.
-#' @return nothing. Column `calc_sunlight` is added in place. This is a logical vector, indicating
-#' wether sunlight was present at time and location of the GPS fix.
+#' Calculate the presence of sunlight for every GPS fix. This is done using the
+#' `suncalc()` function of the package `RAtmosphere`. If the `date_time` of the
+#' GPS fix is after sunrise and before sunset, presence of sunlight is `1`.
+#' Otherwise it is set to `0`.
+#'
+#' @param dt Tracking data as data.table. Should contain columns `latitude`,
+#' `longitude` and `date_time`.
+#'
+#' @return Nothing. Column `calc_sunlight` is added in place. This is a logical
+#' vector, indicating whether sunlight was present at time and location of the
+#' GPS fix.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' add_sunlight(tracking_data)
@@ -222,20 +259,22 @@ add_sunlight <- function(dt) {
 	#print(dt)
 }
 
-
-#' Flag outliers
-#' @description Flag records that are suspect to be erronous.
-#' The following checks are made:
-#'     - date_time < current date
-#'     - altitude < 1000 km
-#'     - speed < 33.3333 meters per second (= 120 km per hour)
-#'     - height_accuracy < 1000
+#' Flag outliers.
+#'
+#' Flag records that are suspect to be erronous. The following checks are made:
+#' - `date_time` < current date
+#' - `altitude` < 1000 km
+#' - `speed` < 33.3333 meters per second (= 120 km per hour)
+#' - `height_accuracy` < 1000
 #' If one of these fails, the record gets flagged.
 #'
-#' @param dt tracking data as data.table.
-#' @return nothing. Flagging happens in place. New columns is called `calc_outlier`
-#' and contains logical values.
+#' @param dt Tracking data as data.table.
+#'
+#' @return Nothing. Flagging happens in place. New columns is called
+#' `calc_outlier` and contains logical values.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' flag_outliers(tracking_data)
@@ -250,14 +289,18 @@ flag_outliers <- function(dt) {
 		 ]
 }
 
-#' Raster join
-#' @description Join tracks with raster data
+#' Raster join.
 #'
-#' @param dt Data table with tracking data. Geospatial points are created based on the
-#' latitude and longitude field and WGS84 datum is expected.
-#' @param raster_data A raster data object. See the package "raster".
-#' @return nothing. The value of the raster for every point is added to the data
-#' table in place
+#' Join tracks with raster data.
+#'
+#' @param dt Data table with tracking data. Geospatial points are created based
+#' on the `latitude` and `longitude` field and WGS84 datum is expected.
+#'
+#' @param raster_data A raster data object. See the package `raster`.
+#'
+#' @return Nothing. The value of the raster for every point is added to the data
+#' table in place.
+#'
 #' @export
 raster_join <- function(dt, raster_data) {
 	pts <- SpatialPoints(data.frame(x = dt$longitude, y = dt$latitude),
@@ -267,16 +310,22 @@ raster_join <- function(dt, raster_data) {
 	dt[, calc_raster_value := results]
 }
 
-#' Join raster value with legend
-#' @description Join the raster value with its legend
+#' Join raster value with legend.
 #'
-#' @param dt Data table with tracking data. Expected to contain a column `calc_raster_value`
-#' which is the result of joining this table with a raster layer.
-#' @param legend a data table with the legend of the raster layer. It should contain a column
-#' `id` and a column `value`. The `id` column should contain the values that are used in the
-#' raster layer, while the `value` column contains the labels for these values.
-#' @return New data table with an additional column "calc_raster_legend"
+#' Join the raster value with its legend.
+#'
+#' @param dt Data table with tracking data. Expected to contain a column
+#' `calc_raster_value` which is the result of joining this table with a raster
+#' layer.
+#' @param legend Data table with the legend of the raster layer. It should
+#' contain a column `id` and a column `value`. The `id` column should contain
+#' the values that are used in the raster layer, while the `value` column
+#' contains the labels for these values.
+#'
+#' @return New data table with an additional column `calc_raster_legend`.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun {
 #' join_raster_value_with_legend(datatable, legendcsv)
@@ -289,19 +338,23 @@ join_raster_value_with_legend <- function(dt, legend) {
 	return(newdt)
 }
 
-#' Enrich data
-#' @description Enrich the bird tracking data by precalculating attributes
-#' and joining data with other sources. See the package vignette for a complete
-#' description of the procedure.
+#' Enrich data.
 #'
-#' @param tracking_data Data table obtained by using the validate_tracks_data
-#' function
-#' @param bird_data Bird metadata obtained by using the validate_bird_data
-#' function
+#' Enrich the bird tracking data by precalculating attributes and joining data
+#' with other sources. See the package vignette for a complete description of
+#' the procedure.
+#'
+#' @param tracking_data Data table obtained by using the
+#' `validate_tracks_data()` function.
+#' @param bird_data Bird metadata obtained by using the `validate_bird_data()`
+#' function.
 #' @param corine_raster_data Filename containing corine raster data to be joined
 #' with bird tracking data.
-#' @return Data table containing enriched data
+#'
+#' @return Data table containing enriched data.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun {
 #' enrich_data(tracking_data, bird_data)

@@ -2,20 +2,20 @@
 % Please edit documentation in R/enrich.R
 \name{add_speed}
 \alias{add_speed}
-\title{Add speed}
+\title{Add speed.}
 \usage{
 add_speed(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table. Should contain column `calc_distance_diff`
-and column `calc_time_diff`}
+\item{dt}{Tracking data as data.table. Should contain column
+\code{calc_distance_diff} and \code{calc_time_diff}.}
 }
 \value{
-nothing. Data is added in place as column `calc_speed_2d`
+Nothing. Data is added in place as column \code{calc_speed_2d}.
 }
 \description{
-calculates the average 2 dimensional speed of the individual since the
-previous GPS fix
+Calculates the average 2 dimensional speed of the individual since the
+previous GPS fix.
 }
 \examples{
 \dontrun{

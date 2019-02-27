@@ -3,7 +3,7 @@
 \docType{data}
 \name{birds_validated}
 \alias{birds_validated}
-\title{Birds validated}
+\title{Birds validated.}
 \format{data table}
 \usage{
 birds_validated

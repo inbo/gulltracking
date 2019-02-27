@@ -2,19 +2,20 @@
 % Please edit documentation in R/enrich.R
 \name{add_dist_to_colony}
 \alias{add_dist_to_colony}
-\title{Add distance to colony}
+\title{Add distance to colony.}
 \usage{
 add_dist_to_colony(dt)
 }
 \arguments{
-\item{dt}{tracking data as data.table. Should contain columns `latitude`,
-`longitude`, `colony_latitude`, `colony_longitude`}
+\item{dt}{Tracking data as data.table. Should contain columns \code{latitude},
+\code{longitude}, \code{colony_latitude}, \code{colony_longitude}.}
 }
 \value{
-nothing. Adds distance (in meters) in place as columns `calc_distance_to_colony`
+Nothing. Adds distance (in meters) in place as column
+\code{calc_distance_to_colony}.
 }
 \description{
-calculates the distance from the GPS position to the colony
+Calculates the distance from the GPS position to the colony.
 }
 \examples{
 \dontrun{

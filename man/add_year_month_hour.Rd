@@ -2,7 +2,7 @@
 % Please edit documentation in R/enrich.R
 \name{add_year_month_hour}
 \alias{add_year_month_hour}
-\title{Add year, month, hour columns}
+\title{Add year, month, hour columns.}
 \usage{
 add_year_month_hour(data)
 }
@@ -10,10 +10,10 @@ add_year_month_hour(data)
 \item{dt}{Tracking data as a data.table.}
 }
 \value{
-Nothing, columns are added in place
+Nothing, columns are added in place.
 }
 \description{
-Add the year, month and hour of the GPS fix in separate columns
+Add the year, month and hour of the GPS fix in separate columns.
 }
 \examples{
 \dontrun{

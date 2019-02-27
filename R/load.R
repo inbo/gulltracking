@@ -1,10 +1,13 @@
-#' data2table
-#' @description Load all the enriched data to a RDBMS table 
-#' 
-#' @param dbConnection a DBI database connection
-#' @param data A data table containing all data. See the vignette to see the required
-#' columns and how they are written to the database.
-#' @return Nothing
+#' Data to table.
+#'
+#' Load all the enriched data to a RDBMS table.
+#'
+#' @param dbConnection A DBI database connection.
+#' @param data A data table containing all data. See the vignette to see the
+#' required columns and how they are written to the database.
+#'
+#' @return Nothing.
+#'
 #' @examples
 #' \dontrun{data2table(dbConnection, datatable)}
 #' @export

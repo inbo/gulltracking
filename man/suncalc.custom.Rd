@@ -2,24 +2,24 @@
 % Please edit documentation in R/enrich.R
 \name{suncalc.custom}
 \alias{suncalc.custom}
-\title{Calculate sunrise and sunset}
+\title{Calculate sunrise and sunset.}
 \usage{
 suncalc.custom(dates, Lat, Long)
 }
 \arguments{
-\item{dates}{vector containing POSIX dates}
+\item{dates}{Vector containing POSIX dates.}
 
-\item{Lat}{Latitudes in WGS84}
+\item{Lat}{Latitudes in WGS84.}
 
-\item{Long}{Longitudes in WGS84}
+\item{Long}{Longitudes in WGS84.}
 }
 \value{
-named list with elements "sunrise" and "sunset"
+Named list with elements \code{sunrise} and \code{sunset}.
 }
 \description{
-This function calculate the sunrise and sunset in UTC
-for a given location and date. Function was slightly modified but inspired
-from this post: http://www.r-bloggers.com/approximate-sunrise-and-sunset-times/
+This function calculate the sunrise and sunset in UTC for a given location
+and date. Function was slightly modified but inspired from this post:
+\url{http://www.r-bloggers.com/approximate-sunrise-and-sunset-times/}
 }
 \examples{
 {

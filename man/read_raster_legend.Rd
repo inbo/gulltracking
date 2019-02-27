@@ -2,20 +2,20 @@
 % Please edit documentation in R/extract.R
 \name{read_raster_legend}
 \alias{read_raster_legend}
-\title{Read the raster legend}
+\title{Read the raster legend.}
 \usage{
 read_raster_legend(filename)
 }
 \arguments{
-\item{filename}{Name of the csv file containing the raster legend}
+\item{filename}{Name of the csv file containing the raster legend.}
 }
 \value{
-a data table containing the raster legend
+A data table containing the raster legend.
 }
 \description{
-Read the raster legend. The legend is expected to contain two columns:
-`id` containing the actual values used in the raster layer, and `value` which contains
-the labels.
+Read the raster legend. The legend is expected to contain two
+columns: \code{id} containing the actual values used in the raster layer, and
+\code{value} which contains the labels.
 }
 \examples{
 \dontrun{

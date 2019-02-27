@@ -2,21 +2,21 @@
 % Please edit documentation in R/extract.R
 \name{check_numeric_values}
 \alias{check_numeric_values}
-\title{Check numeric values}
+\title{Check numeric values.}
 \usage{
 check_numeric_values(colname, col)
 }
 \arguments{
-\item{colname}{Name of the column to be tested}
+\item{colname}{Name of the column to be tested.}
 
-\item{col}{Column containing values to be tested}
+\item{col}{Column containing values to be tested.}
 }
 \value{
-col if all values can be converted to numeric. Otherwise error.
+\code{col} if all values can be converted to numeric. Otherwise error.
 }
 \description{
-Check whether values in given column can be converted to
-numeric types. If not, this function will call stop().
+Check whether values in given column can be converted to numeric types. If
+not, this function will call \code{stop()}.
 }
 \examples{
 check_numeric_values("testcol", c(1, 2, 3))

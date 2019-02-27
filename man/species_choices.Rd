@@ -3,12 +3,12 @@
 \docType{data}
 \name{species_choices}
 \alias{species_choices}
-\title{Species choices}
+\title{Species choices.}
 \format{character vector}
 \usage{
 species_choices
 }
 \description{
-Allowed values for the species column in bird metadata
+Allowed values for the species column in bird metadata.
 }
 \keyword{datasets}
