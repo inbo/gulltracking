@@ -42,7 +42,7 @@ So, `ymd_hms` was replaced by `fast_strptime`. This cut off 73% of the `track_va
 
 ## Profiling the different UvABiTSETL steps
 
-```{r profile}
+```{r profile, eval = FALSE}
 d <- profiling_L1("../data/bird_track_logs_2000L.csv", "../data/two_birds.csv")
 q <- qplot(x=d$step, y=d$timing)
 q + theme(axis.text.x = element_text(angle = 90, hjust = 1))
