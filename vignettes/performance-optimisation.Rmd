@@ -38,12 +38,11 @@ q <- qplot(x=c("ymd_hms", "fast_strptime"), y=c(ymd_hms_time, fast_strptime_time
 q + geom_point()
 ```
 
-(See figure [here](Figs/date_time_parsing-1.png))
+(See figure [here](./date_time_parsing.png))
 
 So, `ymd_hms` was replaced by `fast_strptime`. This cut off 73% of the `track_validation` step processing time.
 
 ## Profiling the different UvABiTSETL steps
-
 
 ```{r profile}
 d <- profiling_L1("../data/bird_track_logs_2000L.csv", "../data/two_birds.csv")
@@ -51,6 +50,6 @@ q <- qplot(x=d$step, y=d$timing)
 q + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-(if the image isn't shown, view it [here](./Figs/profile-1.png))
+(if the image isn't shown, view it [here](./profile.png))
 
 After further investigation of the `validate_tracks_data` function, this turns out to be due to the fact that parsing date_times is slow.
