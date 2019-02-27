@@ -1,5 +1,5 @@
 ---
-title: "performance-optimisation"
+title: "Performance optimisation"
 author: "Bart Aelterman <bart.aelterman@inbo.be>"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -17,8 +17,6 @@ library(data.table)
 library(ggplot2)
 library(lubridate)
 ```
-
-# Performance optimisation
 
 This vignette examines the performance of different computations implemented in the BirdTrackingEtl package.
 

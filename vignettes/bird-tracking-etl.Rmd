@@ -1,5 +1,5 @@
 ---
-title: "BirdTrackingEtl"
+title: "Bird Tracking ETL"
 author: "Bart Aelterman <bart.aelterman@inbo.be>"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -8,8 +8,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
-
-# BirdTrackingEtl
 
 ## Intro
 
