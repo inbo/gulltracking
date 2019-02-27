@@ -1,5 +1,5 @@
 Package: uvabits
-Title: Download bird tracking data from UvA-BiTS 
+Title: Download Bird Tracking Data from UvA-BiTS
 Version: 0.1.0.9000
 Description: The uvabits package provides an R interface to the UvA-BiTS 
     database (http://www.uva-bits.nl/), which stores bird movement data 
