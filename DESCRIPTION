@@ -10,9 +10,9 @@ Description: The uvabits package provides an R interface to the UvA-BiTS
     (https://www.movebank.org/), a free online database for animal tracking 
     data.
 Authors@R: c(
-    person("Bart", "Aelterman", role = c("aut", "cre"), email = "bart.aelterman@inbo.be"),
+    person("Bart", "Aelterman", role = c("aut", "cre"), email = "bart.aelterman@gmail.com"),
     person("Peter", "Desmet", role = "aut", email = "peter.desmet@inbo.be", comment = c(ORCID = "0000-0002-8442-8025")),
-    person("Stijn", "Van Hoey", role = "aut", email = "stijn.vanhoey@inbo.be", comment = c(ORCID = "0000-0001-6413-3185"))
+    person("Stijn", "Van Hoey", role = "aut", email = "stijnvanhoey@gmail.com", comment = c(ORCID = "0000-0001-6413-3185"))
     )
 License: MIT + file LICENSE
 URL: https://github.com/inbo/uvabits, https://inbo.github.io/uvabits
