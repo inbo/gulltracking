@@ -1,27 +1,25 @@
-# uvabits
+# gulltracking
 
-> ✋ This package is not ready for use! It was previously called `BirdTrackingEtl` and used exclusively to process UvA-BiTS data for INBO researchers (see [release](https://github.com/inbo/uvabits/releases/tag/bt-etl) and [vignette](https://inbo.github.io/uvabits/articles/bird-tracking-etl.html) for that version). We are now expanding its functionality for more general use by UvA-BiTS users. Want to contribute? Check out our [contributing guidelines](.github/CONTRIBUTING.md).
-
-uvabits provides an R interface to the [UvA-BiTS database](http://www.uva-bits.nl/), which stores bird movement data collected with UvA-BiTS GPS trackers. The package provides functionality to download data and metadata, calculate some metrics, and load the data into a  query-optimized SQLite database for local analysis. It also allows to download the data in a format that can easily be uploaded to [Movebank](https://www.movebank.org/), a free online database for animal tracking data.
+gulltracking provides functionality to annotate GPS tracking data of gulls stored in [Movebank](https://www.movebank.org/). These data are collected by the LifeWatch [GPS tracking network for large birds](http://lifewatch.be/en/gps-tracking-network-large-birds).
 
 ## Installation
 
-You can install uvabits from [GitHub](https://github.com/inbo/uvabits) with:
+You can install gulltracking from [GitHub](https://github.com/inbo/gulltracking) with:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("inbo/uvabits")
+devtools::install_github("inbo/gulltracking")
 ```
 
 Then load the package with:
 
 ```r
-library(uvabits)
+library(gulltracking)
 ```
 
 ## Meta
 
 * We welcome [contributions](.github/CONTRIBUTING.md) including bug reports.
 * License: MIT
-* Get citation information for `uvabits` in R doing `citation("uvabits")`.
+* Get citation information for `gulltracking` in R doing `citation("gulltracking")`.
 * Please note that this project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.

@@ -1,13 +1,19 @@
-url: https://inbo.github.io/uvabits
+url: https://inbo.github.io/gulltracking
 
 template:
   params:
     bootswatch: yeti
 
 authors:
+  Jan Baert:
+    href: https://www.uantwerpen.be/nl/personeel/jan-baert/
+  Peter Desmet:
+    href: https://twitter.com/peterdesmet
+  Damiano Oldoni:
+    href: https://twitter.com/damianozingaro
+  Reinoud Allaert:
+    href: linkedin.com/in/reinoud-allaert-3698a8175
   Bart Aelterman:
     href: https://twitter.com/bartaelterman
   Stijn Van Hoey:
     href: https://twitter.com/SVanHoey
-  Peter Desmet:
-    href: https://twitter.com/peterdesmet
