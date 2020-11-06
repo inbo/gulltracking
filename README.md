@@ -1,6 +1,6 @@
 # gulltracking
 
-gulltracking provides functionality to annotate GPS tracking data of gulls stored at [Movebank](https://www.movebank.org/). These data are collected by the LifeWatch [GPS tracking network for large birds](http://lifewatch.be/en/gps-tracking-network-large-birds).
+gulltracking provides functionality to annotate GPS tracking data of gulls stored in [Movebank](https://www.movebank.org/). These data are collected by the LifeWatch [GPS tracking network for large birds](http://lifewatch.be/en/gps-tracking-network-large-birds).
 
 ## Installation
 
