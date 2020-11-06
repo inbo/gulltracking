@@ -2,34 +2,12 @@ Package: gulltracking
 Title: Analyze gulls behavior based on GPS tracking data
 Version: 0.1.0.9000
 Authors@R: 
-    c(person(given = "Jan",
-             family = "Baert",
-             role = c("aut", "cre"),
-             email = "Jan.Baert@uantwerpen.be",
-             comment = c(ORCID = "0000-0002-8640-043X")),
-      person(given = "Peter",
-             family = "Desmet",
-             role = "aut",
-             email = "peter.desmet@inbo.be",
-             comment = c(ORCID = "0000-0002-8442-8025")),
-      person(given = "Damiano",
-             family = "Oldoni",
-             role = "aut",
-             email = "damiano.oldoni@inbo.be",
-             comment = c(ORCID = "0000-0003-3445-7562")),
-      person(given = "Reinoud",
-             family = "Allaert",
-             role = "aut",
-             email = "reinoud.allaert@gmail.com"),
-      person(given = "Stijn",
-             family = "Van Hoey",
-             role = "aut",
-             email = "stijnvanhoey@gmail.com",
-             comment = c(ORCID = "0000-0001-6413-3185")),
-      person(given = "Bart",
-             family = "Aelterman",
-             role = "aut",
-             email = "bart.aelterman@gmail.com"))
+    c(person(given = "Jan", family = "Baert", role = c("aut", "cre"), email = "Jan.Baert@uantwerpen.be", comment = c(ORCID = "0000-0002-8640-043X")),
+      person(given = "Peter", family = "Desmet", role = "aut", email = "peter.desmet@inbo.be", comment = c(ORCID = "0000-0002-8442-8025")),
+      person(given = "Damiano", family = "Oldoni", role = "aut", email = "damiano.oldoni@inbo.be", comment = c(ORCID = "0000-0003-3445-7562")),
+      person(given = "Reinoud", family = "Allaert", role = "aut", email = "reinoud.allaert@gmail.com"),
+      person(given = "Stijn", family = "Van Hoey", role = "aut", email = "stijnvanhoey@gmail.com", comment = c(ORCID = "0000-0001-6413-3185")),
+      person(given = "Bart", family = "Aelterman", role = "aut", email = "bart.aelterman@gmail.com"))
 Description: This package analyzes Movebank GPS data for behavior analysis.
 License: MIT + file LICENSE
 BugReports: https://github.com/inbo/gulltracking/issues
