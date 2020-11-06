@@ -2,7 +2,7 @@ Package: gulltracking
 Title: Analyze gulls behavior based on GPS tracking data
 Version: 0.1.0.9000
 Description: gulltracking provides functionality to annotate GPS tracking data 
-    of gulls stored at Movebank (https://www.movebank.org).
+    of gulls stored in Movebank (https://www.movebank.org).
 Authors@R: c(
     person(given = "Jan", family = "Baert", role = c("aut", "cre"), email = "Jan.Baert@uantwerpen.be", comment = c(ORCID = "0000-0002-8640-043X")),
     person(given = "Peter", family = "Desmet", role = "aut", email = "peter.desmet@inbo.be", comment = c(ORCID = "0000-0002-8442-8025")),
