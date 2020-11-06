@@ -9,7 +9,7 @@ gulltracking is an open source project, maintained by people who care. We are no
 [new_issue]: https://github.com/inbo/gulltracking/issues/new
 [website]: https://inbo.github.io/gulltracking
 [citation]: https://inbo.github.io/gulltracking/authors.html
-[email]: mailto:Jan.Baert@uantwerpen.be
+[email]: mailto:jan.baert@uantwerpen.be
 
 ## Code of conduct
 
