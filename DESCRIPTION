@@ -1,37 +1,40 @@
-Package: uvabits
-Title: Download Bird Tracking Data from UvA-BiTS
+Package: gulltracking
+Title: Analyze gulls behavior based on GPS tracking data
 Version: 0.1.0.9000
-Description: The uvabits package provides an R interface to the UvA-BiTS 
-    database (http://www.uva-bits.nl/), which stores bird movement data 
-    collected with UvA-BiTS GPS trackers. The package provides functionality to 
-    download data and metadata, calculate some metrics, and load the data into a 
-    query-optimized SQLite database for local analysis. It also allows to 
-    download the data in a format that can easily be uploaded to Movebank 
-    (https://www.movebank.org/), a free online database for animal tracking 
-    data.
-Authors@R: c(
-    person("Bart", "Aelterman", role = c("aut", "cre"), email = "bart.aelterman@gmail.com"),
-    person("Peter", "Desmet", role = "aut", email = "peter.desmet@inbo.be", comment = c(ORCID = "0000-0002-8442-8025")),
-    person("Stijn", "Van Hoey", role = "aut", email = "stijnvanhoey@gmail.com", comment = c(ORCID = "0000-0001-6413-3185"))
-    )
+Authors@R: 
+    c(person(given = "Jan",
+             family = "Baert",
+             role = c("aut", "cre"),
+             email = "Jan.Baert@uantwerpen.be",
+             comment = c(ORCID = "0000-0002-8640-043X")),
+      person(given = "Peter",
+             family = "Desmet",
+             role = "aut",
+             email = "peter.desmet@inbo.be",
+             comment = c(ORCID = "0000-0002-8442-8025")),
+      person(given = "Damiano",
+             family = "Oldoni",
+             role = "aut",
+             email = "damiano.oldoni@inbo.be",
+             comment = c(ORCID = "0000-0003-3445-7562")),
+      person(given = "Reinoud",
+             family = "Allaert",
+             role = "aut",
+             email = "reinoud.allaert@gmail.com"),
+      person(given = "Stijn",
+             family = "Van Hoey",
+             role = "aut",
+             email = "stijnvanhoey@gmail.com",
+             comment = c(ORCID = "0000-0001-6413-3185")),
+      person(given = "Bart",
+             family = "Aelterman",
+             role = "aut",
+             email = "bart.aelterman@gmail.com"),
+Description: This package analyzes Movebank GPS data for behavior analysis.
 License: MIT + file LICENSE
-URL: https://github.com/inbo/uvabits, https://inbo.github.io/uvabits
-BugReports: https://github.com/inbo/uvabits/issues
-Depends:
-    R (>= 3.2.0)
-Imports: 
-    data.table (>= 1.9.6),
-    DBI (>= 0.3.1),
-    geosphere (>= 1.3.13),
-    lubridate (>= 1.5.6),
-    maptools (>= 0.8.36),
-    raster (>= 2.4.18),
-    sp (>= 1.1.1)
-Suggests:
-    knitr (>= 1.11),
-    testthat (>= 1.0.1)
-LazyData: true
+BugReports: https://github.com/inbo/gulltracking/issues
 Encoding: UTF-8
 VignetteBuilder: knitr
+LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
