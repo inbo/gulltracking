@@ -1,6 +1,6 @@
 # gulltracking
 
-This package analyzes GPS gull tracking data from [Movebank](https://www.movebank.org/), a free online database for animal tracking data.
+gulltracking provides functionality to annotate GPS tracking data of gulls stored at [Movebank](https://www.movebank.org/). These data are collected by the LifeWatch [GPS tracking network for large birds](http://lifewatch.be/en/gps-tracking-network-large-birds).
 
 ## Installation
 
