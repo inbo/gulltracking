@@ -29,7 +29,7 @@ Authors@R:
       person(given = "Bart",
              family = "Aelterman",
              role = "aut",
-             email = "bart.aelterman@gmail.com"),
+             email = "bart.aelterman@gmail.com"))
 Description: This package analyzes Movebank GPS data for behavior analysis.
 License: MIT + file LICENSE
 BugReports: https://github.com/inbo/gulltracking/issues
