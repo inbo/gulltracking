@@ -11,11 +11,17 @@ Authors@R: c(
     person(given = "Stijn", family = "Van Hoey", role = "aut", email = "stijnvanhoey@gmail.com", comment = c(ORCID = "0000-0001-6413-3185")),
     person(given = "Bart", family = "Aelterman", role = "aut", email = "bart.aelterman@gmail.com")
     )
-Description: This package analyzes Movebank GPS data for behavior analysis.
 License: MIT + file LICENSE
 BugReports: https://github.com/inbo/gulltracking/issues
+Imports:
+    assertthat,
+    bit64,
+    data.table,
+    dplyr
 Encoding: UTF-8
 VignetteBuilder: knitr
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat
