@@ -133,11 +133,14 @@ test_that("output has all columns from gps and reference data in right order", {
   expect_true(all(output_col_names == colnames(output)))
 })
 
-test_that("warning is returned if gps and ref_data have one or more columns with same name", {
+
+test_that("warning is returned if and only if gps and ref_data have one or more columns with same name", {
+
   lbbg_gps[["sensor-type"]] <- "A"
   lbbg_gps[["sensor-model"]] <- "3"
   lbbg_ref_data[["sensor-type"]] <- "B"
   lbbg_ref_data[["sensor-model"]] <- "3"
+
   expect_warning(
     append_metadata(lbbg_gps,
       lbbg_ref_data,
@@ -156,4 +159,7 @@ test_that("warning is returned if gps and ref_data have one or more columns with
       "are present in gps as well: `sensor-type`,`sensor-model`."
     )
   )
+
+  # if shared columns are not selected, no warnings should be returned
+  expect_warning(lbbg_gps, lbbg_ref_data, regexp = NA)
 })

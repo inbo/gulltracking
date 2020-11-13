@@ -122,7 +122,8 @@ append_metadata <- function(gps,
            "tag-id" = "tag-local-identifier",
            "animal-id" = "individual-local-identifier") %>%
     # join reference data to gps data
-    left_join(ref_data,
+    left_join(ref_data %>%
+                select(one_of(ref_cols)),
               by = c("animal-taxon",
                      "tag-id",
                      "animal-id")) %>%
