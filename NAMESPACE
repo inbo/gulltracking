@@ -3,6 +3,7 @@
 export(append_metadata)
 importFrom(assertthat,assert_that)
 importFrom(data.table,data.table)
+importFrom(dplyr,"%>%")
 importFrom(dplyr,left_join)
 importFrom(dplyr,mutate)
 importFrom(dplyr,one_of)
