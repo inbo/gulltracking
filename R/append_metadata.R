@@ -12,10 +12,10 @@
 #'   the columns used for the join: `individual-taxon-canonical-name`,
 #'   `tag-local-identifier` and `individual-local-identifier`.
 #' @param ref_data data.frame, data.table or matrix. Movebank reference data
-#'   with at least the columns defined in `reference_cols`.
-#' @param reference_cols Character. Vector with the column names of `ref_data`
-#'   to be added to `gps`. It must at least contain the columns used for the
-#'   join: `animal-taxon`, `tag-id` and `animal-id`. Columns with same name of
+#'   with at least the columns defined in `ref_cols`.
+#' @param ref_cols Character. Vector with the column names of `ref_data` to be
+#'   added to `gps`. It must at least contain the columns used for the join:
+#'   `animal-taxon`, `tag-id` and `animal-id`. Columns with same name of
 #'   columns of `gps` are dropped with a warning.
 #'
 #'   Default: `c("animal-taxon", "tag-id","animal-id", "animal-comments",
@@ -23,7 +23,7 @@
 #'
 #' @return A data.table with the GPS data (all columns except those used in the
 #'   join) appended with the reference data (all columns defined in
-#'   `reference_cols`).
+#'   `ref_cols`).
 #'
 #' @export
 #'
@@ -37,20 +37,20 @@
 #' # Only include specific reference data columns
 #' append_metadata(
 #'   lbbg_gps,
-#'   reference_cols = c("animal-taxon", "tag-id", "animal-id",
 #'   lbbg_ref_data,
+#'   ref_cols = c("animal-taxon", "tag-id", "animal-id",
 #'                      "animal-comments", "animal-life-stage")
 #' )
 append_metadata <- function(gps,
                             ref_data,
-                            reference_cols = c("animal-taxon",
-                                               "tag-id",
-                                               "animal-id",
-                                               "animal-comments",
-                                               "animal-life-stage",
-                                               "animal-mass",
-                                               "animal-sex",
-                                               "deployment-comments")) {
+                            ref_cols = c("animal-taxon",
+                                         "tag-id",
+                                         "animal-id",
+                                         "animal-comments",
+                                         "animal-life-stage",
+                                         "animal-mass",
+                                         "animal-sex",
+                                         "deployment-comments")) {
 
   # gps and ref_data are of the right class
   assert_that(
@@ -83,9 +83,9 @@ append_metadata <- function(gps,
   # cols from gps in output (all cols except those one used for join)
   cols_gps_in_output <- cols_gps[!cols_gps %in% gps_cols_to_have]
 
-  # Check that ref_data contains all columns defined in reference_cols
+  # Check that ref_data contains all columns defined in ref_cols
   cols_not_present <-
-    reference_cols[!reference_cols %in% cols_ref_data]
+    ref_cols[!ref_cols %in% cols_ref_data]
   assert_that(
     length(cols_not_present) == 0,
     msg = paste0(
@@ -94,18 +94,18 @@ append_metadata <- function(gps,
   )
 
   # reference cols to have for join
-  reference_cols_to_have <- c("animal-taxon", "tag-id", "animal-id")
+  ref_cols_to_have <- c("animal-taxon", "tag-id", "animal-id")
   cols_not_present <-
-    reference_cols_to_have[!reference_cols_to_have %in% reference_cols]
+    ref_cols_to_have[!ref_cols_to_have %in% ref_cols]
   assert_that(
     length(cols_not_present) == 0,
     msg = paste0(
-      "reference_cols should (also) contain `",
+      "ref_cols should (also) contain `",
       paste0(cols_not_present, collapse = "`,`"), "` to join data.")
   )
 
   # cols of reference with same name in gps will be removed before join
-  same_name_cols <- reference_cols[reference_cols %in% cols_gps]
+  same_name_cols <- ref_cols[ref_cols %in% cols_gps]
   if (length(same_name_cols) > 0) {
     warning(paste0(
       "The following columns of ref_data will be dropped as they are present in gps as well: `",
@@ -127,5 +127,5 @@ append_metadata <- function(gps,
                      "tag-id",
                      "animal-id")) %>%
     # order columns
-    select(one_of(cols_gps_in_output), one_of(reference_cols))
+    select(one_of(cols_gps_in_output), one_of(ref_cols))
 }

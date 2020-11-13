@@ -7,7 +7,7 @@
 append_metadata(
   gps,
   ref_data,
-  reference_cols = c("animal-taxon", "tag-id", "animal-id", "animal-comments",
+  ref_cols = c("animal-taxon", "tag-id", "animal-id", "animal-comments",
     "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")
 )
 }
@@ -17,11 +17,11 @@ the columns used for the join: \code{individual-taxon-canonical-name},
 \code{tag-local-identifier} and \code{individual-local-identifier}.}
 
 \item{ref_data}{data.frame, data.table or matrix. Movebank reference data
-with at least the columns defined in \code{reference_cols}.}
+with at least the columns defined in \code{ref_cols}.}
 
-\item{reference_cols}{Character. Vector with the column names of \code{ref_data}
-to be added to \code{gps}. It must at least contain the columns used for the
-join: \code{animal-taxon}, \code{tag-id} and \code{animal-id}. Columns with same name of
+\item{ref_cols}{Character. Vector with the column names of \code{ref_data} to be
+added to \code{gps}. It must at least contain the columns used for the join:
+\code{animal-taxon}, \code{tag-id} and \code{animal-id}. Columns with same name of
 columns of \code{gps} are dropped with a warning.
 
 Default: \code{c("animal-taxon", "tag-id","animal-id", "animal-comments", "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")}}
@@ -29,7 +29,7 @@ Default: \code{c("animal-taxon", "tag-id","animal-id", "animal-comments", "anima
 \value{
 A data.table with the GPS data (all columns except those used in the
 join) appended with the reference data (all columns defined in
-\code{reference_cols}).
+\code{ref_cols}).
 }
 \description{
 This function joins Movebank GPS data with Movebank reference (meta)data, on
@@ -43,13 +43,13 @@ GPS and reference data can be downloaded from
 }
 \examples{
 # Default use
-append_metadata(lbbg_gps, lbbg_reference)
+append_metadata(lbbg_gps, lbbg_ref_data)
 
 # Only include specific reference data columns
 append_metadata(
   lbbg_gps,
-  lbbg_reference,
-  reference_cols = c("animal-taxon", "tag-id", "animal-id",
+  lbbg_ref_data,
+  ref_cols = c("animal-taxon", "tag-id", "animal-id",
                      "animal-comments", "animal-life-stage")
 )
 }
