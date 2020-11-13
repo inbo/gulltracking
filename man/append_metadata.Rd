@@ -44,10 +44,10 @@ GPS and reference data can be downloaded from
 \href{https://www.movebank.org}{Movebank}.
 }
 \examples{
-# Use default reference_cols
+# Default use
 append_metadata(lbbg_gps, lbbg_reference)
 
-# Specify columns of reference_data to add
+# Only include specific reference data columns
 append_metadata(
   lbbg_gps,
   lbbg_reference,
