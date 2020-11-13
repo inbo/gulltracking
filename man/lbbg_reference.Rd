@@ -3,17 +3,23 @@
 \docType{data}
 \name{lbbg_reference}
 \alias{lbbg_reference}
-\title{Movebank reference data of a Lesser black-backed gulls bird tracking dataset}
+\title{Sample of gull reference data}
 \format{
-A tibble (data.frame) with 100 rows and 24 variables.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 60 rows and 24 columns.
 }
 \source{
-Reference data in csv format: \url{https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip?download=1}. More information on Zenodo: https://zenodo.org/record/3968687.
+\href{https://doi.org/10.5281/zenodo.3968687}{Stienen et al. 2020}
 }
 \usage{
 lbbg_reference
 }
 \description{
-A dataset containing reference data (metadata) of a GPS data from 2013 of lesser black-backed gulls.
+A sample dataset of gull reference data in Movebank format.
+}
+\examples{
+\dontrun{
+ref_data <- read_csv("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-reference-data.csv")
+save(ref_data, file = "data/lbbg_reference.rda")
+}
 }
 \keyword{datasets}

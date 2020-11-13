@@ -1,16 +1,28 @@
-#' Sample of Movebank GPS data of a Lesser black-backed
-#' gulls bird tracking dataset
+#' Sample of gull GPS data
 #'
-#' A bird tracking dataset containing 100 rows of GPS data from 2013 of Lesser black-backed gulls.
+#' A sample dataset of gull GPS data (100 records from 2013) in Movebank format.
 #'
-#' @format A tibble (data.frame) with 100 rows and 22 variables.
-#' @source To download the entire file (zip format): \url{https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip?download=1}. More information on Zenodo: https://zenodo.org/record/3968687.
+#' @source [Stienen et al. 2020](https://doi.org/10.5281/zenodo.3968687)
+#'
+#' @examples
+#' \dontrun{
+#' temp <- tempfile()
+#' download.file("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip", temp)
+#' gps <- read_csv(unzip(temp))
+#' gps <- head(gps, 100)
+#' save(gps, file = "data/lbbg_gps.rda")
+#' }
 "lbbg_gps"
 
-#' Movebank reference data of a Lesser black-backed gulls bird tracking dataset
+#' Sample of gull reference data
 #'
-#' A dataset containing reference data (metadata) of a GPS data from 2013 of lesser black-backed gulls.
+#' A sample dataset of gull reference data in Movebank format.
 #'
-#' @format A tibble (data.frame) with 100 rows and 24 variables.
-#' @source Reference data in csv format: \url{https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip?download=1}. More information on Zenodo: https://zenodo.org/record/3968687.
+#' @source [Stienen et al. 2020](https://doi.org/10.5281/zenodo.3968687)
+#'
+#' @examples
+#' \dontrun{
+#' ref_data <- read_csv("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-reference-data.csv")
+#' save(ref_data, file = "data/lbbg_reference.rda")
+#' }
 "lbbg_reference"

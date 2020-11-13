@@ -3,18 +3,26 @@
 \docType{data}
 \name{lbbg_gps}
 \alias{lbbg_gps}
-\title{Sample of Movebank GPS data of a Lesser black-backed
-gulls bird tracking dataset}
+\title{Sample of gull GPS data}
 \format{
-A tibble (data.frame) with 100 rows and 22 variables.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 100 rows and 22 columns.
 }
 \source{
-To download the entire file (zip format): \url{https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip?download=1}. More information on Zenodo: https://zenodo.org/record/3968687.
+\href{https://doi.org/10.5281/zenodo.3968687}{Stienen et al. 2020}
 }
 \usage{
 lbbg_gps
 }
 \description{
-A bird tracking dataset containing 100 rows of GPS data from 2013 of Lesser black-backed gulls.
+A sample dataset of gull GPS data (100 records from 2013) in Movebank format.
+}
+\examples{
+\dontrun{
+temp <- tempfile()
+download.file("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip", temp)
+gps <- read_csv(unzip(temp))
+gps <- head(gps, 100)
+save(gps, file = "data/lbbg_gps.rda")
+}
 }
 \keyword{datasets}
