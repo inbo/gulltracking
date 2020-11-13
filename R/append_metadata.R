@@ -1,35 +1,29 @@
-#' Merge Movebank GPS event data and reference data
+#' Append Movebank reference data to Movebank GPS data
 #'
-#' This function adds specific Movebank reference data to GPS event data in a
-#' given order. GPS and reference data can be downloaded directly from
-#' [movebank](https://www.movebank.org). Two examples of Movebank bird tracking
-#' data: a [Lesser Black-backed
-#' Gulls](https://www.movebank.org/panel_embedded_movebank_webapp?gwt_fragment=page=studies,path=study985143423)
-#' project and a [Herring
-#' Gulls](https://www.movebank.org/panel_embedded_movebank_webapp?gwt_fragment=page=studies,path=study986040562)
-#' project.
+#' This function joins Movebank GPS data with Movebank reference (meta)data, on
+#' the shared columns:
+#' - `gps.individual-taxon-canonical-name` = `reference_data.animal-taxon`
+#' - `gps.tag-local-identifier` = `reference_data.tag-id`
+#' - `gps.individual-local-identifier` = `reference_data.animal-id`
 #'
-#' @param gps Movebank GPS data of class matrix, data.frame or data.table. `gps`
-#'   must contain at least the following columns as they are used for join: -
-#'   `individual-taxon-canonical-name` (matched to
-#'   `reference_data$animal-taxon`) - `tag-local-identifier` (matched to
-#'   `reference_data$tag-id`) - `individual-local-identifier` (matched to
-#'   `reference_data$animal-id`)
-#' @param reference_data Movebank reference data of class matrix, data.frame or
-#'   data.table. `reference_data` must contain at least the columns defined in
-#'   `reference_cols`.
-#' @param reference_cols Character. Vector with the names of the columns of
-#'   `reference_data` to add to `gps`. `reference-cols` must contain at least
-#'   the following columns used for join: - `animal-taxon` (matched to
-#'   `gps$individual-taxon-canonical-name`) - `tag-id` (matched to
-#'   `gps$tag-local-identifier`) - `animal-id` (matched to `gps$animal-id`)
+#' GPS and reference data can be downloaded from
+#' [Movebank](https://www.movebank.org).
+#'
+#' @param gps data.frame, data.table or matrix. Movebank GPS data with at least
+#'   the columns used for the join: `individual-taxon-canonical-name`,
+#'   `tag-local-identifier` and `individual-local-identifier`.
+#' @param reference_data data.frame, data.table or matrix. Movebank reference
+#'   data with at least the columns defined in `reference_cols`.
+#' @param reference_cols Character. Vector with the column names of
+#'   `reference_data` to be added to `gps`. It must at least contain the columns
+#'   used for the join: `animal-taxon`, `tag-id` and `animal-id`.
 #'
 #'   Default: `c("animal-taxon", "tag-id","animal-id", "animal-comments",
 #'   "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")`
 #'
-#' @return a data.table object with the following columns: - columns of `gps`
-#'   except those used for join - `animal-taxon` - `tag-id` - `animal-id` -
-#'   other columns of ´reference_data` as listed in `reference_cols`
+#' @return A data.table with the GPS data (all columns except those used in the
+#'   join) appended with the reference data (all columns defined in
+#'   `reference_cols`).
 #'
 #' @export
 #'
@@ -37,16 +31,16 @@
 #' @importFrom dplyr %>% mutate tibble left_join rename one_of select
 #' @importFrom assertthat assert_that
 #' @examples
-#' # Use default reference_cols
+#' # Default use
 #' append_metadata(lbbg_gps, lbbg_reference)
 #'
-#' # Specify columns of reference_data to add
-#' append_metadata(lbbg_gps,
-#'                 lbbg_reference,
-#'                 reference_cols = c("animal-taxon",
-#'                                    "tag-id","animal-id",
-#'                                    "animal-comments",
-#'                                    "animal-life-stage"))
+#' # Only include specific reference data columns
+#' append_metadata(
+#'   lbbg_gps,
+#'   lbbg_reference,
+#'   reference_cols = c("animal-taxon", "tag-id", "animal-id",
+#'                      "animal-comments", "animal-life-stage")
+#' )
 append_metadata <- function(gps,
                             reference_data,
                             reference_cols = c("animal-taxon",
