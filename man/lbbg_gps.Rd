@@ -18,10 +18,9 @@ A sample dataset of gull GPS data (100 records from 2013) in Movebank format.
 }
 \examples{
 \dontrun{
-library(readr)
 temp <- tempfile()
 download.file("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip", temp)
-gps <- read_csv(unzip(temp))
+gps <- readr::read_csv(unzip(temp))
 gps <- head(gps, 100)
 save(gps, file = "data/lbbg_gps.rda")
 }
