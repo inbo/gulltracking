@@ -104,7 +104,15 @@ append_metadata <- function(gps,
       paste0(cols_not_present, collapse = "`,`"), "` to join data.")
   )
 
-  # convert gps and reference_data to data.table
+  # cols of reference with same name in gps will be removed before join
+  same_name_cols <- reference_cols[reference_cols %in% cols_gps]
+  if (length(same_name_cols) > 0) {
+    warning(paste0(
+      "The following columns of ref_data will be dropped as they are present in gps as well: `",
+      paste0(same_name_cols, collapse = "`,`"), "`."))
+  }
+
+  # convert gps and ref_data to data.table
   gps <- data.table(gps)
   ref_data <- data.table(ref_data)
 

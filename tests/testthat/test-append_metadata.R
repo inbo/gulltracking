@@ -99,3 +99,25 @@ test_that("output has all columns from gps and reference data in right order", {
   # Assert
   expect_true(all(output_col_names == colnames(output)))
 })
+
+test_that("warning is returned if gps and ref_data have one or more columns with same name", {
+
+  lbbg_gps[["sensor-type"]] <- "A"
+  lbbg_gps[["sensor-model"]] <- "3"
+  lbbg_reference[["sensor-type"]] <- "B"
+  lbbg_reference[["sensor-model"]] <- "3"
+  expect_warning(
+    append_metadata(lbbg_gps,
+                    lbbg_reference,
+                    reference_cols = c("animal-taxon",
+                                       "tag-id",
+                                       "animal-id",
+                                       "sensor-type", # shared column
+                                       "sensor-model", # shared column
+                                       "animal-comments",
+                                       "animal-mass")),
+    paste0(
+      "The following columns of ref_data will be dropped as they ",
+      "are present in gps as well: `sensor-type`,`sensor-model`."))
+
+})
