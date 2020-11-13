@@ -16,12 +16,13 @@ append_metadata(
 the columns used for the join: \code{individual-taxon-canonical-name},
 \code{tag-local-identifier} and \code{individual-local-identifier}.}
 
-\item{ref_data}{data.frame, data.table or matrix. Movebank reference
-data with at least the columns defined in \code{reference_cols}.}
+\item{ref_data}{data.frame, data.table or matrix. Movebank reference data
+with at least the columns defined in \code{reference_cols}.}
 
-\item{reference_cols}{Character. Vector with the column names of
-\code{ref_data} to be added to \code{gps}. It must at least contain the columns
-used for the join: \code{animal-taxon}, \code{tag-id} and \code{animal-id}.
+\item{reference_cols}{Character. Vector with the column names of \code{ref_data}
+to be added to \code{gps}. It must at least contain the columns used for the
+join: \code{animal-taxon}, \code{tag-id} and \code{animal-id}. Columns with same name of
+columns of \code{gps} are dropped with a warning.
 
 Default: \code{c("animal-taxon", "tag-id","animal-id", "animal-comments", "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")}}
 }
@@ -32,12 +33,9 @@ join) appended with the reference data (all columns defined in
 }
 \description{
 This function joins Movebank GPS data with Movebank reference (meta)data, on
-the shared columns:
-\itemize{
-\item \code{gps.individual-taxon-canonical-name} = \code{ref_data.animal-taxon}
-\item \code{gps.tag-local-identifier} = \code{ref_data.tag-id}
-\item \code{gps.individual-local-identifier} = \code{ref_data.animal-id}
-}
+the shared columns: - \code{gps.individual-taxon-canonical-name} =
+\code{ref_data.animal-taxon} - \code{gps.tag-local-identifier} = \code{ref_data.tag-id} -
+\code{gps.individual-local-identifier} = \code{ref_data.animal-id}
 }
 \details{
 GPS and reference data can be downloaded from

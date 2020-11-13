@@ -1,10 +1,9 @@
 #' Append Movebank reference data to Movebank GPS data
 #'
 #' This function joins Movebank GPS data with Movebank reference (meta)data, on
-#' the shared columns:
-#' - `gps.individual-taxon-canonical-name` = `ref_data.animal-taxon`
-#' - `gps.tag-local-identifier` = `ref_data.tag-id`
-#' - `gps.individual-local-identifier` = `ref_data.animal-id`
+#' the shared columns: - `gps.individual-taxon-canonical-name` =
+#' `ref_data.animal-taxon` - `gps.tag-local-identifier` = `ref_data.tag-id` -
+#' `gps.individual-local-identifier` = `ref_data.animal-id`
 #'
 #' GPS and reference data can be downloaded from
 #' [Movebank](https://www.movebank.org).
@@ -12,11 +11,12 @@
 #' @param gps data.frame, data.table or matrix. Movebank GPS data with at least
 #'   the columns used for the join: `individual-taxon-canonical-name`,
 #'   `tag-local-identifier` and `individual-local-identifier`.
-#' @param ref_data data.frame, data.table or matrix. Movebank reference
-#'   data with at least the columns defined in `reference_cols`.
-#' @param reference_cols Character. Vector with the column names of
-#'   `ref_data` to be added to `gps`. It must at least contain the columns
-#'   used for the join: `animal-taxon`, `tag-id` and `animal-id`.
+#' @param ref_data data.frame, data.table or matrix. Movebank reference data
+#'   with at least the columns defined in `reference_cols`.
+#' @param reference_cols Character. Vector with the column names of `ref_data`
+#'   to be added to `gps`. It must at least contain the columns used for the
+#'   join: `animal-taxon`, `tag-id` and `animal-id`. Columns with same name of
+#'   columns of `gps` are dropped with a warning.
 #'
 #'   Default: `c("animal-taxon", "tag-id","animal-id", "animal-comments",
 #'   "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")`
