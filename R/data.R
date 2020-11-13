@@ -6,6 +6,7 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(readr)
 #' temp <- tempfile()
 #' download.file("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip", temp)
 #' gps <- read_csv(unzip(temp))
