@@ -2,9 +2,9 @@
 #'
 #' This function joins Movebank GPS data with Movebank reference (meta)data, on
 #' the shared columns:
-#' - `gps.individual-taxon-canonical-name` = `reference_data.animal-taxon`
-#' - `gps.tag-local-identifier` = `reference_data.tag-id`
-#' - `gps.individual-local-identifier` = `reference_data.animal-id`
+#' - `gps.individual-taxon-canonical-name` = `ref_data.animal-taxon`
+#' - `gps.tag-local-identifier` = `ref_data.tag-id`
+#' - `gps.individual-local-identifier` = `ref_data.animal-id`
 #'
 #' GPS and reference data can be downloaded from
 #' [Movebank](https://www.movebank.org).
@@ -12,10 +12,10 @@
 #' @param gps data.frame, data.table or matrix. Movebank GPS data with at least
 #'   the columns used for the join: `individual-taxon-canonical-name`,
 #'   `tag-local-identifier` and `individual-local-identifier`.
-#' @param reference_data data.frame, data.table or matrix. Movebank reference
+#' @param ref_data data.frame, data.table or matrix. Movebank reference
 #'   data with at least the columns defined in `reference_cols`.
 #' @param reference_cols Character. Vector with the column names of
-#'   `reference_data` to be added to `gps`. It must at least contain the columns
+#'   `ref_data` to be added to `gps`. It must at least contain the columns
 #'   used for the join: `animal-taxon`, `tag-id` and `animal-id`.
 #'
 #'   Default: `c("animal-taxon", "tag-id","animal-id", "animal-comments",
@@ -42,7 +42,7 @@
 #'                      "animal-comments", "animal-life-stage")
 #' )
 append_metadata <- function(gps,
-                            reference_data,
+                            ref_data,
                             reference_cols = c("animal-taxon",
                                                "tag-id",
                                                "animal-id",
@@ -52,19 +52,19 @@ append_metadata <- function(gps,
                                                "animal-sex",
                                                "deployment-comments")) {
 
-  # gps and reference_data are of the right class
+  # gps and ref_data are of the right class
   assert_that(
     any(c("matrix", "data.frame", "data.table") %in% class(gps)),
     msg = "`gps` must be of class data.table, data.frame or matrix."
   )
   assert_that(
-    any(c("matrix", "data.frame", "data.table") %in% class(reference_data)),
-    msg = "`reference_data` must be of class data.table, data.frame or matrix."
+    any(c("matrix", "data.frame", "data.table") %in% class(ref_data)),
+    msg = "`ref_data` must be of class data.table, data.frame or matrix."
   )
 
-  # colnames gps and reference_data
+  # colnames gps and ref_data
   cols_gps <- colnames(gps)
-  cols_reference_data <- colnames(reference_data)
+  cols_ref_data <- colnames(ref_data)
 
   # Define gps cols to have for join
   gps_cols_to_have <- c("individual-taxon-canonical-name",
@@ -83,14 +83,14 @@ append_metadata <- function(gps,
   # cols from gps in output (all cols except those one used for join)
   cols_gps_in_output <- cols_gps[!cols_gps %in% gps_cols_to_have]
 
-  # Check that reference_data contains all columns defined in reference_cols
+  # Check that ref_data contains all columns defined in reference_cols
   cols_not_present <-
-    reference_cols[!reference_cols %in% cols_reference_data]
+    reference_cols[!reference_cols %in% cols_ref_data]
   assert_that(
     length(cols_not_present) == 0,
     msg = paste0(
       "Can't find column(s) `",
-      paste0(cols_not_present, collapse = "`,`"), "` in `reference_data`.")
+      paste0(cols_not_present, collapse = "`,`"), "` in `ref_data`.")
   )
 
   # reference cols to have for join
@@ -106,7 +106,7 @@ append_metadata <- function(gps,
 
   # convert gps and reference_data to data.table
   gps <- data.table(gps)
-  reference_data <- data.table(reference_data)
+  ref_data <- data.table(ref_data)
 
   gps %>%
     # rename gps columns to join by
@@ -114,7 +114,7 @@ append_metadata <- function(gps,
            "tag-id" = "tag-local-identifier",
            "animal-id" = "individual-local-identifier") %>%
     # join reference data to gps data
-    left_join(reference_data,
+    left_join(ref_data,
               by = c("animal-taxon",
                      "tag-id",
                      "animal-id")) %>%

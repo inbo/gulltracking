@@ -2,11 +2,11 @@ library(dplyr)
 
 test_that("error arises if gps and/or references are of the wrong class", {
   expect_error(append_metadata(gps = 1,
-                               reference_data = lbbg_reference),
+                               ref_data = lbbg_reference),
               "`gps` must be of class data.table, data.frame or matrix.")
   expect_error(append_metadata(gps = lbbg_gps,
-                               reference_data = "bad bad bad"),
-               "`reference_data` must be of class data.table, data.frame or matrix.")
+                               ref_data = "bad bad bad"),
+               "`ref_data` must be of class data.table, data.frame or matrix.")
 })
 
 test_that("gps doesn't contain one or more of the mandatory columns", {
@@ -15,7 +15,7 @@ test_that("gps doesn't contain one or more of the mandatory columns", {
     select(-"individual-taxon-canonical-name")
 
   expect_error(append_metadata(gps = gps_without_canonical_name,
-                               reference_data = lbbg_reference),
+                               ref_data = lbbg_reference),
                "Can't find column(s) `individual-taxon-canonical-name` in `gps`.",
                fixed = TRUE)
 
@@ -23,26 +23,26 @@ test_that("gps doesn't contain one or more of the mandatory columns", {
     select(-c("individual-taxon-canonical-name", "tag-local-identifier"))
 
   expect_error(append_metadata(gps = gps_without_canonical_name_identifier,
-                               reference_data = lbbg_reference),
+                               ref_data = lbbg_reference),
                paste0(
                  "Can't find column(s) `individual-taxon-canonical-name`,",
                  "`tag-local-identifier` in `gps`."),
                fixed = TRUE)
 })
 
-test_that("reference_data doesn't contain mandatory columns", {
+test_that("ref_data doesn't contain mandatory columns", {
 
   ref_cols_too_few = c("animal-taxon")
 
   expect_error(append_metadata(gps = lbbg_gps,
-                               reference_data = lbbg_reference,
+                               ref_data = lbbg_reference,
                                reference_cols = ref_cols_too_few),
                paste0("reference_cols should (also) contain `tag-id`,",
                       "`animal-id` to join data."),
                fixed = TRUE)
 })
 
-test_that("reference_data doesn't contain all columns we want to add to gps", {
+test_that("ref_data doesn't contain all columns we want to add to gps", {
 
   reference_without_comments <-
     lbbg_reference %>%
@@ -53,9 +53,9 @@ test_that("reference_data doesn't contain all columns we want to add to gps", {
                      "animal-comments")
 
   expect_error(append_metadata(gps = lbbg_gps,
-                               reference_data = reference_without_comments,
+                               ref_data = reference_without_comments,
                                reference_cols = ref_cols_test),
-               "Can't find column(s) `animal-comments` in `reference_data`.",
+               "Can't find column(s) `animal-comments` in `ref_data`.",
                fixed = TRUE)
 })
 
