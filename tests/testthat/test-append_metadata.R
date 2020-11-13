@@ -37,8 +37,8 @@ test_that("reference_data doesn't contain mandatory columns", {
   expect_error(append_metadata(gps = lbbg_gps,
                                reference_data = lbbg_reference,
                                reference_cols = ref_cols_too_few),
-               paste0("reference_data column(s) `tag-id`,",
-                      "`animal-id` must be selected."),
+               paste0("reference_cols should (also) contain `tag-id`,",
+                      "`animal-id` to join data."),
                fixed = TRUE)
 })
 
