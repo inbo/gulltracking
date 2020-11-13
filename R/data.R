@@ -24,6 +24,6 @@
 #' @examples
 #' \dontrun{
 #' ref_data <- read_csv("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-reference-data.csv")
-#' save(ref_data, file = "data/lbbg_reference.rda")
+#' save(ref_data, file = "data/lbbg_ref_data.rda")
 #' }
-"lbbg_reference"
+"lbbg_ref_data"

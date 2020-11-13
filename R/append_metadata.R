@@ -32,13 +32,13 @@
 #' @importFrom assertthat assert_that
 #' @examples
 #' # Default use
-#' append_metadata(lbbg_gps, lbbg_reference)
+#' append_metadata(lbbg_gps, lbbg_ref_data)
 #'
 #' # Only include specific reference data columns
 #' append_metadata(
 #'   lbbg_gps,
-#'   lbbg_reference,
 #'   reference_cols = c("animal-taxon", "tag-id", "animal-id",
+#'   lbbg_ref_data,
 #'                      "animal-comments", "animal-life-stage")
 #' )
 append_metadata <- function(gps,
