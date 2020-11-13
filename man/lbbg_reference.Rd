@@ -5,7 +5,7 @@
 \alias{lbbg_reference}
 \title{Sample of gull reference data}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 60 rows and 24 columns.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 156 rows and 24 columns.
 }
 \source{
 \href{https://doi.org/10.5281/zenodo.3968687}{Stienen et al. 2020}

@@ -5,7 +5,7 @@
 \alias{lbbg_gps}
 \title{Sample of gull GPS data}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 100 rows and 22 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 100 rows and 22 columns.
 }
 \source{
 \href{https://doi.org/10.5281/zenodo.3968687}{Stienen et al. 2020}
@@ -18,6 +18,7 @@ A sample dataset of gull GPS data (100 records from 2013) in Movebank format.
 }
 \examples{
 \dontrun{
+library(readr)
 temp <- tempfile()
 download.file("https://zenodo.org/record/3968687/files/LBBG_ZEEBRUGGE-gps-2013.csv.zip", temp)
 gps <- read_csv(unzip(temp))
