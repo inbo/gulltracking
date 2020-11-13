@@ -12,32 +12,47 @@ append_metadata(
 )
 }
 \arguments{
-\item{gps}{Movebank GPS data of class matrix, data.frame or data.table.  \code{gps} must contain at least the following columns:
-\itemize{
-\item \code{individual-taxon-canonical-name}
-\item \code{tag-local-identifier}
-\item \code{individual-local-identifier}
-}}
+\item{gps}{Movebank GPS data of class matrix, data.frame or data.table. \code{gps}
+must contain at least the following columns as they are used for join: -
+\code{individual-taxon-canonical-name} (matched to
+\code{reference_data$animal-taxon}) - \code{tag-local-identifier} (matched to
+\code{reference_data$tag-id}) - \code{individual-local-identifier} (matched to
+\code{reference_data$animal-id})}
 
-\item{reference_data}{Movebank reference data of class matrix, data.frame or data.table. \code{reference_data} must contain at least the columns defined in \code{reference_cols}.}
+\item{reference_data}{Movebank reference data of class matrix, data.frame or
+data.table. \code{reference_data} must contain at least the columns defined in
+\code{reference_cols}.}
 
-\item{reference_cols}{Character. Vector with the names of the columns of \code{reference_data} to add to \code{gps}. \code{reference-cols} must contain at least the following columns:
-\itemize{
-\item \code{animal-taxon}
-\item \code{tag-id}
-\item \code{animal-id}
-}
+\item{reference_cols}{Character. Vector with the names of the columns of
+\code{reference_data} to add to \code{gps}. \code{reference-cols} must contain at least
+the following columns used for join: - \code{animal-taxon} (matched to
+\code{gps$individual-taxon-canonical-name}) - \code{tag-id} (matched to
+\code{gps$tag-local-identifier}) - \code{animal-id} (matched to \code{gps$animal-id})
 
-Default:
-\code{c("animal-taxon", "tag-id","animal-id", "animal-comments", "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")}}
+Default: \code{c("animal-taxon", "tag-id","animal-id", "animal-comments", "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")}}
 }
 \value{
-a data.table
+a data.table object with the following columns: - columns of \code{gps}
+except those used for join - \code{animal-taxon} - \code{tag-id} - \code{animal-id} -
+other columns of ´reference_data\verb{as listed in}reference_cols`
 }
 \description{
-This function adds specific Movebank reference data to GPS event data in a given order. GPS and reference data can be downloaded directly from \href{https://www.movebank.org}{movebank}. Examples: \href{https://www.movebank.org/panel_embedded_movebank_webapp?gwt_fragment=page=studies,path=study985143423}{Lesser Black-backed Gulls} and \href{https://www.movebank.org/panel_embedded_movebank_webapp?gwt_fragment=page=studies,path=study986040562}{Herring Gulls}
+This function adds specific Movebank reference data to GPS event data in a
+given order. GPS and reference data can be downloaded directly from
+\href{https://www.movebank.org}{movebank}. Two examples of Movebank bird tracking
+data: a \href{https://www.movebank.org/panel_embedded_movebank_webapp?gwt_fragment=page=studies,path=study985143423}{Lesser Black-backed Gulls}
+project and a \href{https://www.movebank.org/panel_embedded_movebank_webapp?gwt_fragment=page=studies,path=study986040562}{Herring Gulls}
+project.
 }
 \examples{
-\dontrun{
-}
+# Use default reference_cols
+append_metadata(lbbg_gps, lbbg_reference)
+
+# Specify columns of reference_data to add
+append_metadata(lbbg_gps,
+                lbbg_reference,
+                reference_cols = c("animal-taxon",
+                                   "tag-id","animal-id",
+                                   "animal-comments",
+                                   "animal-life-stage"))
 }
