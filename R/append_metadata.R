@@ -100,8 +100,8 @@ append_metadata <- function(gps,
   assert_that(
     length(cols_not_present) == 0,
     msg = paste0(
-      "reference_data column(s) `",
-      paste0(cols_not_present, collapse = "`,`"), "` must be selected.")
+      "reference_cols should (also) contain `",
+      paste0(cols_not_present, collapse = "`,`"), "` to join data.")
   )
 
   # convert gps and reference_data to data.table
