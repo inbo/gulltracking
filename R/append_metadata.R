@@ -38,19 +38,23 @@
 #' append_metadata(
 #'   lbbg_gps,
 #'   lbbg_ref_data,
-#'   ref_cols = c("animal-taxon", "tag-id", "animal-id",
-#'                      "animal-comments", "animal-life-stage")
+#'   ref_cols = c(
+#'     "animal-taxon", "tag-id", "animal-id",
+#'     "animal-comments", "animal-life-stage"
+#'   )
 #' )
 append_metadata <- function(gps,
                             ref_data,
-                            ref_cols = c("animal-taxon",
-                                         "tag-id",
-                                         "animal-id",
-                                         "animal-comments",
-                                         "animal-life-stage",
-                                         "animal-mass",
-                                         "animal-sex",
-                                         "deployment-comments")) {
+                            ref_cols = c(
+                              "animal-taxon",
+                              "tag-id",
+                              "animal-id",
+                              "animal-comments",
+                              "animal-life-stage",
+                              "animal-mass",
+                              "animal-sex",
+                              "deployment-comments"
+                            )) {
 
   # gps and ref_data are of the right class
   assert_that(
@@ -67,9 +71,11 @@ append_metadata <- function(gps,
   cols_ref_data <- colnames(ref_data)
 
   # Define gps cols to have for join
-  gps_cols_to_have <- c("individual-taxon-canonical-name",
-                         "tag-local-identifier",
-                         "individual-local-identifier")
+  gps_cols_to_have <- c(
+    "individual-taxon-canonical-name",
+    "tag-local-identifier",
+    "individual-local-identifier"
+  )
   # Check that gps contains the columns declared above
   cols_not_present <-
     gps_cols_to_have[!gps_cols_to_have %in% cols_gps]
@@ -77,7 +83,8 @@ append_metadata <- function(gps,
     length(cols_not_present) == 0,
     msg = paste0(
       "Can't find column(s) `",
-      paste0(cols_not_present, collapse = "`,`"), "` in `gps`.")
+      paste0(cols_not_present, collapse = "`,`"), "` in `gps`."
+    )
   )
 
   # cols from gps in output (all cols except those one used for join)
@@ -90,7 +97,8 @@ append_metadata <- function(gps,
     length(cols_not_present) == 0,
     msg = paste0(
       "Can't find column(s) `",
-      paste0(cols_not_present, collapse = "`,`"), "` in `ref_data`.")
+      paste0(cols_not_present, collapse = "`,`"), "` in `ref_data`."
+    )
   )
 
   # reference cols to have for join
@@ -101,7 +109,8 @@ append_metadata <- function(gps,
     length(cols_not_present) == 0,
     msg = paste0(
       "ref_cols should (also) contain `",
-      paste0(cols_not_present, collapse = "`,`"), "` to join data.")
+      paste0(cols_not_present, collapse = "`,`"), "` to join data."
+    )
   )
 
   # cols of reference with same name in gps will be removed before join
@@ -109,7 +118,8 @@ append_metadata <- function(gps,
   if (length(same_name_cols) > 0) {
     warning(paste0(
       "The following ref_data columns were dropped as they are present in gps as well: `",
-      paste0(same_name_cols, collapse = "`,`"), "`."))
+      paste0(same_name_cols, collapse = "`,`"), "`."
+    ))
     ref_cols <- ref_cols[!ref_cols %in% same_name_cols]
   }
 
@@ -119,15 +129,20 @@ append_metadata <- function(gps,
 
   gps %>%
     # rename gps columns to join by
-    rename("animal-taxon" = "individual-taxon-canonical-name",
-           "tag-id" = "tag-local-identifier",
-           "animal-id" = "individual-local-identifier") %>%
+    rename(
+      "animal-taxon" = "individual-taxon-canonical-name",
+      "tag-id" = "tag-local-identifier",
+      "animal-id" = "individual-local-identifier"
+    ) %>%
     # join reference data to gps data
     left_join(ref_data %>%
-                select(one_of(ref_cols)),
-              by = c("animal-taxon",
-                     "tag-id",
-                     "animal-id")) %>%
+      select(one_of(ref_cols)),
+    by = c(
+      "animal-taxon",
+      "tag-id",
+      "animal-id"
+    )
+    ) %>%
     # order columns
     select(one_of(cols_gps_in_output), one_of(ref_cols))
 }

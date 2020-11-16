@@ -144,24 +144,27 @@ test_that("warning is returned if and only if gps and ref_data have one or more 
   # Act
   output <- evaluate_promise(
     append_metadata(lbbg_gps,
-                    lbbg_ref_data,
-                    ref_cols = c(
-                      "animal-taxon",
-                      "tag-id",
-                      "animal-id",
-                      "sensor-type", # shared column
-                      "sensor-model", # shared column
-                      "animal-comments",
-                      "animal-mass"
-                    )
+      lbbg_ref_data,
+      ref_cols = c(
+        "animal-taxon",
+        "tag-id",
+        "animal-id",
+        "sensor-type", # shared column
+        "sensor-model", # shared column
+        "animal-comments",
+        "animal-mass"
+      )
     )
   )
 
   # Assert
-  expect_equal(output$warning,
-               paste0("The following ref_data columns were dropped",
-                           " as they are present in gps as well:",
-                           " `sensor-type`,`sensor-model`.")
+  expect_equal(
+    output$warning,
+    paste0(
+      "The following ref_data columns were dropped",
+      " as they are present in gps as well:",
+      " `sensor-type`,`sensor-model`."
+    )
   )
   expect_true(all(c("sensor-type", "sensor-model") %in% names(output$result)))
 
@@ -170,5 +173,4 @@ test_that("warning is returned if and only if gps and ref_data have one or more 
   expect_equal(length(output$warning), 0)
   # but they are still present in output as they are in gps
   expect_true(all(c("sensor-type", "sensor-model") %in% names(output$result)))
-
 })
