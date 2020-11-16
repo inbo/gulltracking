@@ -110,6 +110,7 @@ append_metadata <- function(gps,
     warning(paste0(
       "The following columns of ref_data will be dropped as they are present in gps as well: `",
       paste0(same_name_cols, collapse = "`,`"), "`."))
+    ref_cols <- ref_cols[!ref_cols %in% same_name_cols]
   }
 
   # convert gps and ref_data to data.table
