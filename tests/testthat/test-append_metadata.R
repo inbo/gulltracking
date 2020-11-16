@@ -133,7 +133,6 @@ test_that("output has all columns from gps and reference data in right order", {
   expect_true(all(output_col_names == colnames(output)))
 })
 
-
 test_that("warning is returned if and only if gps and ref_data have one or more columns with same name", {
 
   # Arrange
