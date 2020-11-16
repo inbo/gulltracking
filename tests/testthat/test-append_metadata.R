@@ -165,7 +165,7 @@ test_that("warning is returned if and only if gps and ref_data have one or more 
   )
   expect_true(all(c("sensor-type", "sensor-model") %in% names(output$result)))
 
-  # if shared columns are not selected for join, no warnings is returned (NA)
+  # if shared columns are not selected for join, no warnings is returned
   output <- evaluate_promise(append_metadata(lbbg_gps, lbbg_ref_data))
   expect_equal(length(output$warning), 0)
   # but they are still present in output as they are in gps
