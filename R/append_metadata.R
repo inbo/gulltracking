@@ -117,7 +117,7 @@ append_metadata <- function(gps,
   same_name_cols <- ref_cols[ref_cols %in% cols_gps]
   if (length(same_name_cols) > 0) {
     warning(paste0(
-      "The following ref_data columns were dropped as they are present in gps as well: `",
+      "The following `ref_data` columns were dropped as they are present in `gps` as well: `",
       paste0(same_name_cols, collapse = "`,`"), "`."
     ))
     ref_cols <- ref_cols[!ref_cols %in% same_name_cols]
