@@ -136,30 +136,39 @@ test_that("output has all columns from gps and reference data in right order", {
 
 test_that("warning is returned if and only if gps and ref_data have one or more columns with same name", {
 
+  # Arrange
   lbbg_gps[["sensor-type"]] <- "A"
   lbbg_gps[["sensor-model"]] <- "3"
   lbbg_ref_data[["sensor-type"]] <- "B"
   lbbg_ref_data[["sensor-model"]] <- "3"
 
-  expect_warning(
+  # Act
+  output <- evaluate_promise(
     append_metadata(lbbg_gps,
-      lbbg_ref_data,
-      ref_cols = c(
-        "animal-taxon",
-        "tag-id",
-        "animal-id",
-        "sensor-type", # shared column
-        "sensor-model", # shared column
-        "animal-comments",
-        "animal-mass"
-      )
-    ),
-    paste0(
-      "The following columns of ref_data will be dropped as they ",
-      "are present in gps as well: `sensor-type`,`sensor-model`."
+                    lbbg_ref_data,
+                    ref_cols = c(
+                      "animal-taxon",
+                      "tag-id",
+                      "animal-id",
+                      "sensor-type", # shared column
+                      "sensor-model", # shared column
+                      "animal-comments",
+                      "animal-mass"
+                    )
     )
   )
 
-  # if shared columns are not selected, no warnings should be returned
-  expect_warning(lbbg_gps, lbbg_ref_data, regexp = NA)
+  # Assert
+  expect_equal(output$warning,
+               paste0("The following columns of ref_data will be dropped",
+                           " as they are present in gps as well:",
+                           " `sensor-type`,`sensor-model`.")
+  )
+
+  # if shared columns are not selected for join, no warnings is returned (NA)
+  output <- evaluate_promise(append_metadata(lbbg_gps, lbbg_ref_data))
+  expect_equal(length(output$warning), 0)
+  # but they are still present in output as they are in gps
+  expect_true(all(c("sensor-type", "sensor-model") %in% names(output$result)))
+
 })
