@@ -28,11 +28,11 @@ class.acc  <- function(GPS.data,acc.data,RF.mod){
   # gps and acc_data are of the right class
   assert_that(
     any(c("matrix", "data.frame", "data.table") %in% class(GPS.data)),
-    msg = "`gps` must be of class data.table, data.frame or matrix."
+    msg = "`GPS.data` must be of class data.table, data.frame or matrix."
   )
   assert_that(
     any(c("matrix", "data.frame", "data.table") %in% class(acc.data)),
-    msg = "`ref_data` must be of class data.table, data.frame or matrix."
+    msg = "`acc.data` must be of class data.table, data.frame or matrix."
   )
   
   # assing unique IDs to match events
