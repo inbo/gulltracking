@@ -38,7 +38,7 @@ test_that("gps doesn't contain one or more of the mandatory columns", {
   ),
   paste0(
     "Can't find column(s) `individual-taxon-canonical-name`,",
-    "`tag-local-identifier` in `gps`..."
+    "`tag-local-identifier` in `gps`."
   ),
   fixed = TRUE
   )
