@@ -25,6 +25,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
-    testthat
+    testthat,
+    covr
 Depends: 
     R (>= 3.5.0)
