@@ -40,12 +40,15 @@ GPS and reference data can be downloaded from
 append_metadata(lbbg_gps, lbbg_ref_data)
 
 # Only include specific reference data columns
-append_metadata(
-  lbbg_gps,
-  lbbg_ref_data,
-  ref_cols = c(
-    "animal-taxon", "tag-id", "animal-id",
-    "animal-comments", "animal-life-stage"
-  )
+append_metadata(lbbg_gps,
+                lbbg_ref_data,
+                ref_cols = c("animal-taxon",
+                             "tag-id",
+                             "animal-id",
+                             "animal-comments",
+                             "animal-life-stage",
+                             "animal-mass",
+                             "animal-sex",
+                             "deployment-comments")
 )
 }
