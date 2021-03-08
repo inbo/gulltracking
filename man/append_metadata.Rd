@@ -4,12 +4,7 @@
 \alias{append_metadata}
 \title{Append Movebank reference data to Movebank GPS data}
 \usage{
-append_metadata(
-  gps,
-  ref_data,
-  ref_cols = c("animal-taxon", "tag-id", "animal-id", "animal-comments",
-    "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")
-)
+append_metadata(gps, ref_data, ref_cols = NULL)
 }
 \arguments{
 \item{gps}{data.frame, data.table or matrix. Movebank GPS data with at least
