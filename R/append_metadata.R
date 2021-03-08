@@ -1,9 +1,10 @@
 #' Append Movebank reference data to Movebank GPS data
 #'
 #' This function joins Movebank GPS data with Movebank reference (meta)data, on
-#' the shared columns: - `gps.individual-taxon-canonical-name` =
-#' `ref_data.animal-taxon` - `gps.tag-local-identifier` = `ref_data.tag-id` -
-#' `gps.individual-local-identifier` = `ref_data.animal-id`
+#' the shared columns:
+#' - `gps.tag-local-identifier` = `ref_data.tag-id`
+#' - `gps.individual-local-identifier` = `ref_data.animal-id`
+#' - `gps.individual-taxon-canonical-name` = `ref_data.animal-taxon`
 #'
 #' GPS and reference data can be downloaded from
 #' [Movebank](https://www.movebank.org).
