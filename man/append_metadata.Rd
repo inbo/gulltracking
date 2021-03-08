@@ -19,12 +19,11 @@ the columns used for the join: \code{individual-taxon-canonical-name},
 \item{ref_data}{data.frame, data.table or matrix. Movebank reference data
 with at least the columns defined in \code{ref_cols}.}
 
-\item{ref_cols}{Character. Vector with the column names of \code{ref_data} to be
-added to \code{gps}. It must at least contain the columns used for the join:
-\code{animal-taxon}, \code{tag-id} and \code{animal-id}. Columns with same name of
-columns of \code{gps} are dropped with a warning.
-
-Default: \code{c("animal-taxon", "tag-id","animal-id", "animal-comments", "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")}}
+\item{ref_cols}{\code{NULL}, the default, or a character. if  \code{NULL} all columns
+of \code{ref_data} are added  to  \code{gps}. If a  vector, it must contain the
+column names of \code{ref_data} to be added to \code{gps}. It must at least contain
+the columns used for the join: \code{animal-taxon}, \code{tag-id} and \code{animal-id}.
+Columns with same name of columns of \code{gps} are dropped with a warning.}
 }
 \value{
 A data.table with the GPS data (all columns except those used in the

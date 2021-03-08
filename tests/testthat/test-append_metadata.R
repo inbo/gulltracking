@@ -90,7 +90,7 @@ test_that(
     )))
 )
 
-test_that("output has all columns from gps and reference data in right order", {
+test_that("output has all columns from gps and reference data in right order: minimal example", {
   # Arrange
   cols_from_gps_minimal <- c(
     "event-id",
@@ -133,6 +133,21 @@ test_that("output has all columns from gps and reference data in right order", {
   expect_true(all(output_col_names == colnames(output)))
 })
 
+test_that("output has all columns from gps and reference data in right order: full example", {
+  # Arrange
+  output_col_names <- c(colnames(lbbg_gps)[!colnames(lbbg_gps) %in% c("tag-local-identifier",
+                                                                      "individual-local-identifier",
+                                                                      "individual-taxon-canonical-name")],
+                        colnames(lbbg_ref_data))
+
+  # Act
+  output <- append_metadata(lbbg_gps, lbbg_ref_data)
+
+  # Assert
+  expect_true(all(output_col_names == colnames(output)))
+})
+
+
 test_that("warning is returned if and only if gps and ref_data have one or more columns with same name", {
 
   # Arrange
@@ -169,7 +184,14 @@ test_that("warning is returned if and only if gps and ref_data have one or more 
   expect_true(all(c("sensor-type", "sensor-model") %in% names(output$result)))
 
   # if shared columns are not selected for join, no warnings is returned
-  output <- evaluate_promise(append_metadata(lbbg_gps, lbbg_ref_data))
+  output <- evaluate_promise(append_metadata(lbbg_gps,
+                                             lbbg_ref_data,
+                                             ref_cols = c("animal-taxon",
+                                                          "tag-id",
+                                                          "animal-id",
+                                                          "animal-comments",
+                                                          "animal-life-stage",
+                                                          "deployment-comments")))
   expect_equal(length(output$warning), 0)
   # but they are still present in output as they are in gps
   expect_true(all(c("sensor-type", "sensor-model") %in% names(output$result)))

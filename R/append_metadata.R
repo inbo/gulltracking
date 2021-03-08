@@ -13,13 +13,11 @@
 #'   `tag-local-identifier` and `individual-local-identifier`.
 #' @param ref_data data.frame, data.table or matrix. Movebank reference data
 #'   with at least the columns defined in `ref_cols`.
-#' @param ref_cols Character. Vector with the column names of `ref_data` to be
-#'   added to `gps`. It must at least contain the columns used for the join:
-#'   `animal-taxon`, `tag-id` and `animal-id`. Columns with same name of
-#'   columns of `gps` are dropped with a warning.
-#'
-#'   Default: `c("animal-taxon", "tag-id","animal-id", "animal-comments",
-#'   "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")`
+#' @param ref_cols `NULL`, the default, or a character. if  `NULL` all columns
+#'   of `ref_data` are added  to  `gps`. If a  vector, it must contain the
+#'   column names of `ref_data` to be added to `gps`. It must at least contain
+#'   the columns used for the join: `tag-id`, `animal-id` and `animal-taxon`.
+#'   Columns with same name of columns of `gps` are dropped with a warning.
 #'
 #' @return A data.table with the GPS data (all columns except those used in the
 #'   join) appended with the reference data (all columns defined in
@@ -45,16 +43,7 @@
 #' )
 append_metadata <- function(gps,
                             ref_data,
-                            ref_cols = c(
-                              "animal-taxon",
-                              "tag-id",
-                              "animal-id",
-                              "animal-comments",
-                              "animal-life-stage",
-                              "animal-mass",
-                              "animal-sex",
-                              "deployment-comments"
-                            )) {
+                            ref_cols = NULL) {
 
   # gps and ref_data are of the right class
   assert_that(
@@ -91,8 +80,13 @@ append_metadata <- function(gps,
   cols_gps_in_output <- cols_gps[!cols_gps %in% gps_cols_to_have]
 
   # Check that ref_data contains all columns defined in ref_cols
-  cols_not_present <-
-    ref_cols[!ref_cols %in% cols_ref_data]
+  cols_not_present <- character(0)
+  if (!is.null(ref_cols)) {
+    cols_not_present <-
+      ref_cols[!ref_cols %in% cols_ref_data]
+  } else {
+    ref_cols <- cols_ref_data
+  }
   assert_that(
     length(cols_not_present) == 0,
     msg = paste0(
