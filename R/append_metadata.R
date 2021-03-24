@@ -14,11 +14,11 @@
 #'   `tag-local-identifier` and `individual-local-identifier`.
 #' @param ref_data data.frame, data.table or matrix. Movebank reference data
 #'   with at least the columns defined in `ref_cols`.
-#' @param ref_cols `NULL`, the default, or a character. if  `NULL` all columns
-#'   of `ref_data` are added  to  `gps`. If a  vector, it must contain the
-#'   column names of `ref_data` to be added to `gps`. It must at least contain
-#'   the columns used for the join: `tag-id`, `animal-id` and `animal-taxon`.
-#'   Columns with same name of columns of `gps` are dropped with a warning.
+#' @param ref_cols character vector. Column names of `ref_data` to be added to 
+#'   `gps`. Defaults to `NULL`, adding all columns. When specified, it must at 
+#'   least contain the columns used for the join: `tag-id`, `animal-id` and 
+#'   `animal-taxon`. Columns that have same name as the columns of `gps` are 
+#'   dropped with a warning.
 #'
 #' @return A data.table with the GPS data (all columns except those used in the
 #'   join) appended with the reference data (all columns defined in
