@@ -41,9 +41,12 @@
 
 <meta property="og:title" content="Append Movebank reference data to Movebank GPS data — append_metadata" />
 <meta property="og:description" content="This function joins Movebank GPS data with Movebank reference (meta)data, on
-the shared columns: - gps.individual-taxon-canonical-name =
-ref_data.animal-taxon - gps.tag-local-identifier = ref_data.tag-id -
-gps.individual-local-identifier = ref_data.animal-id" />
+the shared columns:
+gps.tag-local-identifier = ref_data.tag-id
+gps.individual-local-identifier = ref_data.animal-id
+gps.individual-taxon-canonical-name = ref_data.animal-taxon
+
+" />
 
 
 
@@ -118,17 +121,15 @@ gps.individual-local-identifier = ref_data.animal-id" />
 
     <div class="ref-description">
     <p>This function joins Movebank GPS data with Movebank reference (meta)data, on
-the shared columns: - <code>gps.individual-taxon-canonical-name</code> =
-<code>ref_data.animal-taxon</code> - <code>gps.tag-local-identifier</code> = <code>ref_data.tag-id</code> -
-<code>gps.individual-local-identifier</code> = <code>ref_data.animal-id</code></p>
+the shared columns:</p><ul>
+<li><p><code>gps.tag-local-identifier</code> = <code>ref_data.tag-id</code></p></li>
+<li><p><code>gps.individual-local-identifier</code> = <code>ref_data.animal-id</code></p></li>
+<li><p><code>gps.individual-taxon-canonical-name</code> = <code>ref_data.animal-taxon</code></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>append_metadata</span><span class='op'>(</span>
-  <span class='va'>gps</span>,
-  <span class='va'>ref_data</span>,
-  ref_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"animal-taxon"</span>, <span class='st'>"tag-id"</span>, <span class='st'>"animal-id"</span>, <span class='st'>"animal-comments"</span>,
-    <span class='st'>"animal-life-stage"</span>, <span class='st'>"animal-mass"</span>, <span class='st'>"animal-sex"</span>, <span class='st'>"deployment-comments"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>append_metadata</span><span class='op'>(</span><span class='va'>gps</span>, <span class='va'>ref_data</span>, ref_cols <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,11 +147,11 @@ with at least the columns defined in <code>ref_cols</code>.</p></td>
     </tr>
     <tr>
       <th>ref_cols</th>
-      <td><p>Character. Vector with the column names of <code>ref_data</code> to be
-added to <code>gps</code>. It must at least contain the columns used for the join:
-<code>animal-taxon</code>, <code>tag-id</code> and <code>animal-id</code>. Columns with same name of
-columns of <code>gps</code> are dropped with a warning.</p>
-<p>Default: <code><a href='https://rdrr.io/r/base/c.html'>c("animal-taxon", "tag-id","animal-id", "animal-comments", "animal-life-stage", "animal-mass", "animal-sex", "deployment-comments")</a></code></p></td>
+      <td><p>character vector. Column names of <code>ref_data</code> to be added to
+<code>gps</code>. Defaults to <code>NULL</code>, adding all columns. When specified, it must at
+least contain the columns used for the join: <code>tag-id</code>, <code>animal-id</code> and
+<code>animal-taxon</code>. Columns that have same name as the columns of <code>gps</code> are
+dropped with a warning.</p></td>
     </tr>
     </table>
 
@@ -167,6 +168,1446 @@ join) appended with the reference data (all columns defined in
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Default use</span>
 <span class='fu'>append_metadata</span><span class='op'>(</span><span class='va'>lbbg_gps</span>, <span class='va'>lbbg_ref_data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         event-id visible           timestamp location-long location-lat
+#&gt;   1: 15476536641    TRUE 2013-05-30 15:48:44      3.180090     51.34288
+#&gt;   2: 15476536652    TRUE 2013-05-30 16:19:21      3.180108     51.34285
+#&gt;   3: 15476536670    TRUE 2013-05-30 16:49:29      3.180325     51.34290
+#&gt;   4: 15476536716    TRUE 2013-05-30 17:21:27      3.180296     51.34291
+#&gt;   5: 15476536769    TRUE 2013-05-30 17:53:13      3.180507     51.34274
+#&gt;   6: 15476536821    TRUE 2013-05-30 18:25:07      3.180389     51.34288
+#&gt;   7: 15476536869    TRUE 2013-05-30 18:55:23      3.180431     51.34289
+#&gt;   8: 15476536915    TRUE 2013-05-30 19:25:38      3.180435     51.34289
+#&gt;   9: 15476536949    TRUE 2013-05-30 19:55:36      3.180451     51.34292
+#&gt;  10: 15476536966    TRUE 2013-05-30 20:25:28      3.185235     51.34317
+#&gt;  11: 15476536981    TRUE 2013-05-30 20:55:33      3.185279     51.34318
+#&gt;  12: 15476536993    TRUE 2013-05-30 21:55:52      3.185156     51.34321
+#&gt;  13: 15476537005    TRUE 2013-05-30 22:56:08      3.185233     51.34323
+#&gt;  14: 15476537017    TRUE 2013-05-30 23:57:08      3.185226     51.34317
+#&gt;  15: 15476537029    TRUE 2013-05-31 00:57:47      3.185219     51.34318
+#&gt;  16: 15476537040    TRUE 2013-05-31 01:58:17      3.182410     51.34379
+#&gt;  17: 15476537051    TRUE 2013-05-31 02:59:06      3.182474     51.34377
+#&gt;  18: 15476537068    TRUE 2013-05-31 03:31:19      3.185212     51.34319
+#&gt;  19: 15476537081    TRUE 2013-05-31 04:01:11      3.185230     51.34319
+#&gt;  20: 15476537101    TRUE 2013-05-31 04:31:19      3.185218     51.34317
+#&gt;  21: 15476537121    TRUE 2013-05-31 05:01:29      3.185252     51.34316
+#&gt;  22: 15476537169    TRUE 2013-05-31 05:32:18      3.185244     51.34317
+#&gt;  23: 15476537224    TRUE 2013-05-31 06:03:08      3.185283     51.34318
+#&gt;  24: 15476537325    TRUE 2013-05-31 06:33:15      3.206527     51.31715
+#&gt;  25: 15476537445    TRUE 2013-05-31 07:03:04      3.189048     51.33693
+#&gt;  26: 15476537560    TRUE 2013-05-31 07:33:03      3.185282     51.34321
+#&gt;  27: 15476537565    TRUE 2013-05-31 07:34:54      3.185251     51.34321
+#&gt;  28: 15476537594    TRUE 2013-05-31 07:44:37      3.185296     51.34321
+#&gt;  29: 15476537612    TRUE 2013-05-31 07:51:24      3.185268     51.34315
+#&gt;  30: 15476537632    TRUE 2013-05-31 07:58:47      3.185245     51.34318
+#&gt;  31: 15476537644    TRUE 2013-05-31 08:03:37      3.184562     51.34380
+#&gt;  32: 15476537663    TRUE 2013-05-31 08:10:47      3.184695     51.34383
+#&gt;  33: 15476537684    TRUE 2013-05-31 08:18:01      3.184239     51.34389
+#&gt;  34: 15476537702    TRUE 2013-05-31 08:25:14      3.184122     51.34364
+#&gt;  35: 15476537720    TRUE 2013-05-31 08:31:51      3.184643     51.34353
+#&gt;  36: 15476537739    TRUE 2013-05-31 08:39:07      3.184349     51.34346
+#&gt;  37: 15476537742    TRUE 2013-05-31 08:39:53      3.184351     51.34354
+#&gt;  38: 15476537785    TRUE 2013-05-31 08:55:21      3.185280     51.34318
+#&gt;  39: 15476537800    TRUE 2013-05-31 09:00:26      3.185364     51.34316
+#&gt;  40: 15476537814    TRUE 2013-05-31 09:05:32      3.185344     51.34316
+#&gt;  41: 15476537831    TRUE 2013-05-31 09:11:09      3.185271     51.34317
+#&gt;  42: 15476537846    TRUE 2013-05-31 09:16:08      3.185277     51.34316
+#&gt;  43: 15476537868    TRUE 2013-05-31 09:23:39      3.185269     51.34316
+#&gt;  44: 15476537882    TRUE 2013-05-31 09:28:26      3.185266     51.34318
+#&gt;  45: 15476537897    TRUE 2013-05-31 09:33:12      3.185306     51.34317
+#&gt;  46: 15476537910    TRUE 2013-05-31 09:37:59      3.185240     51.34315
+#&gt;  47: 15476537941    TRUE 2013-05-31 09:48:23      3.185214     51.34318
+#&gt;  48: 15476537961    TRUE 2013-05-31 09:56:02      3.185279     51.34318
+#&gt;  49: 15476537977    TRUE 2013-05-31 10:02:09      3.185350     51.34323
+#&gt;  50: 15476537997    TRUE 2013-05-31 10:09:17      3.185245     51.34318
+#&gt;  51: 15476538015    TRUE 2013-05-31 10:16:40      3.185264     51.34318
+#&gt;  52: 15476538037    TRUE 2013-05-31 10:24:41      3.186621     51.34206
+#&gt;  53: 15476538040    TRUE 2013-05-31 10:25:29      3.186835     51.34220
+#&gt;  54: 15476538054    TRUE 2013-05-31 10:30:15      3.186643     51.34211
+#&gt;  55: 15476538076    TRUE 2013-05-31 10:37:44      3.186638     51.34221
+#&gt;  56: 15476538097    TRUE 2013-05-31 10:44:57      3.183391     51.34419
+#&gt;  57: 15476538104    TRUE 2013-05-31 10:46:31      3.185127     51.34305
+#&gt;  58: 15476538118    TRUE 2013-05-31 10:51:32      3.186528     51.34492
+#&gt;  59: 15476538124    TRUE 2013-05-31 10:54:00      3.185263     51.34321
+#&gt;  60: 15476538145    TRUE 2013-05-31 11:01:14      3.185292     51.34323
+#&gt;  61: 15476538164    TRUE 2013-05-31 11:07:20      3.185258     51.34321
+#&gt;  62: 15476538180    TRUE 2013-05-31 11:12:37      3.185233     51.34317
+#&gt;  63: 15476538196    TRUE 2013-05-31 11:17:59      3.185110     51.34313
+#&gt;  64: 15476538217    TRUE 2013-05-31 11:25:28      3.185192     51.34327
+#&gt;  65: 15476538230    TRUE 2013-05-31 11:30:56      3.185064     51.34315
+#&gt;  66: 15476538253    TRUE 2013-05-31 11:37:59      3.185086     51.34306
+#&gt;  67: 15476538270    TRUE 2013-05-31 11:42:47      3.184868     51.34302
+#&gt;  68: 15476538291    TRUE 2013-05-31 11:49:59      3.184934     51.34304
+#&gt;  69: 15476538315    TRUE 2013-05-31 11:57:26      3.185131     51.34311
+#&gt;  70: 15476538339    TRUE 2013-05-31 12:03:08      3.181286     51.34245
+#&gt;  71: 15476538357    TRUE 2013-05-31 12:08:04      3.185221     51.34316
+#&gt;  72: 15476538401    TRUE 2013-05-31 12:20:40      3.185605     51.34606
+#&gt;  73: 15476538404    TRUE 2013-05-31 12:21:27      3.184956     51.34344
+#&gt;  74: 15476538427    TRUE 2013-05-31 12:28:47      3.185218     51.34318
+#&gt;  75: 15476538447    TRUE 2013-05-31 12:34:10      3.185252     51.34316
+#&gt;  76: 15476538479    TRUE 2013-05-31 12:41:46      3.185238     51.34314
+#&gt;  77: 15476538492    TRUE 2013-05-31 12:46:32      3.185226     51.34314
+#&gt;  78: 15476538523    TRUE 2013-05-31 13:00:59      3.185235     51.34316
+#&gt;  79: 15476538539    TRUE 2013-05-31 13:08:21      3.185244     51.34316
+#&gt;  80: 15476538559    TRUE 2013-05-31 13:15:51      3.185112     51.34322
+#&gt;  81: 15476538580    TRUE 2013-05-31 13:23:53      3.185138     51.34327
+#&gt;  82: 15476538595    TRUE 2013-05-31 13:28:46      3.188295     51.34194
+#&gt;  83: 15476538603    TRUE 2013-05-31 13:31:20      3.187311     51.34245
+#&gt;  84: 15476538623    TRUE 2013-05-31 13:38:35      3.187459     51.34356
+#&gt;  85: 15476538649    TRUE 2013-05-31 13:48:24      3.181500     51.34410
+#&gt;  86: 15476538658    TRUE 2013-05-31 13:51:15      3.185181     51.34324
+#&gt;  87: 15476538675    TRUE 2013-05-31 13:58:18      3.185369     51.34350
+#&gt;  88: 15476538695    TRUE 2013-05-31 14:05:27      3.184176     51.34408
+#&gt;  89: 15476538698    TRUE 2013-05-31 14:06:29      3.185223     51.34313
+#&gt;  90: 15476538713    TRUE 2013-05-31 14:11:34      3.185252     51.34320
+#&gt;  91: 15476538724    TRUE 2013-05-31 14:16:23      3.185103     51.34319
+#&gt;  92: 15476538736    TRUE 2013-05-31 14:21:11      3.185139     51.34307
+#&gt;  93: 15476538758    TRUE 2013-05-31 14:29:43      3.185153     51.34326
+#&gt;  94: 15476538771    TRUE 2013-05-31 14:37:03      3.185013     51.34341
+#&gt;  95: 15476538786    TRUE 2013-05-31 14:44:23      3.184905     51.34345
+#&gt;  96: 15476538803    TRUE 2013-05-31 14:51:36      3.185080     51.34364
+#&gt;  97: 15476538819    TRUE 2013-05-31 14:59:20      3.185063     51.34347
+#&gt;  98: 15476538836    TRUE 2013-05-31 15:04:56      3.185307     51.34440
+#&gt;  99: 15476538842    TRUE 2013-05-31 15:07:19      3.185261     51.34322
+#&gt; 100: 15476538857    TRUE 2013-05-31 15:12:25      3.185325     51.34281
+#&gt;         event-id visible           timestamp location-long location-lat
+#&gt;      bar:barometric-pressure external-temperature gps:dop gps:satellite-count
+#&gt;   1:                      NA                 26.2     3.9                   5
+#&gt;   2:                      NA                 25.2     2.9                   5
+#&gt;   3:                      NA                 23.5     3.4                   5
+#&gt;   4:                      NA                 23.6     3.3                   5
+#&gt;   5:                      NA                 24.1     2.7                   5
+#&gt;   6:                      NA                 24.6     5.2                   4
+#&gt;   7:                      NA                 24.2     2.8                   4
+#&gt;   8:                      NA                 23.5     1.6                   8
+#&gt;   9:                      NA                 23.4     2.7                   6
+#&gt;  10:                      NA                 24.2     3.0                   6
+#&gt;  11:                      NA                 25.8     7.6                   4
+#&gt;  12:                      NA                 26.3     4.0                   5
+#&gt;  13:                      NA                 25.6     3.9                   5
+#&gt;  14:                      NA                 29.6     2.4                   8
+#&gt;  15:                      NA                 29.0     2.4                   7
+#&gt;  16:                      NA                 21.9     3.9                   5
+#&gt;  17:                      NA                 23.8     2.0                   8
+#&gt;  18:                      NA                 25.0     1.9                   8
+#&gt;  19:                      NA                 23.9     2.2                   7
+#&gt;  20:                      NA                 25.2     2.3                   7
+#&gt;  21:                      NA                 25.9     3.8                   6
+#&gt;  22:                      NA                 26.6     8.5                   4
+#&gt;  23:                      NA                 26.5     2.5                   7
+#&gt;  24:                      NA                 15.8     2.4                   7
+#&gt;  25:                      NA                 22.7     2.0                   7
+#&gt;  26:                      NA                 30.5     2.8                   5
+#&gt;  27:                      NA                 31.1     2.4                   6
+#&gt;  28:                      NA                 32.8     3.0                   6
+#&gt;  29:                      NA                 32.8     4.6                   4
+#&gt;  30:                      NA                 30.9     2.3                   6
+#&gt;  31:                      NA                 29.1     2.2                   6
+#&gt;  32:                      NA                 28.1     2.2                   6
+#&gt;  33:                      NA                 28.6     2.2                   6
+#&gt;  34:                      NA                 30.6     2.1                   6
+#&gt;  35:                      NA                 29.2     2.1                   6
+#&gt;  36:                      NA                 30.9     2.1                   6
+#&gt;  37:                      NA                 31.0     2.1                   6
+#&gt;  38:                      NA                 33.5     7.6                   4
+#&gt;  39:                      NA                 34.2     8.5                   4
+#&gt;  40:                      NA                 34.2     9.6                   4
+#&gt;  41:                      NA                 34.7     1.9                   7
+#&gt;  42:                      NA                 34.8     1.9                   7
+#&gt;  43:                      NA                 34.1     1.9                   7
+#&gt;  44:                      NA                 34.6     2.6                   6
+#&gt;  45:                      NA                 33.9     2.3                   6
+#&gt;  46:                      NA                 32.4     1.8                   7
+#&gt;  47:                      NA                 31.0     2.3                   6
+#&gt;  48:                      NA                 33.1     2.2                   6
+#&gt;  49:                      NA                 33.9     2.2                   6
+#&gt;  50:                      NA                 37.1     3.0                   5
+#&gt;  51:                      NA                 39.8     2.1                   6
+#&gt;  52:                      NA                 40.1     2.8                   5
+#&gt;  53:                      NA                 41.0     2.8                   5
+#&gt;  54:                      NA                 41.9     2.8                   5
+#&gt;  55:                      NA                 44.5     2.8                   5
+#&gt;  56:                      NA                 45.9     2.8                   5
+#&gt;  57:                      NA                 45.8     3.4                   5
+#&gt;  58:                      NA                 44.4     3.2                   5
+#&gt;  59:                      NA                 42.6     2.1                   6
+#&gt;  60:                      NA                 38.4     2.0                   6
+#&gt;  61:                      NA                 35.5     2.0                   6
+#&gt;  62:                      NA                 34.3     1.5                   9
+#&gt;  63:                      NA                 33.7     1.6                   7
+#&gt;  64:                      NA                 28.7     1.7                   7
+#&gt;  65:                      NA                 32.0     2.2                   6
+#&gt;  66:                      NA                 36.0     2.3                   6
+#&gt;  67:                      NA                 37.8     2.4                   6
+#&gt;  68:                      NA                 38.5     2.5                   6
+#&gt;  69:                      NA                 36.4     2.6                   6
+#&gt;  70:                      NA                 37.3     2.0                   7
+#&gt;  71:                      NA                 36.2     1.9                   8
+#&gt;  72:                      NA                 38.4     2.8                   5
+#&gt;  73:                      NA                 38.4     1.8                   8
+#&gt;  74:                      NA                 40.5     2.7                   6
+#&gt;  75:                      NA                 40.4     1.7                   8
+#&gt;  76:                      NA                 42.2     1.8                   7
+#&gt;  77:                      NA                 42.3     1.9                   6
+#&gt;  78:                      NA                 43.3     2.5                   5
+#&gt;  79:                      NA                 41.6     2.7                   4
+#&gt;  80:                      NA                 39.6     2.0                   6
+#&gt;  81:                      NA                 39.3     2.4                   5
+#&gt;  82:                      NA                 40.7     2.0                   6
+#&gt;  83:                      NA                 40.8     1.8                   7
+#&gt;  84:                      NA                 41.6     3.4                   5
+#&gt;  85:                      NA                 40.2     1.7                   6
+#&gt;  86:                      NA                 40.0     3.8                   4
+#&gt;  87:                      NA                 39.6     3.7                   5
+#&gt;  88:                      NA                 40.6     4.4                   4
+#&gt;  89:                      NA                 40.9     4.3                   4
+#&gt;  90:                      NA                 40.1     3.6                   4
+#&gt;  91:                      NA                 38.7     1.5                   7
+#&gt;  92:                      NA                 38.7     1.5                   7
+#&gt;  93:                      NA                 40.2     2.7                   6
+#&gt;  94:                      NA                 40.1     3.8                   5
+#&gt;  95:                      NA                 40.6     3.8                   5
+#&gt;  96:                      NA                 38.9     3.9                   5
+#&gt;  97:                      NA                 37.8     4.0                   5
+#&gt;  98:                      NA                 36.7     4.1                   5
+#&gt;  99:                      NA                 36.4     4.1                   5
+#&gt; 100:                      NA                 37.0     4.2                   5
+#&gt;      bar:barometric-pressure external-temperature gps:dop gps:satellite-count
+#&gt;      gps-time-to-fix ground-speed     heading height-above-msl
+#&gt;   1:            89.5   0.23990525  97.2881136                2
+#&gt;   2:             9.0   0.68492543 201.0745766               -1
+#&gt;   3:             8.9   0.27465942 148.7308238                1
+#&gt;   4:            39.0   0.16557312 282.8655324                6
+#&gt;   5:             9.0   7.48392294 137.9184498              -31
+#&gt;   6:            18.9   0.06223111  86.6817700                6
+#&gt;   7:            10.9   0.37885842  75.4210737                3
+#&gt;   8:            34.1   0.03912849 277.0961510                5
+#&gt;   9:             8.1   0.27813325   3.4307856                2
+#&gt;  10:             8.1   0.21626916 216.3378302                8
+#&gt;  11:            21.1   0.42254144 213.1880607               -4
+#&gt;  12:             8.2   0.11743204   3.5346435               -2
+#&gt;  13:            24.2   0.14009017  55.4527317                8
+#&gt;  14:            40.3   0.24014618 153.8226960               10
+#&gt;  15:            11.2   1.52351722 146.0765369                2
+#&gt;  16:             9.3   1.38663051   3.0996011               -8
+#&gt;  17:            42.3   0.10831387  57.1364089                4
+#&gt;  18:             7.4   0.05888493   6.4519104                7
+#&gt;  19:             7.4   0.05136576  42.8827627                4
+#&gt;  20:             7.3   0.10068071 108.6082890                5
+#&gt;  21:             9.3   0.92465076   0.5249213                6
+#&gt;  22:            18.4   0.29339074 344.9964163                7
+#&gt;  23:            28.4   0.12203525 186.2655188                2
+#&gt;  24:            27.3   0.46824603 309.9392163                2
+#&gt;  25:             8.4  11.28791545   5.7045198               25
+#&gt;  26:            15.4   0.84643382  83.2646952               -1
+#&gt;  27:            14.5   0.22818084 244.7378888                3
+#&gt;  28:            53.4   0.86419519  65.0867051                4
+#&gt;  29:            12.5   0.51429448 159.3498228                7
+#&gt;  30:             7.5   0.14281827 103.8391207               11
+#&gt;  31:             9.6   0.36297562 328.2926558               87
+#&gt;  32:             7.6   0.35787969 219.9205193               66
+#&gt;  33:             9.6   0.16766413  13.9858533               14
+#&gt;  34:            10.6   0.41616598 247.8757085              -16
+#&gt;  35:             7.6   7.47854779 139.5451614               41
+#&gt;  36:            11.6   0.23651147 291.4025191               86
+#&gt;  37:             9.6   0.20384551 344.2115826               59
+#&gt;  38:            25.5           NA          NA               11
+#&gt;  39:            26.4   0.54704634 280.4330484               20
+#&gt;  40:            28.5   0.74650538 304.2156136               19
+#&gt;  41:            45.4   0.46181160 308.3496399                7
+#&gt;  42:             8.5   0.20609428 266.8658862                2
+#&gt;  43:            11.4   0.13892739 164.9535728                2
+#&gt;  44:            10.5   0.39747301 355.7584010                9
+#&gt;  45:             8.4   0.13197686 323.9664515                4
+#&gt;  46:             7.5   0.18340665  11.5178420                5
+#&gt;  47:             7.4   0.16453955 206.8584468                8
+#&gt;  48:            18.6   0.09585560  34.5542281                4
+#&gt;  49:            17.6   0.05829610  10.4166379              -14
+#&gt;  50:            13.5   0.38033134   0.9310743                5
+#&gt;  51:             8.5   0.17065513 181.6907034                4
+#&gt;  52:             9.3   2.86354240 244.7271718              -51
+#&gt;  53:             9.3   3.49591138  54.1065836              -65
+#&gt;  54:             7.2   0.16622914 202.3698005              -57
+#&gt;  55:             8.3   2.28810841 193.6149043              -74
+#&gt;  56:             9.8   5.42683717 272.3489767               93
+#&gt;  57:            53.4   5.67148674  30.2983711               25
+#&gt;  58:            20.5   6.05694294 203.7652604             -300
+#&gt;  59:             8.5   0.25598398 348.3771781                4
+#&gt;  60:            10.5   0.11931494 228.4716576               -2
+#&gt;  61:             8.3   0.33439870 321.6601212                1
+#&gt;  62:            37.4   0.36467648  17.1649262                5
+#&gt;  63:             7.5   5.18526491 138.6292925              -11
+#&gt;  64:             8.6   6.36503323  36.9183811              -32
+#&gt;  65:            16.6   2.00495778  69.8365362              -59
+#&gt;  66:             7.5   0.45210620  24.1203866              -18
+#&gt;  67:             7.6   2.00723340 215.4409870               -7
+#&gt;  68:             7.6   0.20072609 204.4654729              -14
+#&gt;  69:             7.6   0.69175852  25.7142353              -17
+#&gt;  70:            45.0   7.25211219  38.5342449               40
+#&gt;  71:            20.5   0.16937155 212.4875567                6
+#&gt;  72:             8.6   2.86898926 185.4245816             -333
+#&gt;  73:             7.6   0.24739941 197.6209170               65
+#&gt;  74:            15.1   1.33311659 148.2597956               19
+#&gt;  75:            18.6   0.02068081  74.9249787                4
+#&gt;  76:            10.5   0.06553511  35.7493819                4
+#&gt;  77:             8.5   0.11772666 111.8433543                6
+#&gt;  78:            11.5   0.17241865 208.6515706                8
+#&gt;  79:            20.3   0.18944986 310.6871329                6
+#&gt;  80:             7.5   0.14018983  29.3894591               34
+#&gt;  81:            39.7   5.23350263 323.9015970               11
+#&gt;  82:            14.3   1.79506731 321.1310385             -185
+#&gt;  83:             8.3   3.27769898 119.5885597             -150
+#&gt;  84:            11.5   4.07987985 218.8440455             -244
+#&gt;  85:             8.9   0.32147997 145.8940604              270
+#&gt;  86:            33.1           NA          NA               13
+#&gt;  87:            10.5   1.37894859 201.1339418              -29
+#&gt;  88:             7.5   0.19840139 195.2376916              174
+#&gt;  89:            21.5   0.13574215  10.8386581                6
+#&gt;  90:            21.1   0.52508276 359.3955436               10
+#&gt;  91:             7.5   4.17105033 330.2974525               -8
+#&gt;  92:             7.5   2.27047078 199.4418473                8
+#&gt;  93:             7.4   0.17822759   0.7198856               -4
+#&gt;  94:            15.6   7.75369224   1.7046700              -79
+#&gt;  95:             7.6   3.26507958 301.6901629              -32
+#&gt;  96:             8.6   1.57423282  73.4156522              -66
+#&gt;  97:             8.6   0.81027899 191.6963403              -27
+#&gt;  98:             8.6   0.73037187 220.0381846              -45
+#&gt;  99:             7.5   0.15584643 290.6029286                5
+#&gt; 100:             9.5   5.38071068 154.4731714               23
+#&gt;      gps-time-to-fix ground-speed     heading height-above-msl
+#&gt;      import-marked-outlier location-error-numerical manually-marked-outlier
+#&gt;   1:                 FALSE                      6.0                   FALSE
+#&gt;   2:                 FALSE                      9.1                   FALSE
+#&gt;   3:                 FALSE                     19.5                   FALSE
+#&gt;   4:                 FALSE                      7.8                   FALSE
+#&gt;   5:                 FALSE                      8.9                   FALSE
+#&gt;   6:                 FALSE                      8.8                   FALSE
+#&gt;   7:                 FALSE                     28.9                   FALSE
+#&gt;   8:                 FALSE                      6.8                   FALSE
+#&gt;   9:                 FALSE                     13.5                   FALSE
+#&gt;  10:                 FALSE                      8.3                   FALSE
+#&gt;  11:                 FALSE                     18.8                   FALSE
+#&gt;  12:                 FALSE                      6.8                   FALSE
+#&gt;  13:                 FALSE                      5.7                   FALSE
+#&gt;  14:                 FALSE                     10.6                   FALSE
+#&gt;  15:                 FALSE                     32.1                   FALSE
+#&gt;  16:                 FALSE                     10.4                   FALSE
+#&gt;  17:                 FALSE                      4.8                   FALSE
+#&gt;  18:                 FALSE                      4.8                   FALSE
+#&gt;  19:                 FALSE                      5.0                   FALSE
+#&gt;  20:                 FALSE                      6.2                   FALSE
+#&gt;  21:                 FALSE                      9.7                   FALSE
+#&gt;  22:                 FALSE                     12.9                   FALSE
+#&gt;  23:                 FALSE                      4.0                   FALSE
+#&gt;  24:                 FALSE                     26.1                   FALSE
+#&gt;  25:                 FALSE                      7.4                   FALSE
+#&gt;  26:                 FALSE                     32.1                   FALSE
+#&gt;  27:                 FALSE                     26.3                   FALSE
+#&gt;  28:                 FALSE                     35.0                   FALSE
+#&gt;  29:                 FALSE                     40.7                   FALSE
+#&gt;  30:                 FALSE                      8.2                   FALSE
+#&gt;  31:                 FALSE                      9.9                   FALSE
+#&gt;  32:                 FALSE                     11.7                   FALSE
+#&gt;  33:                 FALSE                     17.5                   FALSE
+#&gt;  34:                 FALSE                     13.9                   FALSE
+#&gt;  35:                 FALSE                     16.2                   FALSE
+#&gt;  36:                 FALSE                     21.2                   FALSE
+#&gt;  37:                 FALSE                     20.1                   FALSE
+#&gt;  38:                 FALSE                       NA                   FALSE
+#&gt;  39:                 FALSE                     42.3                   FALSE
+#&gt;  40:                 FALSE                     53.8                   FALSE
+#&gt;  41:                 FALSE                     12.7                   FALSE
+#&gt;  42:                 FALSE                      9.4                   FALSE
+#&gt;  43:                 FALSE                     15.8                   FALSE
+#&gt;  44:                 FALSE                     17.2                   FALSE
+#&gt;  45:                 FALSE                      9.3                   FALSE
+#&gt;  46:                 FALSE                      7.4                   FALSE
+#&gt;  47:                 FALSE                      8.1                   FALSE
+#&gt;  48:                 FALSE                      9.7                   FALSE
+#&gt;  49:                 FALSE                      8.8                   FALSE
+#&gt;  50:                 FALSE                     21.7                   FALSE
+#&gt;  51:                 FALSE                     10.0                   FALSE
+#&gt;  52:                 FALSE                     11.8                   FALSE
+#&gt;  53:                 FALSE                     10.8                   FALSE
+#&gt;  54:                 FALSE                      9.2                   FALSE
+#&gt;  55:                 FALSE                     12.1                   FALSE
+#&gt;  56:                 FALSE                     15.4                   FALSE
+#&gt;  57:                 FALSE                     34.0                   FALSE
+#&gt;  58:                 FALSE                     61.6                   FALSE
+#&gt;  59:                 FALSE                     12.4                   FALSE
+#&gt;  60:                 FALSE                     19.5                   FALSE
+#&gt;  61:                 FALSE                     10.0                   FALSE
+#&gt;  62:                 FALSE                     10.2                   FALSE
+#&gt;  63:                 FALSE                     11.8                   FALSE
+#&gt;  64:                 FALSE                     10.5                   FALSE
+#&gt;  65:                 FALSE                     94.4                   FALSE
+#&gt;  66:                 FALSE                     14.1                   FALSE
+#&gt;  67:                 FALSE                     14.9                   FALSE
+#&gt;  68:                 FALSE                     10.5                   FALSE
+#&gt;  69:                 FALSE                     11.7                   FALSE
+#&gt;  70:                 FALSE                     95.6                   FALSE
+#&gt;  71:                 FALSE                      7.7                   FALSE
+#&gt;  72:                 FALSE                    100.4                   FALSE
+#&gt;  73:                 FALSE                     17.0                   FALSE
+#&gt;  74:                 FALSE                     56.0                   FALSE
+#&gt;  75:                 FALSE                     10.9                   FALSE
+#&gt;  76:                 FALSE                     13.5                   FALSE
+#&gt;  77:                 FALSE                     15.0                   FALSE
+#&gt;  78:                 FALSE                     18.0                   FALSE
+#&gt;  79:                 FALSE                     14.0                   FALSE
+#&gt;  80:                 FALSE                     14.5                   FALSE
+#&gt;  81:                 FALSE                     49.5                   FALSE
+#&gt;  82:                 FALSE                     71.8                   FALSE
+#&gt;  83:                 FALSE                     26.2                   FALSE
+#&gt;  84:                 FALSE                     63.4                   FALSE
+#&gt;  85:                 FALSE                     41.6                   FALSE
+#&gt;  86:                 FALSE                       NA                   FALSE
+#&gt;  87:                 FALSE                     17.7                   FALSE
+#&gt;  88:                 FALSE                     23.3                   FALSE
+#&gt;  89:                 FALSE                     19.4                   FALSE
+#&gt;  90:                 FALSE                     16.0                   FALSE
+#&gt;  91:                 FALSE                     14.8                   FALSE
+#&gt;  92:                 FALSE                     13.9                   FALSE
+#&gt;  93:                 FALSE                     10.4                   FALSE
+#&gt;  94:                 FALSE                     34.6                   FALSE
+#&gt;  95:                 FALSE                     41.0                   FALSE
+#&gt;  96:                 FALSE                     40.0                   FALSE
+#&gt;  97:                 FALSE                     45.9                   FALSE
+#&gt;  98:                 FALSE                     35.7                   FALSE
+#&gt;  99:                 FALSE                     17.0                   FALSE
+#&gt; 100:                 FALSE                     26.7                   FALSE
+#&gt;      import-marked-outlier location-error-numerical manually-marked-outlier
+#&gt;      vertical-error-numerical sensor-type
+#&gt;   1:                     11.1         gps
+#&gt;   2:                     17.6         gps
+#&gt;   3:                     18.1         gps
+#&gt;   4:                      6.1         gps
+#&gt;   5:                     12.2         gps
+#&gt;   6:                     14.4         gps
+#&gt;   7:                     17.3         gps
+#&gt;   8:                      5.8         gps
+#&gt;   9:                      8.5         gps
+#&gt;  10:                      7.2         gps
+#&gt;  11:                     32.6         gps
+#&gt;  12:                     10.8         gps
+#&gt;  13:                      7.5         gps
+#&gt;  14:                     17.7         gps
+#&gt;  15:                     23.4         gps
+#&gt;  16:                     18.2         gps
+#&gt;  17:                      8.4         gps
+#&gt;  18:                      8.2         gps
+#&gt;  19:                      6.0         gps
+#&gt;  20:                      7.8         gps
+#&gt;  21:                      8.9         gps
+#&gt;  22:                     14.4         gps
+#&gt;  23:                      6.2         gps
+#&gt;  24:                     34.5         gps
+#&gt;  25:                     10.0         gps
+#&gt;  26:                     45.0         gps
+#&gt;  27:                     40.6         gps
+#&gt;  28:                     42.9         gps
+#&gt;  29:                     35.1         gps
+#&gt;  30:                     13.2         gps
+#&gt;  31:                     14.0         gps
+#&gt;  32:                     14.2         gps
+#&gt;  33:                     21.5         gps
+#&gt;  34:                     26.1         gps
+#&gt;  35:                     17.4         gps
+#&gt;  36:                     30.6         gps
+#&gt;  37:                     26.1         gps
+#&gt;  38:                       NA         gps
+#&gt;  39:                     76.9         gps
+#&gt;  40:                     87.9         gps
+#&gt;  41:                     19.0         gps
+#&gt;  42:                     11.6         gps
+#&gt;  43:                     26.0         gps
+#&gt;  44:                     32.1         gps
+#&gt;  45:                     23.2         gps
+#&gt;  46:                      9.1         gps
+#&gt;  47:                     18.1         gps
+#&gt;  48:                     16.6         gps
+#&gt;  49:                     15.4         gps
+#&gt;  50:                     37.7         gps
+#&gt;  51:                     19.4         gps
+#&gt;  52:                     16.0         gps
+#&gt;  53:                     14.7         gps
+#&gt;  54:                     13.6         gps
+#&gt;  55:                     18.9         gps
+#&gt;  56:                     20.9         gps
+#&gt;  57:                     42.0         gps
+#&gt;  58:                     68.9         gps
+#&gt;  59:                     14.0         gps
+#&gt;  60:                     18.6         gps
+#&gt;  61:                     11.6         gps
+#&gt;  62:                      9.2         gps
+#&gt;  63:                     13.4         gps
+#&gt;  64:                     10.6         gps
+#&gt;  65:                     65.8         gps
+#&gt;  66:                     12.1         gps
+#&gt;  67:                     12.5         gps
+#&gt;  68:                     10.9         gps
+#&gt;  69:                     15.8         gps
+#&gt;  70:                    114.0         gps
+#&gt;  71:                      8.5         gps
+#&gt;  72:                     48.3         gps
+#&gt;  73:                     17.5         gps
+#&gt;  74:                     76.2         gps
+#&gt;  75:                     14.8         gps
+#&gt;  76:                     19.2         gps
+#&gt;  77:                     23.0         gps
+#&gt;  78:                     20.7         gps
+#&gt;  79:                     11.7         gps
+#&gt;  80:                     15.6         gps
+#&gt;  81:                     26.4         gps
+#&gt;  82:                     50.3         gps
+#&gt;  83:                     23.6         gps
+#&gt;  84:                     57.1         gps
+#&gt;  85:                     39.3         gps
+#&gt;  86:                       NA         gps
+#&gt;  87:                     13.8         gps
+#&gt;  88:                     17.7         gps
+#&gt;  89:                     14.9         gps
+#&gt;  90:                     15.4         gps
+#&gt;  91:                     15.5         gps
+#&gt;  92:                     13.3         gps
+#&gt;  93:                     10.4         gps
+#&gt;  94:                     30.5         gps
+#&gt;  95:                     38.0         gps
+#&gt;  96:                     37.4         gps
+#&gt;  97:                     41.8         gps
+#&gt;  98:                     34.7         gps
+#&gt;  99:                     16.9         gps
+#&gt; 100:                     27.8         gps
+#&gt;      vertical-error-numerical sensor-type
+#&gt;                                                                                                                                     study-name
+#&gt;   1: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   2: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   3: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   4: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   5: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   6: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   7: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   8: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;   9: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  10: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  11: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  12: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  13: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  14: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  15: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  16: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  17: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  18: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  19: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  20: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  21: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  22: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  23: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  24: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  25: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  26: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  27: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  28: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  29: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  30: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  31: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  32: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  33: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  34: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  35: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  36: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  37: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  38: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  39: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  40: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  41: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  42: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  43: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  44: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  45: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  46: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  47: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  48: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  49: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  50: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  51: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  52: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  53: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  54: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  55: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  56: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  57: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  58: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  59: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  60: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  61: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  62: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  63: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  64: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  65: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  66: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  67: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  68: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  69: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  70: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  71: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  72: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  73: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  74: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  75: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  76: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  77: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  78: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  79: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  80: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  81: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  82: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  83: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  84: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  85: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  86: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  87: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  88: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  89: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  90: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  91: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  92: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  93: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  94: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  95: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  96: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  97: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  98: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;  99: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt; 100: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
+#&gt;                                                                                                                                     study-name
+#&gt;      tag-id animal-id animal-taxon deploy-on-date deploy-off-date
+#&gt;   1:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   2:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   3:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   4:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   5:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   6:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   7:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   8:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;   9:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  10:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  11:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  12:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  13:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  14:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  15:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  16:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  17:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  18:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  19:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  20:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  21:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  22:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  23:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  24:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  25:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  26:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  27:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  28:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  29:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  30:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  31:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  32:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  33:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  34:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  35:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  36:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  37:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  38:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  39:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  40:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  41:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  42:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  43:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  44:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  45:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  46:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  47:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  48:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  49:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  50:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  51:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  52:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  53:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  54:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  55:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  56:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  57:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  58:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  59:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  60:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  61:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  62:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  63:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  64:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  65:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  66:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  67:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  68:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  69:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  70:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  71:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  72:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  73:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  74:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  75:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  76:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  77:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  78:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  79:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  80:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  81:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  82:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  83:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  84:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  85:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  86:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  87:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  88:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  89:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  90:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  91:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  92:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  93:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  94:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  95:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  96:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  97:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  98:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;  99:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt; 100:    703   L904812 Larus fuscus     2013-05-30            &lt;NA&gt;
+#&gt;      tag-id animal-id animal-taxon deploy-on-date deploy-off-date
+#&gt;      animal-comments animal-life-stage animal-mass animal-nickname
+#&gt;   1:            Kees             adult         869            Kees
+#&gt;   2:            Kees             adult         869            Kees
+#&gt;   3:            Kees             adult         869            Kees
+#&gt;   4:            Kees             adult         869            Kees
+#&gt;   5:            Kees             adult         869            Kees
+#&gt;   6:            Kees             adult         869            Kees
+#&gt;   7:            Kees             adult         869            Kees
+#&gt;   8:            Kees             adult         869            Kees
+#&gt;   9:            Kees             adult         869            Kees
+#&gt;  10:            Kees             adult         869            Kees
+#&gt;  11:            Kees             adult         869            Kees
+#&gt;  12:            Kees             adult         869            Kees
+#&gt;  13:            Kees             adult         869            Kees
+#&gt;  14:            Kees             adult         869            Kees
+#&gt;  15:            Kees             adult         869            Kees
+#&gt;  16:            Kees             adult         869            Kees
+#&gt;  17:            Kees             adult         869            Kees
+#&gt;  18:            Kees             adult         869            Kees
+#&gt;  19:            Kees             adult         869            Kees
+#&gt;  20:            Kees             adult         869            Kees
+#&gt;  21:            Kees             adult         869            Kees
+#&gt;  22:            Kees             adult         869            Kees
+#&gt;  23:            Kees             adult         869            Kees
+#&gt;  24:            Kees             adult         869            Kees
+#&gt;  25:            Kees             adult         869            Kees
+#&gt;  26:            Kees             adult         869            Kees
+#&gt;  27:            Kees             adult         869            Kees
+#&gt;  28:            Kees             adult         869            Kees
+#&gt;  29:            Kees             adult         869            Kees
+#&gt;  30:            Kees             adult         869            Kees
+#&gt;  31:            Kees             adult         869            Kees
+#&gt;  32:            Kees             adult         869            Kees
+#&gt;  33:            Kees             adult         869            Kees
+#&gt;  34:            Kees             adult         869            Kees
+#&gt;  35:            Kees             adult         869            Kees
+#&gt;  36:            Kees             adult         869            Kees
+#&gt;  37:            Kees             adult         869            Kees
+#&gt;  38:            Kees             adult         869            Kees
+#&gt;  39:            Kees             adult         869            Kees
+#&gt;  40:            Kees             adult         869            Kees
+#&gt;  41:            Kees             adult         869            Kees
+#&gt;  42:            Kees             adult         869            Kees
+#&gt;  43:            Kees             adult         869            Kees
+#&gt;  44:            Kees             adult         869            Kees
+#&gt;  45:            Kees             adult         869            Kees
+#&gt;  46:            Kees             adult         869            Kees
+#&gt;  47:            Kees             adult         869            Kees
+#&gt;  48:            Kees             adult         869            Kees
+#&gt;  49:            Kees             adult         869            Kees
+#&gt;  50:            Kees             adult         869            Kees
+#&gt;  51:            Kees             adult         869            Kees
+#&gt;  52:            Kees             adult         869            Kees
+#&gt;  53:            Kees             adult         869            Kees
+#&gt;  54:            Kees             adult         869            Kees
+#&gt;  55:            Kees             adult         869            Kees
+#&gt;  56:            Kees             adult         869            Kees
+#&gt;  57:            Kees             adult         869            Kees
+#&gt;  58:            Kees             adult         869            Kees
+#&gt;  59:            Kees             adult         869            Kees
+#&gt;  60:            Kees             adult         869            Kees
+#&gt;  61:            Kees             adult         869            Kees
+#&gt;  62:            Kees             adult         869            Kees
+#&gt;  63:            Kees             adult         869            Kees
+#&gt;  64:            Kees             adult         869            Kees
+#&gt;  65:            Kees             adult         869            Kees
+#&gt;  66:            Kees             adult         869            Kees
+#&gt;  67:            Kees             adult         869            Kees
+#&gt;  68:            Kees             adult         869            Kees
+#&gt;  69:            Kees             adult         869            Kees
+#&gt;  70:            Kees             adult         869            Kees
+#&gt;  71:            Kees             adult         869            Kees
+#&gt;  72:            Kees             adult         869            Kees
+#&gt;  73:            Kees             adult         869            Kees
+#&gt;  74:            Kees             adult         869            Kees
+#&gt;  75:            Kees             adult         869            Kees
+#&gt;  76:            Kees             adult         869            Kees
+#&gt;  77:            Kees             adult         869            Kees
+#&gt;  78:            Kees             adult         869            Kees
+#&gt;  79:            Kees             adult         869            Kees
+#&gt;  80:            Kees             adult         869            Kees
+#&gt;  81:            Kees             adult         869            Kees
+#&gt;  82:            Kees             adult         869            Kees
+#&gt;  83:            Kees             adult         869            Kees
+#&gt;  84:            Kees             adult         869            Kees
+#&gt;  85:            Kees             adult         869            Kees
+#&gt;  86:            Kees             adult         869            Kees
+#&gt;  87:            Kees             adult         869            Kees
+#&gt;  88:            Kees             adult         869            Kees
+#&gt;  89:            Kees             adult         869            Kees
+#&gt;  90:            Kees             adult         869            Kees
+#&gt;  91:            Kees             adult         869            Kees
+#&gt;  92:            Kees             adult         869            Kees
+#&gt;  93:            Kees             adult         869            Kees
+#&gt;  94:            Kees             adult         869            Kees
+#&gt;  95:            Kees             adult         869            Kees
+#&gt;  96:            Kees             adult         869            Kees
+#&gt;  97:            Kees             adult         869            Kees
+#&gt;  98:            Kees             adult         869            Kees
+#&gt;  99:            Kees             adult         869            Kees
+#&gt; 100:            Kees             adult         869            Kees
+#&gt;      animal-comments animal-life-stage animal-mass animal-nickname
+#&gt;      animal-ring-id animal-sex attachment-type deploy-on-latitude
+#&gt;   1:           URAL          m         harness           51.33931
+#&gt;   2:           URAL          m         harness           51.33931
+#&gt;   3:           URAL          m         harness           51.33931
+#&gt;   4:           URAL          m         harness           51.33931
+#&gt;   5:           URAL          m         harness           51.33931
+#&gt;   6:           URAL          m         harness           51.33931
+#&gt;   7:           URAL          m         harness           51.33931
+#&gt;   8:           URAL          m         harness           51.33931
+#&gt;   9:           URAL          m         harness           51.33931
+#&gt;  10:           URAL          m         harness           51.33931
+#&gt;  11:           URAL          m         harness           51.33931
+#&gt;  12:           URAL          m         harness           51.33931
+#&gt;  13:           URAL          m         harness           51.33931
+#&gt;  14:           URAL          m         harness           51.33931
+#&gt;  15:           URAL          m         harness           51.33931
+#&gt;  16:           URAL          m         harness           51.33931
+#&gt;  17:           URAL          m         harness           51.33931
+#&gt;  18:           URAL          m         harness           51.33931
+#&gt;  19:           URAL          m         harness           51.33931
+#&gt;  20:           URAL          m         harness           51.33931
+#&gt;  21:           URAL          m         harness           51.33931
+#&gt;  22:           URAL          m         harness           51.33931
+#&gt;  23:           URAL          m         harness           51.33931
+#&gt;  24:           URAL          m         harness           51.33931
+#&gt;  25:           URAL          m         harness           51.33931
+#&gt;  26:           URAL          m         harness           51.33931
+#&gt;  27:           URAL          m         harness           51.33931
+#&gt;  28:           URAL          m         harness           51.33931
+#&gt;  29:           URAL          m         harness           51.33931
+#&gt;  30:           URAL          m         harness           51.33931
+#&gt;  31:           URAL          m         harness           51.33931
+#&gt;  32:           URAL          m         harness           51.33931
+#&gt;  33:           URAL          m         harness           51.33931
+#&gt;  34:           URAL          m         harness           51.33931
+#&gt;  35:           URAL          m         harness           51.33931
+#&gt;  36:           URAL          m         harness           51.33931
+#&gt;  37:           URAL          m         harness           51.33931
+#&gt;  38:           URAL          m         harness           51.33931
+#&gt;  39:           URAL          m         harness           51.33931
+#&gt;  40:           URAL          m         harness           51.33931
+#&gt;  41:           URAL          m         harness           51.33931
+#&gt;  42:           URAL          m         harness           51.33931
+#&gt;  43:           URAL          m         harness           51.33931
+#&gt;  44:           URAL          m         harness           51.33931
+#&gt;  45:           URAL          m         harness           51.33931
+#&gt;  46:           URAL          m         harness           51.33931
+#&gt;  47:           URAL          m         harness           51.33931
+#&gt;  48:           URAL          m         harness           51.33931
+#&gt;  49:           URAL          m         harness           51.33931
+#&gt;  50:           URAL          m         harness           51.33931
+#&gt;  51:           URAL          m         harness           51.33931
+#&gt;  52:           URAL          m         harness           51.33931
+#&gt;  53:           URAL          m         harness           51.33931
+#&gt;  54:           URAL          m         harness           51.33931
+#&gt;  55:           URAL          m         harness           51.33931
+#&gt;  56:           URAL          m         harness           51.33931
+#&gt;  57:           URAL          m         harness           51.33931
+#&gt;  58:           URAL          m         harness           51.33931
+#&gt;  59:           URAL          m         harness           51.33931
+#&gt;  60:           URAL          m         harness           51.33931
+#&gt;  61:           URAL          m         harness           51.33931
+#&gt;  62:           URAL          m         harness           51.33931
+#&gt;  63:           URAL          m         harness           51.33931
+#&gt;  64:           URAL          m         harness           51.33931
+#&gt;  65:           URAL          m         harness           51.33931
+#&gt;  66:           URAL          m         harness           51.33931
+#&gt;  67:           URAL          m         harness           51.33931
+#&gt;  68:           URAL          m         harness           51.33931
+#&gt;  69:           URAL          m         harness           51.33931
+#&gt;  70:           URAL          m         harness           51.33931
+#&gt;  71:           URAL          m         harness           51.33931
+#&gt;  72:           URAL          m         harness           51.33931
+#&gt;  73:           URAL          m         harness           51.33931
+#&gt;  74:           URAL          m         harness           51.33931
+#&gt;  75:           URAL          m         harness           51.33931
+#&gt;  76:           URAL          m         harness           51.33931
+#&gt;  77:           URAL          m         harness           51.33931
+#&gt;  78:           URAL          m         harness           51.33931
+#&gt;  79:           URAL          m         harness           51.33931
+#&gt;  80:           URAL          m         harness           51.33931
+#&gt;  81:           URAL          m         harness           51.33931
+#&gt;  82:           URAL          m         harness           51.33931
+#&gt;  83:           URAL          m         harness           51.33931
+#&gt;  84:           URAL          m         harness           51.33931
+#&gt;  85:           URAL          m         harness           51.33931
+#&gt;  86:           URAL          m         harness           51.33931
+#&gt;  87:           URAL          m         harness           51.33931
+#&gt;  88:           URAL          m         harness           51.33931
+#&gt;  89:           URAL          m         harness           51.33931
+#&gt;  90:           URAL          m         harness           51.33931
+#&gt;  91:           URAL          m         harness           51.33931
+#&gt;  92:           URAL          m         harness           51.33931
+#&gt;  93:           URAL          m         harness           51.33931
+#&gt;  94:           URAL          m         harness           51.33931
+#&gt;  95:           URAL          m         harness           51.33931
+#&gt;  96:           URAL          m         harness           51.33931
+#&gt;  97:           URAL          m         harness           51.33931
+#&gt;  98:           URAL          m         harness           51.33931
+#&gt;  99:           URAL          m         harness           51.33931
+#&gt; 100:           URAL          m         harness           51.33931
+#&gt;      animal-ring-id animal-sex attachment-type deploy-on-latitude
+#&gt;      deploy-on-longitude
+#&gt;   1:             3.17913
+#&gt;   2:             3.17913
+#&gt;   3:             3.17913
+#&gt;   4:             3.17913
+#&gt;   5:             3.17913
+#&gt;   6:             3.17913
+#&gt;   7:             3.17913
+#&gt;   8:             3.17913
+#&gt;   9:             3.17913
+#&gt;  10:             3.17913
+#&gt;  11:             3.17913
+#&gt;  12:             3.17913
+#&gt;  13:             3.17913
+#&gt;  14:             3.17913
+#&gt;  15:             3.17913
+#&gt;  16:             3.17913
+#&gt;  17:             3.17913
+#&gt;  18:             3.17913
+#&gt;  19:             3.17913
+#&gt;  20:             3.17913
+#&gt;  21:             3.17913
+#&gt;  22:             3.17913
+#&gt;  23:             3.17913
+#&gt;  24:             3.17913
+#&gt;  25:             3.17913
+#&gt;  26:             3.17913
+#&gt;  27:             3.17913
+#&gt;  28:             3.17913
+#&gt;  29:             3.17913
+#&gt;  30:             3.17913
+#&gt;  31:             3.17913
+#&gt;  32:             3.17913
+#&gt;  33:             3.17913
+#&gt;  34:             3.17913
+#&gt;  35:             3.17913
+#&gt;  36:             3.17913
+#&gt;  37:             3.17913
+#&gt;  38:             3.17913
+#&gt;  39:             3.17913
+#&gt;  40:             3.17913
+#&gt;  41:             3.17913
+#&gt;  42:             3.17913
+#&gt;  43:             3.17913
+#&gt;  44:             3.17913
+#&gt;  45:             3.17913
+#&gt;  46:             3.17913
+#&gt;  47:             3.17913
+#&gt;  48:             3.17913
+#&gt;  49:             3.17913
+#&gt;  50:             3.17913
+#&gt;  51:             3.17913
+#&gt;  52:             3.17913
+#&gt;  53:             3.17913
+#&gt;  54:             3.17913
+#&gt;  55:             3.17913
+#&gt;  56:             3.17913
+#&gt;  57:             3.17913
+#&gt;  58:             3.17913
+#&gt;  59:             3.17913
+#&gt;  60:             3.17913
+#&gt;  61:             3.17913
+#&gt;  62:             3.17913
+#&gt;  63:             3.17913
+#&gt;  64:             3.17913
+#&gt;  65:             3.17913
+#&gt;  66:             3.17913
+#&gt;  67:             3.17913
+#&gt;  68:             3.17913
+#&gt;  69:             3.17913
+#&gt;  70:             3.17913
+#&gt;  71:             3.17913
+#&gt;  72:             3.17913
+#&gt;  73:             3.17913
+#&gt;  74:             3.17913
+#&gt;  75:             3.17913
+#&gt;  76:             3.17913
+#&gt;  77:             3.17913
+#&gt;  78:             3.17913
+#&gt;  79:             3.17913
+#&gt;  80:             3.17913
+#&gt;  81:             3.17913
+#&gt;  82:             3.17913
+#&gt;  83:             3.17913
+#&gt;  84:             3.17913
+#&gt;  85:             3.17913
+#&gt;  86:             3.17913
+#&gt;  87:             3.17913
+#&gt;  88:             3.17913
+#&gt;  89:             3.17913
+#&gt;  90:             3.17913
+#&gt;  91:             3.17913
+#&gt;  92:             3.17913
+#&gt;  93:             3.17913
+#&gt;  94:             3.17913
+#&gt;  95:             3.17913
+#&gt;  96:             3.17913
+#&gt;  97:             3.17913
+#&gt;  98:             3.17913
+#&gt;  99:             3.17913
+#&gt; 100:             3.17913
+#&gt;      deploy-on-longitude
+#&gt;                                                  deployment-comments
+#&gt;   1: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   2: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   3: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   4: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   5: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   6: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   7: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   8: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;   9: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  10: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  11: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  12: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  13: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  14: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  15: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  16: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  17: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  18: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  19: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  20: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  21: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  22: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  23: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  24: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  25: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  26: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  27: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  28: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  29: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  30: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  31: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  32: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  33: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  34: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  35: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  36: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  37: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  38: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  39: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  40: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  41: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  42: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  43: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  44: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  45: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  46: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  47: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  48: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  49: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  50: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  51: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  52: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  53: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  54: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  55: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  56: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  57: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  58: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  59: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  60: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  61: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  62: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  63: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  64: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  65: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  66: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  67: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  68: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  69: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  70: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  71: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  72: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  73: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  74: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  75: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  76: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  77: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  78: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  79: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  80: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  81: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  82: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  83: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  84: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  85: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  86: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  87: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  88: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  89: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  90: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  91: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  92: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  93: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  94: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  95: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  96: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  97: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  98: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;  99: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt; 100: ZEEB_APM | Poor tracker functioning after bird removed antenna.
+#&gt;                                                  deployment-comments
+#&gt;      deployment-end-type deployment-id location-accuracy-comments
+#&gt;   1:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   2:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   3:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   4:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   5:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   6:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   7:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   8:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;   9:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  10:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  11:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  12:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  13:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  14:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  15:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  16:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  17:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  18:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  19:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  20:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  21:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  22:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  23:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  24:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  25:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  26:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  27:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  28:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  29:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  30:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  31:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  32:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  33:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  34:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  35:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  36:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  37:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  38:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  39:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  40:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  41:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  42:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  43:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  44:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  45:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  46:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  47:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  48:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  49:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  50:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  51:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  52:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  53:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  54:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  55:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  56:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  57:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  58:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  59:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  60:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  61:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  62:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  63:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  64:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  65:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  66:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  67:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  68:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  69:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  70:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  71:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  72:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  73:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  74:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  75:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  76:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  77:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  78:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  79:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  80:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  81:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  82:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  83:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  84:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  85:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  86:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  87:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  88:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  89:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  90:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  91:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  92:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  93:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  94:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  95:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  96:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  97:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  98:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;  99:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt; 100:                &lt;NA&gt;           524   provided by the GPS unit
+#&gt;      deployment-end-type deployment-id location-accuracy-comments
+#&gt;      manipulation-type     study-site tag-manufacturer-name tag-mass
+#&gt;   1:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   2:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   3:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   4:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   5:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   6:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   7:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   8:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;   9:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  10:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  11:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  12:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  13:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  14:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  15:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  16:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  17:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  18:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  19:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  20:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  21:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  22:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  23:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  24:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  25:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  26:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  27:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  28:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  29:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  30:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  31:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  32:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  33:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  34:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  35:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  36:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  37:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  38:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  39:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  40:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  41:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  42:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  43:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  44:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  45:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  46:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  47:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  48:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  49:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  50:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  51:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  52:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  53:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  54:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  55:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  56:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  57:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  58:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  59:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  60:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  61:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  62:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  63:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  64:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  65:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  66:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  67:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  68:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  69:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  70:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  71:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  72:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  73:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  74:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  75:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  76:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  77:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  78:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  79:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  80:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  81:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  82:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  83:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  84:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  85:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  86:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  87:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  88:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  89:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  90:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  91:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  92:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  93:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  94:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  95:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  96:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  97:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  98:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;  99:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt; 100:              none LBBG_ZEEBRUGGE              UvA-BiTS     18.2
+#&gt;      manipulation-type     study-site tag-manufacturer-name tag-mass
+#&gt;      tag-readout-method tag-serial-no
+#&gt;   1:     other-wireless           703
+#&gt;   2:     other-wireless           703
+#&gt;   3:     other-wireless           703
+#&gt;   4:     other-wireless           703
+#&gt;   5:     other-wireless           703
+#&gt;   6:     other-wireless           703
+#&gt;   7:     other-wireless           703
+#&gt;   8:     other-wireless           703
+#&gt;   9:     other-wireless           703
+#&gt;  10:     other-wireless           703
+#&gt;  11:     other-wireless           703
+#&gt;  12:     other-wireless           703
+#&gt;  13:     other-wireless           703
+#&gt;  14:     other-wireless           703
+#&gt;  15:     other-wireless           703
+#&gt;  16:     other-wireless           703
+#&gt;  17:     other-wireless           703
+#&gt;  18:     other-wireless           703
+#&gt;  19:     other-wireless           703
+#&gt;  20:     other-wireless           703
+#&gt;  21:     other-wireless           703
+#&gt;  22:     other-wireless           703
+#&gt;  23:     other-wireless           703
+#&gt;  24:     other-wireless           703
+#&gt;  25:     other-wireless           703
+#&gt;  26:     other-wireless           703
+#&gt;  27:     other-wireless           703
+#&gt;  28:     other-wireless           703
+#&gt;  29:     other-wireless           703
+#&gt;  30:     other-wireless           703
+#&gt;  31:     other-wireless           703
+#&gt;  32:     other-wireless           703
+#&gt;  33:     other-wireless           703
+#&gt;  34:     other-wireless           703
+#&gt;  35:     other-wireless           703
+#&gt;  36:     other-wireless           703
+#&gt;  37:     other-wireless           703
+#&gt;  38:     other-wireless           703
+#&gt;  39:     other-wireless           703
+#&gt;  40:     other-wireless           703
+#&gt;  41:     other-wireless           703
+#&gt;  42:     other-wireless           703
+#&gt;  43:     other-wireless           703
+#&gt;  44:     other-wireless           703
+#&gt;  45:     other-wireless           703
+#&gt;  46:     other-wireless           703
+#&gt;  47:     other-wireless           703
+#&gt;  48:     other-wireless           703
+#&gt;  49:     other-wireless           703
+#&gt;  50:     other-wireless           703
+#&gt;  51:     other-wireless           703
+#&gt;  52:     other-wireless           703
+#&gt;  53:     other-wireless           703
+#&gt;  54:     other-wireless           703
+#&gt;  55:     other-wireless           703
+#&gt;  56:     other-wireless           703
+#&gt;  57:     other-wireless           703
+#&gt;  58:     other-wireless           703
+#&gt;  59:     other-wireless           703
+#&gt;  60:     other-wireless           703
+#&gt;  61:     other-wireless           703
+#&gt;  62:     other-wireless           703
+#&gt;  63:     other-wireless           703
+#&gt;  64:     other-wireless           703
+#&gt;  65:     other-wireless           703
+#&gt;  66:     other-wireless           703
+#&gt;  67:     other-wireless           703
+#&gt;  68:     other-wireless           703
+#&gt;  69:     other-wireless           703
+#&gt;  70:     other-wireless           703
+#&gt;  71:     other-wireless           703
+#&gt;  72:     other-wireless           703
+#&gt;  73:     other-wireless           703
+#&gt;  74:     other-wireless           703
+#&gt;  75:     other-wireless           703
+#&gt;  76:     other-wireless           703
+#&gt;  77:     other-wireless           703
+#&gt;  78:     other-wireless           703
+#&gt;  79:     other-wireless           703
+#&gt;  80:     other-wireless           703
+#&gt;  81:     other-wireless           703
+#&gt;  82:     other-wireless           703
+#&gt;  83:     other-wireless           703
+#&gt;  84:     other-wireless           703
+#&gt;  85:     other-wireless           703
+#&gt;  86:     other-wireless           703
+#&gt;  87:     other-wireless           703
+#&gt;  88:     other-wireless           703
+#&gt;  89:     other-wireless           703
+#&gt;  90:     other-wireless           703
+#&gt;  91:     other-wireless           703
+#&gt;  92:     other-wireless           703
+#&gt;  93:     other-wireless           703
+#&gt;  94:     other-wireless           703
+#&gt;  95:     other-wireless           703
+#&gt;  96:     other-wireless           703
+#&gt;  97:     other-wireless           703
+#&gt;  98:     other-wireless           703
+#&gt;  99:     other-wireless           703
+#&gt; 100:     other-wireless           703
+#&gt;      tag-readout-method tag-serial-no</div><div class='input'>
+<span class='co'># Only include specific reference data columns</span>
+<span class='fu'>append_metadata</span><span class='op'>(</span><span class='va'>lbbg_gps</span>,
+                <span class='va'>lbbg_ref_data</span>,
+                ref_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"animal-taxon"</span>,
+                             <span class='st'>"tag-id"</span>,
+                             <span class='st'>"animal-id"</span>,
+                             <span class='st'>"animal-comments"</span>,
+                             <span class='st'>"animal-life-stage"</span>,
+                             <span class='st'>"animal-mass"</span>,
+                             <span class='st'>"animal-sex"</span>,
+                             <span class='st'>"deployment-comments"</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt;         event-id visible           timestamp location-long location-lat
 #&gt;   1: 15476536641    TRUE 2013-05-30 15:48:44      3.180090     51.34288
 #&gt;   2: 15476536652    TRUE 2013-05-30 16:19:21      3.180108     51.34285
@@ -1084,730 +2525,7 @@ join) appended with the reference data (all columns defined in
 #&gt;  98: ZEEB_APM | Poor tracker functioning after bird removed antenna.
 #&gt;  99: ZEEB_APM | Poor tracker functioning after bird removed antenna.
 #&gt; 100: ZEEB_APM | Poor tracker functioning after bird removed antenna.
-#&gt;                                                  deployment-comments</div><div class='input'>
-<span class='co'># Only include specific reference data columns</span>
-<span class='fu'>append_metadata</span><span class='op'>(</span>
-  <span class='va'>lbbg_gps</span>,
-  <span class='va'>lbbg_ref_data</span>,
-  ref_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='st'>"animal-taxon"</span>, <span class='st'>"tag-id"</span>, <span class='st'>"animal-id"</span>,
-    <span class='st'>"animal-comments"</span>, <span class='st'>"animal-life-stage"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt;         event-id visible           timestamp location-long location-lat
-#&gt;   1: 15476536641    TRUE 2013-05-30 15:48:44      3.180090     51.34288
-#&gt;   2: 15476536652    TRUE 2013-05-30 16:19:21      3.180108     51.34285
-#&gt;   3: 15476536670    TRUE 2013-05-30 16:49:29      3.180325     51.34290
-#&gt;   4: 15476536716    TRUE 2013-05-30 17:21:27      3.180296     51.34291
-#&gt;   5: 15476536769    TRUE 2013-05-30 17:53:13      3.180507     51.34274
-#&gt;   6: 15476536821    TRUE 2013-05-30 18:25:07      3.180389     51.34288
-#&gt;   7: 15476536869    TRUE 2013-05-30 18:55:23      3.180431     51.34289
-#&gt;   8: 15476536915    TRUE 2013-05-30 19:25:38      3.180435     51.34289
-#&gt;   9: 15476536949    TRUE 2013-05-30 19:55:36      3.180451     51.34292
-#&gt;  10: 15476536966    TRUE 2013-05-30 20:25:28      3.185235     51.34317
-#&gt;  11: 15476536981    TRUE 2013-05-30 20:55:33      3.185279     51.34318
-#&gt;  12: 15476536993    TRUE 2013-05-30 21:55:52      3.185156     51.34321
-#&gt;  13: 15476537005    TRUE 2013-05-30 22:56:08      3.185233     51.34323
-#&gt;  14: 15476537017    TRUE 2013-05-30 23:57:08      3.185226     51.34317
-#&gt;  15: 15476537029    TRUE 2013-05-31 00:57:47      3.185219     51.34318
-#&gt;  16: 15476537040    TRUE 2013-05-31 01:58:17      3.182410     51.34379
-#&gt;  17: 15476537051    TRUE 2013-05-31 02:59:06      3.182474     51.34377
-#&gt;  18: 15476537068    TRUE 2013-05-31 03:31:19      3.185212     51.34319
-#&gt;  19: 15476537081    TRUE 2013-05-31 04:01:11      3.185230     51.34319
-#&gt;  20: 15476537101    TRUE 2013-05-31 04:31:19      3.185218     51.34317
-#&gt;  21: 15476537121    TRUE 2013-05-31 05:01:29      3.185252     51.34316
-#&gt;  22: 15476537169    TRUE 2013-05-31 05:32:18      3.185244     51.34317
-#&gt;  23: 15476537224    TRUE 2013-05-31 06:03:08      3.185283     51.34318
-#&gt;  24: 15476537325    TRUE 2013-05-31 06:33:15      3.206527     51.31715
-#&gt;  25: 15476537445    TRUE 2013-05-31 07:03:04      3.189048     51.33693
-#&gt;  26: 15476537560    TRUE 2013-05-31 07:33:03      3.185282     51.34321
-#&gt;  27: 15476537565    TRUE 2013-05-31 07:34:54      3.185251     51.34321
-#&gt;  28: 15476537594    TRUE 2013-05-31 07:44:37      3.185296     51.34321
-#&gt;  29: 15476537612    TRUE 2013-05-31 07:51:24      3.185268     51.34315
-#&gt;  30: 15476537632    TRUE 2013-05-31 07:58:47      3.185245     51.34318
-#&gt;  31: 15476537644    TRUE 2013-05-31 08:03:37      3.184562     51.34380
-#&gt;  32: 15476537663    TRUE 2013-05-31 08:10:47      3.184695     51.34383
-#&gt;  33: 15476537684    TRUE 2013-05-31 08:18:01      3.184239     51.34389
-#&gt;  34: 15476537702    TRUE 2013-05-31 08:25:14      3.184122     51.34364
-#&gt;  35: 15476537720    TRUE 2013-05-31 08:31:51      3.184643     51.34353
-#&gt;  36: 15476537739    TRUE 2013-05-31 08:39:07      3.184349     51.34346
-#&gt;  37: 15476537742    TRUE 2013-05-31 08:39:53      3.184351     51.34354
-#&gt;  38: 15476537785    TRUE 2013-05-31 08:55:21      3.185280     51.34318
-#&gt;  39: 15476537800    TRUE 2013-05-31 09:00:26      3.185364     51.34316
-#&gt;  40: 15476537814    TRUE 2013-05-31 09:05:32      3.185344     51.34316
-#&gt;  41: 15476537831    TRUE 2013-05-31 09:11:09      3.185271     51.34317
-#&gt;  42: 15476537846    TRUE 2013-05-31 09:16:08      3.185277     51.34316
-#&gt;  43: 15476537868    TRUE 2013-05-31 09:23:39      3.185269     51.34316
-#&gt;  44: 15476537882    TRUE 2013-05-31 09:28:26      3.185266     51.34318
-#&gt;  45: 15476537897    TRUE 2013-05-31 09:33:12      3.185306     51.34317
-#&gt;  46: 15476537910    TRUE 2013-05-31 09:37:59      3.185240     51.34315
-#&gt;  47: 15476537941    TRUE 2013-05-31 09:48:23      3.185214     51.34318
-#&gt;  48: 15476537961    TRUE 2013-05-31 09:56:02      3.185279     51.34318
-#&gt;  49: 15476537977    TRUE 2013-05-31 10:02:09      3.185350     51.34323
-#&gt;  50: 15476537997    TRUE 2013-05-31 10:09:17      3.185245     51.34318
-#&gt;  51: 15476538015    TRUE 2013-05-31 10:16:40      3.185264     51.34318
-#&gt;  52: 15476538037    TRUE 2013-05-31 10:24:41      3.186621     51.34206
-#&gt;  53: 15476538040    TRUE 2013-05-31 10:25:29      3.186835     51.34220
-#&gt;  54: 15476538054    TRUE 2013-05-31 10:30:15      3.186643     51.34211
-#&gt;  55: 15476538076    TRUE 2013-05-31 10:37:44      3.186638     51.34221
-#&gt;  56: 15476538097    TRUE 2013-05-31 10:44:57      3.183391     51.34419
-#&gt;  57: 15476538104    TRUE 2013-05-31 10:46:31      3.185127     51.34305
-#&gt;  58: 15476538118    TRUE 2013-05-31 10:51:32      3.186528     51.34492
-#&gt;  59: 15476538124    TRUE 2013-05-31 10:54:00      3.185263     51.34321
-#&gt;  60: 15476538145    TRUE 2013-05-31 11:01:14      3.185292     51.34323
-#&gt;  61: 15476538164    TRUE 2013-05-31 11:07:20      3.185258     51.34321
-#&gt;  62: 15476538180    TRUE 2013-05-31 11:12:37      3.185233     51.34317
-#&gt;  63: 15476538196    TRUE 2013-05-31 11:17:59      3.185110     51.34313
-#&gt;  64: 15476538217    TRUE 2013-05-31 11:25:28      3.185192     51.34327
-#&gt;  65: 15476538230    TRUE 2013-05-31 11:30:56      3.185064     51.34315
-#&gt;  66: 15476538253    TRUE 2013-05-31 11:37:59      3.185086     51.34306
-#&gt;  67: 15476538270    TRUE 2013-05-31 11:42:47      3.184868     51.34302
-#&gt;  68: 15476538291    TRUE 2013-05-31 11:49:59      3.184934     51.34304
-#&gt;  69: 15476538315    TRUE 2013-05-31 11:57:26      3.185131     51.34311
-#&gt;  70: 15476538339    TRUE 2013-05-31 12:03:08      3.181286     51.34245
-#&gt;  71: 15476538357    TRUE 2013-05-31 12:08:04      3.185221     51.34316
-#&gt;  72: 15476538401    TRUE 2013-05-31 12:20:40      3.185605     51.34606
-#&gt;  73: 15476538404    TRUE 2013-05-31 12:21:27      3.184956     51.34344
-#&gt;  74: 15476538427    TRUE 2013-05-31 12:28:47      3.185218     51.34318
-#&gt;  75: 15476538447    TRUE 2013-05-31 12:34:10      3.185252     51.34316
-#&gt;  76: 15476538479    TRUE 2013-05-31 12:41:46      3.185238     51.34314
-#&gt;  77: 15476538492    TRUE 2013-05-31 12:46:32      3.185226     51.34314
-#&gt;  78: 15476538523    TRUE 2013-05-31 13:00:59      3.185235     51.34316
-#&gt;  79: 15476538539    TRUE 2013-05-31 13:08:21      3.185244     51.34316
-#&gt;  80: 15476538559    TRUE 2013-05-31 13:15:51      3.185112     51.34322
-#&gt;  81: 15476538580    TRUE 2013-05-31 13:23:53      3.185138     51.34327
-#&gt;  82: 15476538595    TRUE 2013-05-31 13:28:46      3.188295     51.34194
-#&gt;  83: 15476538603    TRUE 2013-05-31 13:31:20      3.187311     51.34245
-#&gt;  84: 15476538623    TRUE 2013-05-31 13:38:35      3.187459     51.34356
-#&gt;  85: 15476538649    TRUE 2013-05-31 13:48:24      3.181500     51.34410
-#&gt;  86: 15476538658    TRUE 2013-05-31 13:51:15      3.185181     51.34324
-#&gt;  87: 15476538675    TRUE 2013-05-31 13:58:18      3.185369     51.34350
-#&gt;  88: 15476538695    TRUE 2013-05-31 14:05:27      3.184176     51.34408
-#&gt;  89: 15476538698    TRUE 2013-05-31 14:06:29      3.185223     51.34313
-#&gt;  90: 15476538713    TRUE 2013-05-31 14:11:34      3.185252     51.34320
-#&gt;  91: 15476538724    TRUE 2013-05-31 14:16:23      3.185103     51.34319
-#&gt;  92: 15476538736    TRUE 2013-05-31 14:21:11      3.185139     51.34307
-#&gt;  93: 15476538758    TRUE 2013-05-31 14:29:43      3.185153     51.34326
-#&gt;  94: 15476538771    TRUE 2013-05-31 14:37:03      3.185013     51.34341
-#&gt;  95: 15476538786    TRUE 2013-05-31 14:44:23      3.184905     51.34345
-#&gt;  96: 15476538803    TRUE 2013-05-31 14:51:36      3.185080     51.34364
-#&gt;  97: 15476538819    TRUE 2013-05-31 14:59:20      3.185063     51.34347
-#&gt;  98: 15476538836    TRUE 2013-05-31 15:04:56      3.185307     51.34440
-#&gt;  99: 15476538842    TRUE 2013-05-31 15:07:19      3.185261     51.34322
-#&gt; 100: 15476538857    TRUE 2013-05-31 15:12:25      3.185325     51.34281
-#&gt;         event-id visible           timestamp location-long location-lat
-#&gt;      bar:barometric-pressure external-temperature gps:dop gps:satellite-count
-#&gt;   1:                      NA                 26.2     3.9                   5
-#&gt;   2:                      NA                 25.2     2.9                   5
-#&gt;   3:                      NA                 23.5     3.4                   5
-#&gt;   4:                      NA                 23.6     3.3                   5
-#&gt;   5:                      NA                 24.1     2.7                   5
-#&gt;   6:                      NA                 24.6     5.2                   4
-#&gt;   7:                      NA                 24.2     2.8                   4
-#&gt;   8:                      NA                 23.5     1.6                   8
-#&gt;   9:                      NA                 23.4     2.7                   6
-#&gt;  10:                      NA                 24.2     3.0                   6
-#&gt;  11:                      NA                 25.8     7.6                   4
-#&gt;  12:                      NA                 26.3     4.0                   5
-#&gt;  13:                      NA                 25.6     3.9                   5
-#&gt;  14:                      NA                 29.6     2.4                   8
-#&gt;  15:                      NA                 29.0     2.4                   7
-#&gt;  16:                      NA                 21.9     3.9                   5
-#&gt;  17:                      NA                 23.8     2.0                   8
-#&gt;  18:                      NA                 25.0     1.9                   8
-#&gt;  19:                      NA                 23.9     2.2                   7
-#&gt;  20:                      NA                 25.2     2.3                   7
-#&gt;  21:                      NA                 25.9     3.8                   6
-#&gt;  22:                      NA                 26.6     8.5                   4
-#&gt;  23:                      NA                 26.5     2.5                   7
-#&gt;  24:                      NA                 15.8     2.4                   7
-#&gt;  25:                      NA                 22.7     2.0                   7
-#&gt;  26:                      NA                 30.5     2.8                   5
-#&gt;  27:                      NA                 31.1     2.4                   6
-#&gt;  28:                      NA                 32.8     3.0                   6
-#&gt;  29:                      NA                 32.8     4.6                   4
-#&gt;  30:                      NA                 30.9     2.3                   6
-#&gt;  31:                      NA                 29.1     2.2                   6
-#&gt;  32:                      NA                 28.1     2.2                   6
-#&gt;  33:                      NA                 28.6     2.2                   6
-#&gt;  34:                      NA                 30.6     2.1                   6
-#&gt;  35:                      NA                 29.2     2.1                   6
-#&gt;  36:                      NA                 30.9     2.1                   6
-#&gt;  37:                      NA                 31.0     2.1                   6
-#&gt;  38:                      NA                 33.5     7.6                   4
-#&gt;  39:                      NA                 34.2     8.5                   4
-#&gt;  40:                      NA                 34.2     9.6                   4
-#&gt;  41:                      NA                 34.7     1.9                   7
-#&gt;  42:                      NA                 34.8     1.9                   7
-#&gt;  43:                      NA                 34.1     1.9                   7
-#&gt;  44:                      NA                 34.6     2.6                   6
-#&gt;  45:                      NA                 33.9     2.3                   6
-#&gt;  46:                      NA                 32.4     1.8                   7
-#&gt;  47:                      NA                 31.0     2.3                   6
-#&gt;  48:                      NA                 33.1     2.2                   6
-#&gt;  49:                      NA                 33.9     2.2                   6
-#&gt;  50:                      NA                 37.1     3.0                   5
-#&gt;  51:                      NA                 39.8     2.1                   6
-#&gt;  52:                      NA                 40.1     2.8                   5
-#&gt;  53:                      NA                 41.0     2.8                   5
-#&gt;  54:                      NA                 41.9     2.8                   5
-#&gt;  55:                      NA                 44.5     2.8                   5
-#&gt;  56:                      NA                 45.9     2.8                   5
-#&gt;  57:                      NA                 45.8     3.4                   5
-#&gt;  58:                      NA                 44.4     3.2                   5
-#&gt;  59:                      NA                 42.6     2.1                   6
-#&gt;  60:                      NA                 38.4     2.0                   6
-#&gt;  61:                      NA                 35.5     2.0                   6
-#&gt;  62:                      NA                 34.3     1.5                   9
-#&gt;  63:                      NA                 33.7     1.6                   7
-#&gt;  64:                      NA                 28.7     1.7                   7
-#&gt;  65:                      NA                 32.0     2.2                   6
-#&gt;  66:                      NA                 36.0     2.3                   6
-#&gt;  67:                      NA                 37.8     2.4                   6
-#&gt;  68:                      NA                 38.5     2.5                   6
-#&gt;  69:                      NA                 36.4     2.6                   6
-#&gt;  70:                      NA                 37.3     2.0                   7
-#&gt;  71:                      NA                 36.2     1.9                   8
-#&gt;  72:                      NA                 38.4     2.8                   5
-#&gt;  73:                      NA                 38.4     1.8                   8
-#&gt;  74:                      NA                 40.5     2.7                   6
-#&gt;  75:                      NA                 40.4     1.7                   8
-#&gt;  76:                      NA                 42.2     1.8                   7
-#&gt;  77:                      NA                 42.3     1.9                   6
-#&gt;  78:                      NA                 43.3     2.5                   5
-#&gt;  79:                      NA                 41.6     2.7                   4
-#&gt;  80:                      NA                 39.6     2.0                   6
-#&gt;  81:                      NA                 39.3     2.4                   5
-#&gt;  82:                      NA                 40.7     2.0                   6
-#&gt;  83:                      NA                 40.8     1.8                   7
-#&gt;  84:                      NA                 41.6     3.4                   5
-#&gt;  85:                      NA                 40.2     1.7                   6
-#&gt;  86:                      NA                 40.0     3.8                   4
-#&gt;  87:                      NA                 39.6     3.7                   5
-#&gt;  88:                      NA                 40.6     4.4                   4
-#&gt;  89:                      NA                 40.9     4.3                   4
-#&gt;  90:                      NA                 40.1     3.6                   4
-#&gt;  91:                      NA                 38.7     1.5                   7
-#&gt;  92:                      NA                 38.7     1.5                   7
-#&gt;  93:                      NA                 40.2     2.7                   6
-#&gt;  94:                      NA                 40.1     3.8                   5
-#&gt;  95:                      NA                 40.6     3.8                   5
-#&gt;  96:                      NA                 38.9     3.9                   5
-#&gt;  97:                      NA                 37.8     4.0                   5
-#&gt;  98:                      NA                 36.7     4.1                   5
-#&gt;  99:                      NA                 36.4     4.1                   5
-#&gt; 100:                      NA                 37.0     4.2                   5
-#&gt;      bar:barometric-pressure external-temperature gps:dop gps:satellite-count
-#&gt;      gps-time-to-fix ground-speed     heading height-above-msl
-#&gt;   1:            89.5   0.23990525  97.2881136                2
-#&gt;   2:             9.0   0.68492543 201.0745766               -1
-#&gt;   3:             8.9   0.27465942 148.7308238                1
-#&gt;   4:            39.0   0.16557312 282.8655324                6
-#&gt;   5:             9.0   7.48392294 137.9184498              -31
-#&gt;   6:            18.9   0.06223111  86.6817700                6
-#&gt;   7:            10.9   0.37885842  75.4210737                3
-#&gt;   8:            34.1   0.03912849 277.0961510                5
-#&gt;   9:             8.1   0.27813325   3.4307856                2
-#&gt;  10:             8.1   0.21626916 216.3378302                8
-#&gt;  11:            21.1   0.42254144 213.1880607               -4
-#&gt;  12:             8.2   0.11743204   3.5346435               -2
-#&gt;  13:            24.2   0.14009017  55.4527317                8
-#&gt;  14:            40.3   0.24014618 153.8226960               10
-#&gt;  15:            11.2   1.52351722 146.0765369                2
-#&gt;  16:             9.3   1.38663051   3.0996011               -8
-#&gt;  17:            42.3   0.10831387  57.1364089                4
-#&gt;  18:             7.4   0.05888493   6.4519104                7
-#&gt;  19:             7.4   0.05136576  42.8827627                4
-#&gt;  20:             7.3   0.10068071 108.6082890                5
-#&gt;  21:             9.3   0.92465076   0.5249213                6
-#&gt;  22:            18.4   0.29339074 344.9964163                7
-#&gt;  23:            28.4   0.12203525 186.2655188                2
-#&gt;  24:            27.3   0.46824603 309.9392163                2
-#&gt;  25:             8.4  11.28791545   5.7045198               25
-#&gt;  26:            15.4   0.84643382  83.2646952               -1
-#&gt;  27:            14.5   0.22818084 244.7378888                3
-#&gt;  28:            53.4   0.86419519  65.0867051                4
-#&gt;  29:            12.5   0.51429448 159.3498228                7
-#&gt;  30:             7.5   0.14281827 103.8391207               11
-#&gt;  31:             9.6   0.36297562 328.2926558               87
-#&gt;  32:             7.6   0.35787969 219.9205193               66
-#&gt;  33:             9.6   0.16766413  13.9858533               14
-#&gt;  34:            10.6   0.41616598 247.8757085              -16
-#&gt;  35:             7.6   7.47854779 139.5451614               41
-#&gt;  36:            11.6   0.23651147 291.4025191               86
-#&gt;  37:             9.6   0.20384551 344.2115826               59
-#&gt;  38:            25.5           NA          NA               11
-#&gt;  39:            26.4   0.54704634 280.4330484               20
-#&gt;  40:            28.5   0.74650538 304.2156136               19
-#&gt;  41:            45.4   0.46181160 308.3496399                7
-#&gt;  42:             8.5   0.20609428 266.8658862                2
-#&gt;  43:            11.4   0.13892739 164.9535728                2
-#&gt;  44:            10.5   0.39747301 355.7584010                9
-#&gt;  45:             8.4   0.13197686 323.9664515                4
-#&gt;  46:             7.5   0.18340665  11.5178420                5
-#&gt;  47:             7.4   0.16453955 206.8584468                8
-#&gt;  48:            18.6   0.09585560  34.5542281                4
-#&gt;  49:            17.6   0.05829610  10.4166379              -14
-#&gt;  50:            13.5   0.38033134   0.9310743                5
-#&gt;  51:             8.5   0.17065513 181.6907034                4
-#&gt;  52:             9.3   2.86354240 244.7271718              -51
-#&gt;  53:             9.3   3.49591138  54.1065836              -65
-#&gt;  54:             7.2   0.16622914 202.3698005              -57
-#&gt;  55:             8.3   2.28810841 193.6149043              -74
-#&gt;  56:             9.8   5.42683717 272.3489767               93
-#&gt;  57:            53.4   5.67148674  30.2983711               25
-#&gt;  58:            20.5   6.05694294 203.7652604             -300
-#&gt;  59:             8.5   0.25598398 348.3771781                4
-#&gt;  60:            10.5   0.11931494 228.4716576               -2
-#&gt;  61:             8.3   0.33439870 321.6601212                1
-#&gt;  62:            37.4   0.36467648  17.1649262                5
-#&gt;  63:             7.5   5.18526491 138.6292925              -11
-#&gt;  64:             8.6   6.36503323  36.9183811              -32
-#&gt;  65:            16.6   2.00495778  69.8365362              -59
-#&gt;  66:             7.5   0.45210620  24.1203866              -18
-#&gt;  67:             7.6   2.00723340 215.4409870               -7
-#&gt;  68:             7.6   0.20072609 204.4654729              -14
-#&gt;  69:             7.6   0.69175852  25.7142353              -17
-#&gt;  70:            45.0   7.25211219  38.5342449               40
-#&gt;  71:            20.5   0.16937155 212.4875567                6
-#&gt;  72:             8.6   2.86898926 185.4245816             -333
-#&gt;  73:             7.6   0.24739941 197.6209170               65
-#&gt;  74:            15.1   1.33311659 148.2597956               19
-#&gt;  75:            18.6   0.02068081  74.9249787                4
-#&gt;  76:            10.5   0.06553511  35.7493819                4
-#&gt;  77:             8.5   0.11772666 111.8433543                6
-#&gt;  78:            11.5   0.17241865 208.6515706                8
-#&gt;  79:            20.3   0.18944986 310.6871329                6
-#&gt;  80:             7.5   0.14018983  29.3894591               34
-#&gt;  81:            39.7   5.23350263 323.9015970               11
-#&gt;  82:            14.3   1.79506731 321.1310385             -185
-#&gt;  83:             8.3   3.27769898 119.5885597             -150
-#&gt;  84:            11.5   4.07987985 218.8440455             -244
-#&gt;  85:             8.9   0.32147997 145.8940604              270
-#&gt;  86:            33.1           NA          NA               13
-#&gt;  87:            10.5   1.37894859 201.1339418              -29
-#&gt;  88:             7.5   0.19840139 195.2376916              174
-#&gt;  89:            21.5   0.13574215  10.8386581                6
-#&gt;  90:            21.1   0.52508276 359.3955436               10
-#&gt;  91:             7.5   4.17105033 330.2974525               -8
-#&gt;  92:             7.5   2.27047078 199.4418473                8
-#&gt;  93:             7.4   0.17822759   0.7198856               -4
-#&gt;  94:            15.6   7.75369224   1.7046700              -79
-#&gt;  95:             7.6   3.26507958 301.6901629              -32
-#&gt;  96:             8.6   1.57423282  73.4156522              -66
-#&gt;  97:             8.6   0.81027899 191.6963403              -27
-#&gt;  98:             8.6   0.73037187 220.0381846              -45
-#&gt;  99:             7.5   0.15584643 290.6029286                5
-#&gt; 100:             9.5   5.38071068 154.4731714               23
-#&gt;      gps-time-to-fix ground-speed     heading height-above-msl
-#&gt;      import-marked-outlier location-error-numerical manually-marked-outlier
-#&gt;   1:                 FALSE                      6.0                   FALSE
-#&gt;   2:                 FALSE                      9.1                   FALSE
-#&gt;   3:                 FALSE                     19.5                   FALSE
-#&gt;   4:                 FALSE                      7.8                   FALSE
-#&gt;   5:                 FALSE                      8.9                   FALSE
-#&gt;   6:                 FALSE                      8.8                   FALSE
-#&gt;   7:                 FALSE                     28.9                   FALSE
-#&gt;   8:                 FALSE                      6.8                   FALSE
-#&gt;   9:                 FALSE                     13.5                   FALSE
-#&gt;  10:                 FALSE                      8.3                   FALSE
-#&gt;  11:                 FALSE                     18.8                   FALSE
-#&gt;  12:                 FALSE                      6.8                   FALSE
-#&gt;  13:                 FALSE                      5.7                   FALSE
-#&gt;  14:                 FALSE                     10.6                   FALSE
-#&gt;  15:                 FALSE                     32.1                   FALSE
-#&gt;  16:                 FALSE                     10.4                   FALSE
-#&gt;  17:                 FALSE                      4.8                   FALSE
-#&gt;  18:                 FALSE                      4.8                   FALSE
-#&gt;  19:                 FALSE                      5.0                   FALSE
-#&gt;  20:                 FALSE                      6.2                   FALSE
-#&gt;  21:                 FALSE                      9.7                   FALSE
-#&gt;  22:                 FALSE                     12.9                   FALSE
-#&gt;  23:                 FALSE                      4.0                   FALSE
-#&gt;  24:                 FALSE                     26.1                   FALSE
-#&gt;  25:                 FALSE                      7.4                   FALSE
-#&gt;  26:                 FALSE                     32.1                   FALSE
-#&gt;  27:                 FALSE                     26.3                   FALSE
-#&gt;  28:                 FALSE                     35.0                   FALSE
-#&gt;  29:                 FALSE                     40.7                   FALSE
-#&gt;  30:                 FALSE                      8.2                   FALSE
-#&gt;  31:                 FALSE                      9.9                   FALSE
-#&gt;  32:                 FALSE                     11.7                   FALSE
-#&gt;  33:                 FALSE                     17.5                   FALSE
-#&gt;  34:                 FALSE                     13.9                   FALSE
-#&gt;  35:                 FALSE                     16.2                   FALSE
-#&gt;  36:                 FALSE                     21.2                   FALSE
-#&gt;  37:                 FALSE                     20.1                   FALSE
-#&gt;  38:                 FALSE                       NA                   FALSE
-#&gt;  39:                 FALSE                     42.3                   FALSE
-#&gt;  40:                 FALSE                     53.8                   FALSE
-#&gt;  41:                 FALSE                     12.7                   FALSE
-#&gt;  42:                 FALSE                      9.4                   FALSE
-#&gt;  43:                 FALSE                     15.8                   FALSE
-#&gt;  44:                 FALSE                     17.2                   FALSE
-#&gt;  45:                 FALSE                      9.3                   FALSE
-#&gt;  46:                 FALSE                      7.4                   FALSE
-#&gt;  47:                 FALSE                      8.1                   FALSE
-#&gt;  48:                 FALSE                      9.7                   FALSE
-#&gt;  49:                 FALSE                      8.8                   FALSE
-#&gt;  50:                 FALSE                     21.7                   FALSE
-#&gt;  51:                 FALSE                     10.0                   FALSE
-#&gt;  52:                 FALSE                     11.8                   FALSE
-#&gt;  53:                 FALSE                     10.8                   FALSE
-#&gt;  54:                 FALSE                      9.2                   FALSE
-#&gt;  55:                 FALSE                     12.1                   FALSE
-#&gt;  56:                 FALSE                     15.4                   FALSE
-#&gt;  57:                 FALSE                     34.0                   FALSE
-#&gt;  58:                 FALSE                     61.6                   FALSE
-#&gt;  59:                 FALSE                     12.4                   FALSE
-#&gt;  60:                 FALSE                     19.5                   FALSE
-#&gt;  61:                 FALSE                     10.0                   FALSE
-#&gt;  62:                 FALSE                     10.2                   FALSE
-#&gt;  63:                 FALSE                     11.8                   FALSE
-#&gt;  64:                 FALSE                     10.5                   FALSE
-#&gt;  65:                 FALSE                     94.4                   FALSE
-#&gt;  66:                 FALSE                     14.1                   FALSE
-#&gt;  67:                 FALSE                     14.9                   FALSE
-#&gt;  68:                 FALSE                     10.5                   FALSE
-#&gt;  69:                 FALSE                     11.7                   FALSE
-#&gt;  70:                 FALSE                     95.6                   FALSE
-#&gt;  71:                 FALSE                      7.7                   FALSE
-#&gt;  72:                 FALSE                    100.4                   FALSE
-#&gt;  73:                 FALSE                     17.0                   FALSE
-#&gt;  74:                 FALSE                     56.0                   FALSE
-#&gt;  75:                 FALSE                     10.9                   FALSE
-#&gt;  76:                 FALSE                     13.5                   FALSE
-#&gt;  77:                 FALSE                     15.0                   FALSE
-#&gt;  78:                 FALSE                     18.0                   FALSE
-#&gt;  79:                 FALSE                     14.0                   FALSE
-#&gt;  80:                 FALSE                     14.5                   FALSE
-#&gt;  81:                 FALSE                     49.5                   FALSE
-#&gt;  82:                 FALSE                     71.8                   FALSE
-#&gt;  83:                 FALSE                     26.2                   FALSE
-#&gt;  84:                 FALSE                     63.4                   FALSE
-#&gt;  85:                 FALSE                     41.6                   FALSE
-#&gt;  86:                 FALSE                       NA                   FALSE
-#&gt;  87:                 FALSE                     17.7                   FALSE
-#&gt;  88:                 FALSE                     23.3                   FALSE
-#&gt;  89:                 FALSE                     19.4                   FALSE
-#&gt;  90:                 FALSE                     16.0                   FALSE
-#&gt;  91:                 FALSE                     14.8                   FALSE
-#&gt;  92:                 FALSE                     13.9                   FALSE
-#&gt;  93:                 FALSE                     10.4                   FALSE
-#&gt;  94:                 FALSE                     34.6                   FALSE
-#&gt;  95:                 FALSE                     41.0                   FALSE
-#&gt;  96:                 FALSE                     40.0                   FALSE
-#&gt;  97:                 FALSE                     45.9                   FALSE
-#&gt;  98:                 FALSE                     35.7                   FALSE
-#&gt;  99:                 FALSE                     17.0                   FALSE
-#&gt; 100:                 FALSE                     26.7                   FALSE
-#&gt;      import-marked-outlier location-error-numerical manually-marked-outlier
-#&gt;      vertical-error-numerical sensor-type
-#&gt;   1:                     11.1         gps
-#&gt;   2:                     17.6         gps
-#&gt;   3:                     18.1         gps
-#&gt;   4:                      6.1         gps
-#&gt;   5:                     12.2         gps
-#&gt;   6:                     14.4         gps
-#&gt;   7:                     17.3         gps
-#&gt;   8:                      5.8         gps
-#&gt;   9:                      8.5         gps
-#&gt;  10:                      7.2         gps
-#&gt;  11:                     32.6         gps
-#&gt;  12:                     10.8         gps
-#&gt;  13:                      7.5         gps
-#&gt;  14:                     17.7         gps
-#&gt;  15:                     23.4         gps
-#&gt;  16:                     18.2         gps
-#&gt;  17:                      8.4         gps
-#&gt;  18:                      8.2         gps
-#&gt;  19:                      6.0         gps
-#&gt;  20:                      7.8         gps
-#&gt;  21:                      8.9         gps
-#&gt;  22:                     14.4         gps
-#&gt;  23:                      6.2         gps
-#&gt;  24:                     34.5         gps
-#&gt;  25:                     10.0         gps
-#&gt;  26:                     45.0         gps
-#&gt;  27:                     40.6         gps
-#&gt;  28:                     42.9         gps
-#&gt;  29:                     35.1         gps
-#&gt;  30:                     13.2         gps
-#&gt;  31:                     14.0         gps
-#&gt;  32:                     14.2         gps
-#&gt;  33:                     21.5         gps
-#&gt;  34:                     26.1         gps
-#&gt;  35:                     17.4         gps
-#&gt;  36:                     30.6         gps
-#&gt;  37:                     26.1         gps
-#&gt;  38:                       NA         gps
-#&gt;  39:                     76.9         gps
-#&gt;  40:                     87.9         gps
-#&gt;  41:                     19.0         gps
-#&gt;  42:                     11.6         gps
-#&gt;  43:                     26.0         gps
-#&gt;  44:                     32.1         gps
-#&gt;  45:                     23.2         gps
-#&gt;  46:                      9.1         gps
-#&gt;  47:                     18.1         gps
-#&gt;  48:                     16.6         gps
-#&gt;  49:                     15.4         gps
-#&gt;  50:                     37.7         gps
-#&gt;  51:                     19.4         gps
-#&gt;  52:                     16.0         gps
-#&gt;  53:                     14.7         gps
-#&gt;  54:                     13.6         gps
-#&gt;  55:                     18.9         gps
-#&gt;  56:                     20.9         gps
-#&gt;  57:                     42.0         gps
-#&gt;  58:                     68.9         gps
-#&gt;  59:                     14.0         gps
-#&gt;  60:                     18.6         gps
-#&gt;  61:                     11.6         gps
-#&gt;  62:                      9.2         gps
-#&gt;  63:                     13.4         gps
-#&gt;  64:                     10.6         gps
-#&gt;  65:                     65.8         gps
-#&gt;  66:                     12.1         gps
-#&gt;  67:                     12.5         gps
-#&gt;  68:                     10.9         gps
-#&gt;  69:                     15.8         gps
-#&gt;  70:                    114.0         gps
-#&gt;  71:                      8.5         gps
-#&gt;  72:                     48.3         gps
-#&gt;  73:                     17.5         gps
-#&gt;  74:                     76.2         gps
-#&gt;  75:                     14.8         gps
-#&gt;  76:                     19.2         gps
-#&gt;  77:                     23.0         gps
-#&gt;  78:                     20.7         gps
-#&gt;  79:                     11.7         gps
-#&gt;  80:                     15.6         gps
-#&gt;  81:                     26.4         gps
-#&gt;  82:                     50.3         gps
-#&gt;  83:                     23.6         gps
-#&gt;  84:                     57.1         gps
-#&gt;  85:                     39.3         gps
-#&gt;  86:                       NA         gps
-#&gt;  87:                     13.8         gps
-#&gt;  88:                     17.7         gps
-#&gt;  89:                     14.9         gps
-#&gt;  90:                     15.4         gps
-#&gt;  91:                     15.5         gps
-#&gt;  92:                     13.3         gps
-#&gt;  93:                     10.4         gps
-#&gt;  94:                     30.5         gps
-#&gt;  95:                     38.0         gps
-#&gt;  96:                     37.4         gps
-#&gt;  97:                     41.8         gps
-#&gt;  98:                     34.7         gps
-#&gt;  99:                     16.9         gps
-#&gt; 100:                     27.8         gps
-#&gt;      vertical-error-numerical sensor-type
-#&gt;                                                                                                                                     study-name
-#&gt;   1: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   2: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   3: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   4: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   5: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   6: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   7: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   8: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;   9: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  10: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  11: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  12: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  13: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  14: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  15: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  16: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  17: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  18: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  19: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  20: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  21: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  22: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  23: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  24: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  25: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  26: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  27: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  28: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  29: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  30: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  31: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  32: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  33: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  34: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  35: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  36: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  37: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  38: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  39: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  40: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  41: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  42: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  43: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  44: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  45: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  46: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  47: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  48: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  49: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  50: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  51: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  52: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  53: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  54: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  55: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  56: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  57: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  58: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  59: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  60: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  61: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  62: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  63: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  64: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  65: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  66: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  67: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  68: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  69: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  70: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  71: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  72: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  73: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  74: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  75: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  76: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  77: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  78: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  79: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  80: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  81: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  82: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  83: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  84: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  85: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  86: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  87: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  88: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  89: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  90: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  91: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  92: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  93: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  94: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  95: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  96: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  97: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  98: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;  99: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt; 100: LBBG_ZEEBRUGGE - Lesser black-backed gulls (Larus fuscus, Laridae) breeding at the southern North Sea coast (Belgium and the Netherlands)
-#&gt;                                                                                                                                     study-name
-#&gt;      animal-taxon tag-id animal-id animal-comments animal-life-stage
-#&gt;   1: Larus fuscus    703   L904812            Kees             adult
-#&gt;   2: Larus fuscus    703   L904812            Kees             adult
-#&gt;   3: Larus fuscus    703   L904812            Kees             adult
-#&gt;   4: Larus fuscus    703   L904812            Kees             adult
-#&gt;   5: Larus fuscus    703   L904812            Kees             adult
-#&gt;   6: Larus fuscus    703   L904812            Kees             adult
-#&gt;   7: Larus fuscus    703   L904812            Kees             adult
-#&gt;   8: Larus fuscus    703   L904812            Kees             adult
-#&gt;   9: Larus fuscus    703   L904812            Kees             adult
-#&gt;  10: Larus fuscus    703   L904812            Kees             adult
-#&gt;  11: Larus fuscus    703   L904812            Kees             adult
-#&gt;  12: Larus fuscus    703   L904812            Kees             adult
-#&gt;  13: Larus fuscus    703   L904812            Kees             adult
-#&gt;  14: Larus fuscus    703   L904812            Kees             adult
-#&gt;  15: Larus fuscus    703   L904812            Kees             adult
-#&gt;  16: Larus fuscus    703   L904812            Kees             adult
-#&gt;  17: Larus fuscus    703   L904812            Kees             adult
-#&gt;  18: Larus fuscus    703   L904812            Kees             adult
-#&gt;  19: Larus fuscus    703   L904812            Kees             adult
-#&gt;  20: Larus fuscus    703   L904812            Kees             adult
-#&gt;  21: Larus fuscus    703   L904812            Kees             adult
-#&gt;  22: Larus fuscus    703   L904812            Kees             adult
-#&gt;  23: Larus fuscus    703   L904812            Kees             adult
-#&gt;  24: Larus fuscus    703   L904812            Kees             adult
-#&gt;  25: Larus fuscus    703   L904812            Kees             adult
-#&gt;  26: Larus fuscus    703   L904812            Kees             adult
-#&gt;  27: Larus fuscus    703   L904812            Kees             adult
-#&gt;  28: Larus fuscus    703   L904812            Kees             adult
-#&gt;  29: Larus fuscus    703   L904812            Kees             adult
-#&gt;  30: Larus fuscus    703   L904812            Kees             adult
-#&gt;  31: Larus fuscus    703   L904812            Kees             adult
-#&gt;  32: Larus fuscus    703   L904812            Kees             adult
-#&gt;  33: Larus fuscus    703   L904812            Kees             adult
-#&gt;  34: Larus fuscus    703   L904812            Kees             adult
-#&gt;  35: Larus fuscus    703   L904812            Kees             adult
-#&gt;  36: Larus fuscus    703   L904812            Kees             adult
-#&gt;  37: Larus fuscus    703   L904812            Kees             adult
-#&gt;  38: Larus fuscus    703   L904812            Kees             adult
-#&gt;  39: Larus fuscus    703   L904812            Kees             adult
-#&gt;  40: Larus fuscus    703   L904812            Kees             adult
-#&gt;  41: Larus fuscus    703   L904812            Kees             adult
-#&gt;  42: Larus fuscus    703   L904812            Kees             adult
-#&gt;  43: Larus fuscus    703   L904812            Kees             adult
-#&gt;  44: Larus fuscus    703   L904812            Kees             adult
-#&gt;  45: Larus fuscus    703   L904812            Kees             adult
-#&gt;  46: Larus fuscus    703   L904812            Kees             adult
-#&gt;  47: Larus fuscus    703   L904812            Kees             adult
-#&gt;  48: Larus fuscus    703   L904812            Kees             adult
-#&gt;  49: Larus fuscus    703   L904812            Kees             adult
-#&gt;  50: Larus fuscus    703   L904812            Kees             adult
-#&gt;  51: Larus fuscus    703   L904812            Kees             adult
-#&gt;  52: Larus fuscus    703   L904812            Kees             adult
-#&gt;  53: Larus fuscus    703   L904812            Kees             adult
-#&gt;  54: Larus fuscus    703   L904812            Kees             adult
-#&gt;  55: Larus fuscus    703   L904812            Kees             adult
-#&gt;  56: Larus fuscus    703   L904812            Kees             adult
-#&gt;  57: Larus fuscus    703   L904812            Kees             adult
-#&gt;  58: Larus fuscus    703   L904812            Kees             adult
-#&gt;  59: Larus fuscus    703   L904812            Kees             adult
-#&gt;  60: Larus fuscus    703   L904812            Kees             adult
-#&gt;  61: Larus fuscus    703   L904812            Kees             adult
-#&gt;  62: Larus fuscus    703   L904812            Kees             adult
-#&gt;  63: Larus fuscus    703   L904812            Kees             adult
-#&gt;  64: Larus fuscus    703   L904812            Kees             adult
-#&gt;  65: Larus fuscus    703   L904812            Kees             adult
-#&gt;  66: Larus fuscus    703   L904812            Kees             adult
-#&gt;  67: Larus fuscus    703   L904812            Kees             adult
-#&gt;  68: Larus fuscus    703   L904812            Kees             adult
-#&gt;  69: Larus fuscus    703   L904812            Kees             adult
-#&gt;  70: Larus fuscus    703   L904812            Kees             adult
-#&gt;  71: Larus fuscus    703   L904812            Kees             adult
-#&gt;  72: Larus fuscus    703   L904812            Kees             adult
-#&gt;  73: Larus fuscus    703   L904812            Kees             adult
-#&gt;  74: Larus fuscus    703   L904812            Kees             adult
-#&gt;  75: Larus fuscus    703   L904812            Kees             adult
-#&gt;  76: Larus fuscus    703   L904812            Kees             adult
-#&gt;  77: Larus fuscus    703   L904812            Kees             adult
-#&gt;  78: Larus fuscus    703   L904812            Kees             adult
-#&gt;  79: Larus fuscus    703   L904812            Kees             adult
-#&gt;  80: Larus fuscus    703   L904812            Kees             adult
-#&gt;  81: Larus fuscus    703   L904812            Kees             adult
-#&gt;  82: Larus fuscus    703   L904812            Kees             adult
-#&gt;  83: Larus fuscus    703   L904812            Kees             adult
-#&gt;  84: Larus fuscus    703   L904812            Kees             adult
-#&gt;  85: Larus fuscus    703   L904812            Kees             adult
-#&gt;  86: Larus fuscus    703   L904812            Kees             adult
-#&gt;  87: Larus fuscus    703   L904812            Kees             adult
-#&gt;  88: Larus fuscus    703   L904812            Kees             adult
-#&gt;  89: Larus fuscus    703   L904812            Kees             adult
-#&gt;  90: Larus fuscus    703   L904812            Kees             adult
-#&gt;  91: Larus fuscus    703   L904812            Kees             adult
-#&gt;  92: Larus fuscus    703   L904812            Kees             adult
-#&gt;  93: Larus fuscus    703   L904812            Kees             adult
-#&gt;  94: Larus fuscus    703   L904812            Kees             adult
-#&gt;  95: Larus fuscus    703   L904812            Kees             adult
-#&gt;  96: Larus fuscus    703   L904812            Kees             adult
-#&gt;  97: Larus fuscus    703   L904812            Kees             adult
-#&gt;  98: Larus fuscus    703   L904812            Kees             adult
-#&gt;  99: Larus fuscus    703   L904812            Kees             adult
-#&gt; 100: Larus fuscus    703   L904812            Kees             adult
-#&gt;      animal-taxon tag-id animal-id animal-comments animal-life-stage</div></pre>
+#&gt;                                                  deployment-comments</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
