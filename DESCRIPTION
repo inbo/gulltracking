@@ -1,5 +1,5 @@
 Package: gulltracking
-Title: Analyze gulls behavior based on GPS tracking data
+Title: Annotate GPS Tracking Data of Gulls
 Version: 0.1.0.9001
 Description: gulltracking provides functionality to annotate GPS tracking data 
     of gulls stored in Movebank (https://www.movebank.org).
